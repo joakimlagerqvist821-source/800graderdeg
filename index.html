@@ -3,15 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Degguiden – Pizzeria v2.3.2 (dual-mode + iOS)</title>
+<title>Degguiden – Pizzeria v2.3.3 (dual‑mode + iOS)</title>e>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <script id="__manifest" type="application/json">{
-  "name":"Degguiden","short_name":"Degguiden","start_url":"./",
-  "display":"standalone","background_color":"#f8fafc","theme_color":"#2563eb"
-}</script>
-<script>(function(){try{var el=document.getElementById('__manifest');if(!el)return;var blob=new Blob([el.textContent],{type:'application/manifest+json'});var url=URL.createObjectURL(blob);var link=document.createElement('link');link.rel='manifest';link.href=url;document.head.appendChild(link);}catch(e){}})();</script>
+  "name":"Degguiden","short_name":"Degguiden","start_url":"./","display":"standalone","background_color":"#f8fafc","theme_color":"#2563eb"}
+</script>
+<script>(function(){try{var el=document.getElementById('__manifest');if(!el)return;var blob=new Blob([el.textContent],{type:'application/manifest+json'});var url=URL.createObjectURL(blob);var link=document.createElement('link');link.rel='manifest';link.href=url;document.head.appendChild(link);}catch(e){/*noop*/}})();</script>
 <style>
   :root { --bg:#f8fafc; --panel:#fff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569; --accent:#2563eb; --warn:#b45309; --danger:#ef4444; --radius:16px; --b1a:#e8f0ff; --b1b:#f5f9ff; --b1border:#93c5fd; --b2a:#f5e8ff; --b2b:#fbf7ff; --b2border:#d8b4fe; }
   *{box-sizing:border-box}
@@ -33,17 +32,15 @@
   .btn.ghost{background:transparent;border-color:#cbd5e1}
   .muted{color:var(--muted);font-size:13px}
 
-  /* iOS install tips */
   #iosInstall{display:none;position:sticky;top:56px;z-index:25;margin:12px auto 0;max-width:840px}
   #iosInstall .inner{border:1px dashed #94a3b8;background:#ffffff;border-radius:12px;padding:10px 12px}
 
-  /* HERO */
   .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;max-width:840px;margin:0 auto;background:var(--panel)}
   .hero.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
   .hero.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
   .hero .batchTag{font-weight:900;letter-spacing:.08em;color:#0f172a;text-transform:uppercase}
   .hero .stepNum{font-size:13px;color:#1d4ed8;letter-spacing:.08em;text-transform:uppercase}
-  .hero .stepName{font-weight:800;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1;font-size:clamp(22px,4.5vw,34px)}
+  .hero .stepName{font-weight:800;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
   .hero .hint{margin-top:8px;color:#0f172a;font-weight:800;font-size:clamp(16px,2.8vw,22px)}
   .hero .timerWrap{display:grid;place-items:center;gap:8px;margin-top:12px}
   .hero .time{font-variant-numeric:tabular-nums;font-size:clamp(38px,8vw,74px);font-weight:900}
@@ -51,35 +48,7 @@
   .hero .ackWrap{margin-top:12px}
   .hero .ackBtn{display:none;font-size:clamp(16px,2.6vw,22px);padding:16px 20px}
   @keyframes alarmFlash{0%,100%{box-shadow:0 16px 40px rgba(15,23,42,.08);}50%{box-shadow:0 0 0 6px rgba(239,68,68,.45),0 16px 40px rgba(15,23,42,.14);}}
-  .hero.alarming{animation:alarmFlash .9s ease-in-out infinite}
-
-  .progWrap{text-align:left;margin-top:12px}
-  .track{position:relative;height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-  .bar.overall{position:absolute;inset:0;width:0%;background:#c7d2fe}
-  .bar.time{position:absolute;inset:0;width:0%;background:#2563eb;mix-blend-mode:multiply}
-  .progText{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
-
-  /* Steps list */
-  .stepsTopBar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0}
-  .steps{display:grid;gap:10px}
-  .step{display:grid;gap:6px;padding:12px;border:1px dashed #cbd5e1;border-radius:12px;background:var(--panel-2);opacity:.35;max-width:840px;margin:0 auto}
-  .step.active{opacity:1;border:1px solid #93c5fd;background:var(--panel);box-shadow:0 8px 24px rgba(15,23,42,.08)}
-
-  .field{display:grid;gap:6px}
-  .field input{background:#fff;border:1px solid #cbd5e1;color:#0f172a;border-radius:10px;padding:12px;font-size:16px}
-  .kpi{font-weight:900;font-size:26px}
-
-  .view{display:none}
-  .view.show{display:block}
-  .narrow{max-width:840px;margin:0 auto}
-
-  /* Add blocks (tillsätt-layouter) */
-  .addBlock{margin-top:10px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:var(--panel)}
-  .addBlock .title{font-weight:800;margin-bottom:6px}
-  .addList{list-style:none;padding:0;margin:0;display:grid;gap:10px;justify-content:center}
-  .addItem{text-align:center}
-  .addItem .lab{display:block;font-weight:900;font-size:clamp(20px,3.6vw,26px);line-height:1.06;margin:0}
-  .addItem .amt{display:block;font-weight:700;font-size:clamp(14px,2.4vw,18px);line-height:1.08;margin:0;color:#0f172a}
+.hero.alarming{animation:alarmFlash .9s ease-in-out infinite}
 
   /* Under-hero bar for inactive batch */
   .otherBar{max-width:840px;margin:10px auto 0}
@@ -93,16 +62,64 @@
   .handoffBox{display:none;margin-top:10px;padding:14px;border-radius:14px;border:1px dashed #7f1d1d;background:rgba(127,29,29,.08)}
   .handoffTitle{font-size:clamp(18px,3.2vw,24px);font-weight:900;margin-bottom:6px}
   .handoffText{font-size:16px}
+
+  /* Prettier onboarding */
+  #viewOnboard .btn{min-width:220px}
+  #viewOnboard h2{font-size:clamp(20px,4.2vw,28px)}
+  #viewOnboard .card{background:linear-gradient(180deg,#ffffff,#f8fbff)}e}
+
+  /* Under-hero bar for inactive batch */
+  .otherBar{max-width:840px;margin:10px auto 0}
+  .otherBar .inner{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2)}
+  .otherBar.batch1 .inner{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
+  .otherBar.batch2 .inner{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
+  .otherBar .tag{font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+  .otherBar .time{font-variant-numeric:tabular-nums;font-weight:900}
+
+  /* Handoff overlay */
+  .handoffBox{display:none;margin-top:10px;padding:14px;border-radius:14px;border:1px dashed #7f1d1d;background:rgba(127,29,29,.08)}
+  .handoffTitle{font-size:clamp(18px,3.2vw,24px);font-weight:900;margin-bottom:6px}
+  .handoffText{font-size:16px}
+
+  /* Prettier onboarding */
+  #viewOnboard .btn{min-width:220px}
+  #viewOnboard h2{font-size:clamp(20px,4.2vw,28px)}
+  #viewOnboard .card{background:linear-gradient(180deg,#ffffff,#f8fbff)}
+
+  .progWrap{text-align:left;margin-top:12px}
+  .track{position:relative;height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+  .bar.overall{position:absolute;inset:0;width:0%;background:#c7d2fe}
+  .bar.time{position:absolute;inset:0;width:0%;background:#2563eb;mix-blend-mode:multiply}
+  .progText{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
+
+  .stepsTopBar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0}
+  .steps{display:grid;gap:10px}
+  .step{display:grid;gap:6px;padding:12px;border:1px dashed #cbd5e1;border-radius:12px;background:var(--panel-2);opacity:.35}
+  .step.active{opacity:1;border:1px solid #93c5fd;backgrou<div class="meta ver">v2.3.3</div>4px rgba(15,23,42,.08)}
+
+  .field{display:grid;gap:6px}
+  .field input{background:#fff;border:1px solid #cbd5e1;color:#0f172a;border-radius:10px;padding:12px;font-size:16px}
+  .kpi{font-weight:900;font-size:26px}
+
+  .view{display:none}
+  .view.show{display:block}
+  .narrow{max-width:840px;margin:0 auto}
+
+  .addBlock{margin-top:10px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:var(--panel)}
+  .addBlock .title{font-weight:800;margin-bottom:6px}
+  .addList{list-style:none;padding:0;margin:0;display:grid;gap:10px;justify-content:center}
+  .addItem{text-align:center}
+  .addItem .lab{display:block;font-weight:900;font-size:clamp(20px,3.6vw,26px);line-height:1.06;margin:0}
+  .addItem .amt{display:block;font-weight:700;font-size:clamp(14px,2.4vw,18px);line-height:1.08;margin:0;color:#0f172a}
 </style>
 </head>
 <body>
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
   <div class="meta"><span id="clock">--:--</span><span>🔈 <input id="volRange" type="range" min="0" max="100" value="85" /> <span id="volLabel">85%</span></span></div>
-  <div class="meta ver">v2.3.2</div>
+  <div class="meta ver">v2.3.3</div>
 </header>
 
-<!-- iOS install banner -->
 <div id="iosInstall" class="narrow">
   <div class="inner">
     <strong>Tips för helskärm på iPhone:</strong> öppna i Safari och <em>Lägg till på hemskärmen</em> (Dela → Lägg till på hemskärmen). Öppna sedan app-ikonen.
@@ -162,7 +179,12 @@
     <h2>Steg 4: Väg upp enligt batch</h2>
     <div class="row" style="justify-content:center;gap:12px;flex-wrap:wrap">
       <div class="card"><div class="preLabel">Vatten</div><div class="bigBreak" id="preWaterBig">—</div><div class="smallTotal" id="preWaterSmall">= — g</div></div>
-      <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
+      <div class<div class="hint" id="heroHint"></div>
+        <div class="handoffBox" id="handoffBox">
+          <div class="handoffTitle">BYT BATCH</div>
+          <div class="handoffText">Ta ur <strong>Batch 1</strong> ur blandaren. Starta <strong>autolys 30 min</strong> för Batch 1. Börja <strong>Batch 2, steg 1–2</strong>.</div>
+          <div class="handoffOk" style="margin-top:10px"><button class="btn primary" id="handoffOkBtn">Ok, förstått</button></div>
+        </div>v><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
       <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div><div class="smallTotal" id="preOilSmall">= — g</div></div>
     </div>
     <div class="row" style="justify-content:space-between">
@@ -173,28 +195,7 @@
 
   <section id="viewMix" class="view stack">
     <div>
-      <div class="hero batch1" id="hero">
-        <div class="batchTag" id="heroBatchLabel">Batch 1</div>
-        <div class="stepNum" id="heroStepNum">Steg —</div>
-        <div class="stepName" id="heroStepName">—</div>
-        <div class="hint" id="heroHint"></div>
-
-        <div class="handoffBox" id="handoffBox">
-          <div class="handoffTitle">BYT BATCH</div>
-          <div class="handoffText">
-            Ta ur <strong>Batch 1</strong> ur blandaren. Starta <strong>autolys 30 min</strong> för Batch 1.<br>
-            Börja <strong>Batch 2, steg 1–2</strong>.
-          </div>
-          <div class="handoffOk" style="margin-top:10px"><button class="btn primary" id="handoffOkBtn">Ok, förstått</button></div>
-        </div>
-
-        <div class="progWrap"><div class="track"><div class="bar overall" id="heroProgOverall"></div><div class="bar time" id="heroProgTime"></div></div><div class="progText"><span id="heroProgLabel">Steg — av 7</span><span id="heroProgPct">0%</span></div></div>
-        <div class="timerWrap" id="heroTimerWrap" style="display:none"><div class="time" id="timerDisplay">00:00</div><div class="controls"><button class="btn" id="timerPause">Pausa</button><button class="btn" id="timerReset">Nollställ</button></div><div class="ackWrap"><button class="btn danger ackBtn" id="ackBtn">⏰ Stoppa alarm och nästa steg</button></div></div>
-        <div class="row" style="justify-content:center;gap:8px;margin-top:10px"><button class="btn" id="prevStep">◀ Föregående</button><button class="btn primary" id="nextStep">Nästa ▶</button></div>
-      </div>
-
-      <!-- Under-hero inactive batch bar -->
-      <div class="otherBar" id="otherBar" style="display:none;">
+  <div class="otherBar" id="otherBar" style="display:none;">
         <div class="inner">
           <span class="tag" id="otherBarTag">Batch 2</span>
           <span class="info" id="otherBarInfo">—</span>
@@ -202,15 +203,25 @@
           <button class="btn ghost" id="otherBarJump">Gå till denna batch</button>
         </div>
       </div>
-
+      <div class="card narrow" style="margin-top:12px">div class="batchTag" id="heroBatchLabel">Batch 1</div>
+        <div class="stepNum" id="heroStepNum">Steg —</div>
+        <div class="stepName" id="heroStepName">—</div>
+        <div class="hint" id="heroHint"></div>
+        <div class="handoffBox" id="handoffBox">
+          <div class="handoffTitle">BYT BATCH</div>
+          <div class="handoffText">Ta ur <strong>Batch 1</strong> ur blandaren. Starta <strong>autolys 30 min</strong> för Batch 1. Börja <strong>Batch 2, steg 1–2</strong>.</div>
+          <div class="handoffOk" style="margin-top:10px"><button class="btn primary" id="handoffOkBtn">Ok, förstått</button></div>
+        </div>
+        <div class="progWrap"><div class="track"><div class="bar overall" id="heroProgOverall"></div><div class="bar time" id="heroProgTime"></div></div><div class="progText"><span id="heroProgLabel">Steg — av 7</span><span id="heroProgPct">0%</span></div></div>
+        <div class="timerWrap" id="heroTimerWrap" style="display:none"><div class="time" id="timerDisplay">00:00</div><div class="controls"><button class="btn" id="timerPause">Pausa</button><button class="btn" id="timerReset">Nollställ</button></div><div class="ackWrap"><button class="btn danger ackBtn" id="ackBtn">⏰ Stoppa alarm och nästa steg</button></div></div>
+        <div class="row" style="justify-content:center;gap:8px;margin-top:10px"><button class="btn" id="prevStep">◀ Föregående</button><button class="btn priactive:1,dualMode:false,b2Started:false,tickHandle:null,v>
+      </div>
       <div class="card narrow" style="margin-top:12px"><div class="stepsTopBar"><div><strong id="stepBadge">1 / 7</strong></div></div><div class="steps" id="stepsContainer"></div></div>
     </div>
   </section>
 </main>
 
-<audio id="beepFallback" preload="auto" playsinline>
-  <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAZGF0YQAAAAAAAAD///8AAAAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///w==" type="audio/wav">
-</audio>
+<audio id="beepFallback" preload="auto" playsinline><source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAZGF0YQAAAAAAAAD///8AAAAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///w==" type="audio/wav"></audio>
 
 <script>
 (function(){
@@ -234,7 +245,7 @@
     base:{water:1250,salt:450,oil:450},
     B1:{id:1,idx:0,deadline:0,running:false},
     B2:{id:2,idx:0,deadline:0,running:false},
-    active:1,dualMode:false,b2Started:false,tickHandle:null,
+    active:1,dualMode:false,tickHandle:null,
     audioCtx:null,gain:null,alarmTimer:null,alarmOn:false,volume:+(LS.get('deg_alarm_vol')||0.85),
     flour:null,room:null,target:22,friction:null,waterCalc:null,note:'',
     logs:[], measurements:[],
@@ -242,13 +253,13 @@
     audioUnlocked: LS.get('audio_unlocked')==='1'
   };
 
-  function ensureAudio(){ if(state.audioCtx) return; var Ctx=window.AudioContext||window.webkitAudioContext; if(!Ctx) return; state.audioCtx=new Ctx(); state.gain=state.audioCtx.createGain(); state.gain.gain.value=state.volume; state.gain.connect(state.audioCtx.destination); }
+  function ensureAudio(){ if(statContext||window.webkitAudioContext; if(!Ctx) return; state.audioCtx=new Ctx(); state.gain=state.audioCtx.createGain(); state.gain.gain.value=state.volume; state.gain.connect(state.audioCtx.destination); }
   function unlockAudio(){ if(state.audioUnlocked) return; ensureAudio(); if(state.audioCtx){ try{ var b=state.audioCtx.createBuffer(1,1,22050); var src=state.audioCtx.createBufferSource(); src.buffer=b; src.connect(state.gain); src.start(0); }catch(e){} }
     var el=$('#beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} }
     state.audioUnlocked=true; LS.set('audio_unlocked','1');
     var sh=$('#silenceHint'); if(sh) sh.style.display='block';
   }
-  window.__unlockAudio = unlockAudio;
+  window.__unlockAudio = unlockAudio; // inline fallback använder denna
 
   function playBeep(freq,dur){ freq=freq||1000; dur=dur||0.25; if(!state.audioCtx) return; try{ var osc=state.audioCtx.createOscillator(); var g=state.audioCtx.createGain(); osc.type='square'; osc.frequency.value=freq; g.gain.setValueAtTime(0, state.audioCtx.currentTime); g.gain.linearRampToValueAtTime(state.volume, state.audioCtx.currentTime+0.02); g.gain.linearRampToValueAtTime(0.0001, state.audioCtx.currentTime+dur); osc.connect(g).connect(state.gain); osc.start(); var stopAt=state.audioCtx.currentTime+dur+0.05; osc.stop(stopAt); setTimeout(function(){ try{ osc.disconnect(); g.disconnect(); }catch(e){} }, (dur+0.1)*1000); }catch(e){} }
   function playFallback(){ var el=$('#beepFallback'); if(!el) return; try{ el.currentTime=0; el.play(); }catch(e){} }
@@ -266,92 +277,30 @@
 
   function waterLabel(){ return (typeof state.waterCalc==='number')?(' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)'):''; }
   var steps=[{id:1,duration:0},{id:2,duration:6*60},{id:3,duration:30*60},{id:4,duration:6*60},{id:5,duration:7*60},{id:6,duration:30*60},{id:7,duration:0}];
-  function perBatch(){ return {water:state.base.water, salt:state.base.salt, oil:state.base.oil}; }
-  function stepTitle(id){switch(id){case 1:return 'Häll i vatten'+waterLabel()+' i degblandaren.';case 2:return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';case 3:return 'Autolys – vila 30 minuter.';case 4:return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';case 5:return 'Starta degblandaren och kör på hastighet 2 i 7 minuter.';case 6:return 'Vik 1 - Vila 30 minuter';case 7:return 'Vik 2 - Plasta och ställ i kylskåp.';default:return ''}}
-  function addBlock(items,title){ var html='<div class="addBlock"><div class="title">'+(title||'Tillsätt:')+'</div><ul class="addList">'; for(var i=0;i<items.length;i++){ var it=items[i]; html+='<li class="addItem"><span class="lab">'+it.label+'</span>'+(it.amt?'<span class="amt">'+it.amt+'</span>':'')+'</li>'; } html+='</ul></div>'; return html; }
-  function stepHint(id){ var a=perBatch(); switch(id){case 1:return 'Använd beräknad vattentemperatur'+waterLabel()+'.';case 2:return addBlock([{label:'Mjöl'}],'Tillsätt:');case 3:return 'Låt degen vila i 30 minuter (autolys).';case 4:return addBlock([{label:'Jäst'}],'Tillsätt under körning:');case 5:return addBlock([{label:'Vatten',amt:a.water+' g / batch'},{label:'Salt',amt:a.salt+' g / batch'},{label:'Olivolja',amt:a.oil+' g / batch'}],'I följande ordning, tillsätt:');case 6:return 'Vik 1 - Vila 30 minuter';case 7:return 'Vik 2 - Plasta och ställ i kylskåp.';default:return ''}}
-
-  function batchObj(n){ return n===1?state.B1:state.B2; }
-  function currentBatch(){ return batchObj(state.active); }
-  function otherBatch(){ return batchObj(state.active===1?2:1); }
-
-  function setIdx(b,idx){
-    b.idx=Math.max(0,Math.min(idx,steps.length-1));
-    var st=steps[b.idx];
-    if(st.duration>0){ b.deadline=Date.now()+st.duration*1000; b.running=true; }
-    else { b.deadline=0; b.running=false; }
-  }
-  function remaining(b){ if(!b.deadline) return 0; return Math.max(0, Math.ceil((b.deadline-Date.now())/1000)); }
-
-  function refreshHero(){
-    var b=currentBatch(); var stepId=b.idx+1; var hero=document.getElementById('hero');
-    if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
+  function perBatch(){ return {water:state.base.water, salt:state.function currentBatch(){ return batchObj(state.active); }
+  function otherBatch(){ return batchObj(state.active===1?2:1); }){switch(id){case 1:return 'Häll i vatten'+waterLabel()+' i degblandaren.';case 2:return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';case 3:return 'Autolys – vila 30 minuter.';case 4:return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';case 5:return 'Starta degblandaren och kör på hastighet 2 i 7 minuter.'function refreshHero(){ var b=currentBatch(); var stepId=b.idx+1; var hero=document.getElementById('hero'); if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
     document.getElementById('heroBatchLabel').textContent='Batch '+state.active;
     document.getElementById('stepBadge').textContent=(b.idx+1)+' / '+steps.length;
     document.getElementById('heroStepNum').textContent='Steg '+stepId;
     document.getElementById('heroStepName').textContent=stepTitle(stepId);
     document.getElementById('heroHint').innerHTML=stepHint(stepId);
-
-    var overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100));
-    var obEl=document.getElementById('heroProgOverall'); if(obEl) obEl.style.width=overall+'%';
-    var pct=document.getElementById('heroProgPct'); if(pct) pct.textContent=Math.round(overall)+'%';
-    var stlbl=document.getElementById('heroProgLabel'); if(stlbl) stlbl.textContent='Steg '+stepId+' av '+steps.length;
-
-    var showTimer=steps[b.idx].duration>0 && !state.handoffVisible;
-    document.getElementById('heroTimerWrap').style.display=showTimer?'grid':'none';
-    document.getElementById('timerDisplay').textContent=fmt(remaining(b));
-
+    var overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100)); var ob=document.getElementById('heroProgOverall'); if(ob) ob.style.width=overall+'%'; var pct=document.getElementById('heroProgPct'); if(pct) pct.textContent=Math.round(overall)+'%'; var stlbl=document.getElementById('heroProgLabel'); if(stlbl) stlbl.textContent='Steg '+stepId+' av '+steps.length;
+    var showTimer=steps[b.idx].duration>0 && !state.handoffVisible; document.getElementById('heroTimerWrap').style.display=showTimer?'grid':'none'; document.getElementById('timerDisplay').textContent=fmt(remaining(b));
     document.getElementById('handoffBox').style.display = state.handoffVisible ? 'block' : 'none';
-
     renderSteps();
     updateOtherBar();
-  }
+  }.length-1)); var st=steps[b.idx]; if(st.duration>0){ b.deadline=Date.now()+st.duration*1000; b.running=false; } else { b.deadline=0; b.running=false; } }
+  function remaining(b){ if(!b.deadline) return 0; return Math.max(0, Math.ceil((b.deadline-Date.now())/1000)); }
 
-  function renderSteps(){
-    var b=currentBatch(); var c=document.getElementById('stepsContainer'); c.innerHTML='';
-    for(var idx=b.idx; idx<steps.length; idx++){
-      var stepId=idx+1; var div=document.createElement('div');
-      div.className='step'+(idx===b.idx?' active':'');
-      var dur=steps[idx].duration?('⏱ '+fmt(steps[idx].duration)) : '';
-      div.innerHTML='<div style="opacity:.8;font-weight:800;">'+stepId+'. '+stepTitle(stepId)+'</div><div class="muted">'+stepHint(stepId)+'</div>'+(dur?'<div class="muted">'+dur+'</div>':'');
-      c.appendChild(div);
-    }
+  function refreshHero(){ var b=currentBatch'hero'); if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
+    document.getElementById('heroBatchLabel').textContent='Batcfunction tick(){ var b=currentBatch(); var st=steps[b.idx]; if(st.duration>0 && b.running && remaining(b)<=0){ b.running=false; document.getElementById('ackBtn').style.display='inline-block'; startAlarm(); }
+    document.getElementById('timerDisplay').textContent=fmt(remaining(b)); updateOtherBar(); state.tickHandle=requestAnimationFrame(tick);
+  }ng=false; document.getElementById('ackBtn').style.display='inline-block'; startAlarm(); }
+    document.getElementById('timerDisplay').textContent=fmt(remaining(b)); state.tickHandle=requestAnimationFrame(tick);
   }
-
-  function updateOtherBar(){
-    var bar=document.getElementById('otherBar');
-    if(!state.dualMode){ if(bar) bar.style.display='none'; return; }
-    var ob=otherBatch();
-    // Visa inte baren innan Batch 2 är startad (när Batch 1 är aktiv)
-    var started = state.b2Started || (state.active===2);
-    if(state.active===1 && !started){ if(bar) bar.style.display='none'; return; }
-
-    if(bar){
-      bar.classList.toggle('batch1', ob.id===1);
-      bar.classList.toggle('batch2', ob.id===2);
-      bar.style.display='block';
-      var tag=document.getElementById('otherBarTag');
-      var info=document.getElementById('otherBarInfo');
-      var time=document.getElementById('otherBarTime');
-      if(tag) tag.textContent='Batch '+ob.id;
-      if(info) info.textContent='Steg '+(ob.idx+1)+': '+stepTitle(ob.idx+1);
-      if(time) time.textContent= steps[ob.idx].duration>0 ? fmt(remaining(ob)) : '—';
-      var jump=document.getElementById('otherBarJump');
-      if(jump){ jump.onclick=function(){ state.active=ob.id; refreshHero(); }; }
-    }
-  }
-
-  function tick(){
-    var b=currentBatch(); var st=steps[b.idx];
-    if(st.duration>0 && b.running && remaining(b)<=0){
-      b.running=false;
-      document.getElementById('ackBtn').style.display='inline-block';
-      startAlarm();
-    }
-    document.getElementById('timerDisplay').textContent=fmt(remaining(b));
-    updateOtherBar();
-    state.tickHandle=requestAnimationFrame(tick);
-  }
+  function startTimer(){ var b=currentBatch(); var st=steps[b.idx]; if(st.duration<=0) return; if(!b.deadline){ b.deadline=Date.now()+st.duration*1000; } b.running=true; document.getElementById('timerPause').textContent='Pausa'; }
+  function stopTimer(){ var b=currentBatch(); b.running=false; document.getElementById('timerPause').textContent='Fortsätt'; }
+  function resetTimer(){ var b=currentBatch(); var st=steps[b.idx]; b.deadline=st.duration>0?(Date.now()+st.duration*1000):0; b.running=false; document.getElementById('timerPause').textContent='Fortsätt'; }
 
   function num(id){ var el=document.getElementById(id); var raw=(el.value||'').replace(',','.'); return raw===''?NaN:parseFloat(raw); }
   function updateWaterCalc(){ var t=num('targetTemp'), f=num('flourTemp'), r=num('roomTemp'), fr=num('friction'); var target=isFinite(t)?t:22; var w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null; document.getElementById('waterCalc').textContent=(w==null?'—':(Math.round(w*10)/10)+' °C'); state.waterCalc=w; }
@@ -363,50 +312,24 @@
 
     // Volume slider
     var r=document.getElementById('volRange'); var lbl=document.getElementById('volLabel');
-    if(r&&lbl){ r.value=Math.round(state.volume*100); lbl.textContent=Math.round(state.volume*100)+'%'; r.addEventListener('input', function(){ state.volume=Math.max(0, Math.min(1, r.value/100)); if(state.gain){ state.gain.gain.value=state.volume; } LS.set('deg_alarm_vol', state.volume); lbl.textContent=Math.round(state.volume*100)+'%'; }); }
-
-    // FS / audio / alarm
-    var fsBtn=document.getElementById('enterFs'); if(fsBtn){ fsBtn.addEventListener('click', function(){ if(fsSupported()){ try{ document.documentElement.requestFullscreen(); }catch(e){} } }); }
+    if(r&&lbl){ r.value=Math.round(state.volume*100); lbl.textContent=Math.round(state.volume*100)+'%'; r.addEventListener('input', function(){ state.volume=Math.max(0, t.documentElement.requestFullscreen(); }catch(e){} } }); }
     var ua=document.getElementById('unlockAudioBtn'); if(ua){ ua.addEventListener('click', unlockAudio); }
     var tb=document.getElementById('testAlarmBtn'); if(tb){ tb.addEventListener('click', function(){ unlockAudio(); startAlarm(); setTimeout(stopAlarm,2000); }); }
 
-    // Batch -> Temps
     var toTemps=document.getElementById('toTemps'); if(toTemps){ toTemps.addEventListener('click', function(){ var sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; LS.set('deg_batch', state.batchMult); show('viewTemps'); }); }
     var backOnb=document.getElementById('backToOnboard'); if(backOnb){ backOnb.addEventListener('click', function(){ show('viewOnboard'); }); }
 
-    // Temps -> Pre weigh
     var toPre=document.getElementById('toPreWeigh'); if(toPre){ toPre.addEventListener('click', function(){ show('viewPre'); var m=state.batchMult||1; function partsText(mult,base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; } var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); document.getElementById('preWaterBig').textContent=bw.big; document.getElementById('preWaterSmall').textContent='= '+bw.total+' g'; document.getElementById('preSaltBig').textContent=bs.big; document.getElementById('preSaltSmall').textContent='= '+bs.total+' g'; document.getElementById('preOilBig').textContent=bo.big; document.getElementById('preOilSmall').textContent='= '+bo.total+' g'; }); }
     var backTemps=document.getElementById('backToTemps'); if(backTemps){ backTemps.addEventListener('click', function(){ show('viewTemps'); }); }
 
-    // Pre -> Mixing
-    var toMix=document.getElementById('toMixing'); if(toMix){ toMix.addEventListener('click', function(){ setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; state.dualMode = (state.batchMult>=2); state.b2Started=false; state.handoffVisible=false; show('viewMix'); refreshHero(); }); }
+    var toMix=document.getElementById('toMixing'); if(toMix){ toMix.addEventListener('click', function(){ setIdx(state.B1,var toMix=document.getElementById('toMixing'); if(toMix){ toMix.addEventListener('click', function(){ setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; state.dualMode = (state.batchMult>=2); state.b2Started=false; state.handoffVisible=false; show('viewMix'); refreshHero(); }); }Batch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); }}); }
+    var next=document.getElementById('nextStep'); if(next){ next.addEventListener('click', function(){ var b=currentBatch(var next=document.getElementById('nextStep'); if(next){ next.addEventListener('click', function(){ var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); var stepId=b.idx+1; if(state.dualMode && state.active===1 && stepId===3){ state.handoffVisible=true; refreshHero(); return; } refreshHero(); } }); }t=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); }}); }
+    var tReset=document.getElementById('timerReset'); if(tReset){ tReset.addEventListener('click', function(){ resetTimer(); }); }
+    var ack=document.getElementById('ackBtn'); if(ack){ ack.addEventListener('click', function(){ stopAlarm(); this.style.var ack=document.getElementById('ackBtn'); if(ack){ ack.addEventListener('click', function(){ stopAlarm(); this.style.display='none'; var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); var stepId=b.idx+1; if(state.dualMode && state.active===1 && stepId===3){ state.handoffVisible=true; refreshHero(); return; } refreshHero(); } }); }){ el.['targetTemp','flourTemp','roomTemp','friction'].forEach(function(id){ var el=document.getElementById(id); if(el){ el.addEventListener('input', updateWaterCalc); }});
 
-    // Step nav
-    var prev=document.getElementById('prevStep'); if(prev){ prev.addEventListener('click', function(){ var b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); }}); }
-    var next=document.getElementById('nextStep'); if(next){ next.addEventListener('click', function(){ var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); var stepId=b.idx+1; if(state.dualMode && state.active===1 && stepId===3){ state.handoffVisible=true; refreshHero(); return; } refreshHero(); }}); }
-
-    // Timer controls
-    var tPause=document.getElementById('timerPause'); if(tPause){ tPause.addEventListener('click', function(){ var st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running=!currentBatch().running; this.textContent=currentBatch().running?'Pausa':'Fortsätt'; }}); }
-    var tReset=document.getElementById('timerReset'); if(tReset){ tReset.addEventListener('click', function(){ var b=currentBatch(); var st=steps[b.idx]; b.deadline=st.duration>0?(Date.now()+st.duration*1000):0; b.running=false; document.getElementById('timerPause').textContent='Fortsätt'; }); }
-    var ack=document.getElementById('ackBtn'); if(ack){ ack.addEventListener('click', function(){ stopAlarm(); this.style.display='none'; var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); var stepId=b.idx+1; if(state.dualMode && state.active===1 && stepId===3){ state.handoffVisible=true; refreshHero(); return; } refreshHero(); }}); }
-
-    // Handoff OK
-    var handBtn=document.getElementById('handoffOkBtn'); if(handBtn){ handBtn.addEventListener('click', function(){ state.handoffVisible=false; state.active=2; state.b2Started=true; refreshHero(); }); }
-
-    // Live water calc
-    ['targetTemp','flourTemp','roomTemp','friction'].forEach(function(id){ var el=document.getElementById(id); if(el){ el.addEventListener('input', updateWaterCalc); }});
+    function updateOtherBar(){ var bar=document.getElementById('otherBar'); if(!state.dualMode){ if(bar) bar.style.display='none'; return; } var ob=otherBatch(); var started = state.b2Started || (state.active===2); if(state.active===1 && !started){ if(bar) bar.style.display='none'; return; } if(bar){ bar.classList.toggle('batch1', ob.id===1); bar.classList.toggle('batch2', ob.id===2); bar.style.display='block'; var tag=document.getElementById('otherBarTag'); var info=document.getElementById('otherBarInfo'); var time=document.getElementById('otherBarTime'); if(tag) tag.textContent='Batch '+ob.id; if(info) info.textContent='Steg '+(ob.idx+1)+': '+stepTitle(ob.idx+1); if(time) time.textContent= steps[ob.idx].duration>0 ? fmt(remaining(ob)) : '—'; var jump=document.getElementById('otherBarJump'); if(jump){ jump.onclick=function(){ state.active=ob.id; refreshHero(); }; } } }state.handoffVisible=false; state.active=2; state.b2Started=true; refreshHero(); }); }
 
     // iOS install/FS hints
     (function(){ var fsRow=document.getElementById('fsRow'); var fsHint=document.getElementById('fsHint'); var banner=document.getElementById('iosInstall'); var dismissBtn=document.getElementById('dismissInstall'); if(isStandalone()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.textContent='Kör redan i helskärm via hemskärmen.'; if(banner) banner.style.display='none'; }
       else if(isIOS() && !fsSupported()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.innerHTML='På iPhone: öppna i Safari och <strong>Lägg till på hemskärmen</strong> för helskärm.'; if(banner) banner.style.display='block'; if(dismissBtn) dismissBtn.onclick=function(){ banner.style.display='none'; }; }
-      else if(!fsSupported()){ if(fsHint) fsHint.textContent='Din webbläsare saknar helskärmsstöd.'; }
-    })();
-
-    // Start tick om vi redan är i mix (skulle ske via show(), men säkra)
-    if(document.getElementById('viewMix').classList.contains('show') && !state.tickHandle){ state.tickHandle=requestAnimationFrame(tick); }
-  });
-
-})();
-</script>
-</body>
-</html>
+      else if(!fsSupporte
