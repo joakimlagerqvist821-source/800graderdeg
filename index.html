@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Degguiden – Pizzeria v2.3.0 (iOS robust)</title>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<!-- Inline manifest so sidan kan köras i "standalone" läge när den läggs till på hemskärmen -->
 <script id="__manifest" type="application/json">{
   "name":"Degguiden",
   "short_name":"Degguiden",
@@ -16,194 +16,131 @@
   "theme_color":"#2563eb"
 }</script>
 <script>(function(){try{var el=document.getElementById('__manifest');if(!el)return;var blob=new Blob([el.textContent],{type:'application/manifest+json'});var url=URL.createObjectURL(blob);var link=document.createElement('link');link.rel='manifest';link.href=url;document.head.appendChild(link);}catch(e){}})();</script>
-<title>Degguiden – Pizzeria v2.2.8 (unified)</title>
 <style>
-  :root {
-    /* Ljust tema */
-    --bg: #f8fafc; --panel: #ffffff; --panel-2: #f1f5f9; --border: #e2e8f0;
-    --muted: #475569; --focus-bg: #e8f0ff; --focus-border: #93c5fd;
-    --accent: #2563eb; --warn: #f59e0b; --danger: #ef4444; --success: #16a34a;
-    --radius: 16px;
-    --b1a: #e8f0ff; --b1b: #f5f9ff; --b1border:#93c5fd;
-    --b2a: #f5e8ff; --b2b: #fbf7ff; --b2border:#d8b4fe;
-    --handoff-a:#ffe4e6; --handoff-b:#fff1f2; --handoff-border:#fecdd3;
-  }
-  *{box-sizing:border-box} html,body{height:100%}
+  :root { --bg:#f8fafc; --panel:#fff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569; --accent:#2563eb; --warn:#b45309; --danger:#ef4444; --radius:16px; --b1a:#e8f0ff; --b1b:#f5f9ff; --b1border:#93c5fd; --b2a:#f5e8ff; --b2b:#fbf7ff; --b2border:#d8b4fe; }
+  *{box-sizing:border-box}
+  html,body{height:100%}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:#0f172a;line-height:1.45;overflow-x:hidden}
-
-  header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center}
+  header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center}
   header h1{margin:0;font-size:18px;font-weight:800}
   header .meta{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted)}
   header .ver{padding:4px 8px;border:1px solid var(--border);border-radius:999px;background:var(--panel-2);font-weight:700}
-
   main{max-width:1200px;margin:16px auto 120px;padding:0 16px}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:0 8px 24px rgba(15,23,42,.06)}
-  .stack{display:grid;gap:12px} .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center} .row>*{min-width:0}
-
-  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;font-weight:700;font-size:16px;min-height:44px;text-decoration:none;display:inline-block;-webkit-tap-highlight-color: rgba(0,0,0,0)}
+  .stack{display:grid;gap:12px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .row>*{min-width:0}
+  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;font-weight:700;font-size:16px;min-height:44px;text-decoration:none;display:inline-block;-webkit-tap-highlight-color:rgba(0,0,0,0)}
   .btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
-  .btn.warn{background:#b45309;border-color:#b45309;color:#fff}
-  .btn.danger{background:#ef4444;border-color:#ef4444;color:#fff}
+  .btn.warn{background:var(--warn);border-color:var(--warn);color:#fff}
+  .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
   .btn.ghost{background:transparent;border-color:#cbd5e1}
-  .btn:focus{outline:3px solid var(--focus-border);outline-offset:2px}
-
   .muted{color:var(--muted);font-size:13px}
+
+  /* Install-overlay för iOS */
+  #iosInstall{display:none;position:sticky;top:56px;z-index:25;margin:12px auto 0;max-width:840px}
+  #iosInstall .inner{border:1px dashed #94a3b8;background:#ffffff;border-radius:12px;padding:10px 12px}
 
   /* HERO */
   .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;max-width:840px;margin:0 auto;background:var(--panel)}
   .hero.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
   .hero.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
-  .hero.handoff{background:linear-gradient(180deg,var(--handoff-a),var(--handoff-b));border-color:var(--handoff-border)}
   .hero .batchTag{font-weight:900;letter-spacing:.08em;color:#0f172a;text-transform:uppercase}
   .hero .stepNum{font-size:13px;color:#1d4ed8;letter-spacing:.08em;text-transform:uppercase}
   .hero .stepName{font-weight:800;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1}
   .hero .hint{margin-top:8px;color:#0f172a;font-weight:800;font-size:clamp(16px,2.8vw,22px)}
-
-  /* Progress */
-  .hero .progWrap{margin-top:12px;text-align:left}
-  .hero .track{position:relative;height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-  .hero .bar.overall{position:absolute;inset:0;width:0%;background:#c7d2fe}
-  .hero .bar.time{position:absolute;inset:0;width:0%;background:#2563eb;mix-blend-mode:multiply}
-  .hero .progText{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
-
   .hero .timerWrap{display:grid;place-items:center;gap:8px;margin-top:12px}
-  .hero .time{font-variant-numeric:tabular-nums;font-size:clamp(38px,8vw,74px);font-weight:900;letter-spacing:2px}
+  .hero .time{font-variant-numeric:tabular-nums;font-size:clamp(38px,8vw,74px);font-weight:900}
   .hero .controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
   .hero .ackWrap{margin-top:12px}
   .hero .ackBtn{display:none;font-size:clamp(16px,2.6vw,22px);padding:16px 20px}
+  @keyframes alarmFlash{0%,100%{box-shadow:0 16px 40px rgba(15,23,42,.08);}50%{box-shadow:0 0 0 6px rgba(239,68,68,.45),0 16px 40px rgba(15,23,42,.14);}}
+  .hero.alarming{animation:alarmFlash .9s ease-in-out infinite}
 
-  .hero .handoffBox{display:none;margin-top:10px;padding:14px;border-radius:14px;border:1px dashed #fecdd3;background:rgba(127,29,29,.08)}
-  .hero.handoff .handoffBox{display:block}
-
-  .narrow{max-width:840px;margin:0 auto}
+  .progWrap{text-align:left;margin-top:12px}
+  .track{position:relative;height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+  .bar.overall{position:absolute;inset:0;width:0%;background:#c7d2fe}
+  .bar.time{position:absolute;inset:0;width:0%;background:#2563eb;mix-blend-mode:multiply}
+  .progText{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
 
   .stepsTopBar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0}
   .steps{display:grid;gap:10px}
-  .step{display:grid;gap:6px;padding:12px;border:1px dashed #cbd5e1;border-radius:12px;background:var(--panel-2);opacity:.35;transition:opacity .2s ease,background-color .2s ease,transform .2s ease}
-  .step.active{opacity:1;border:1px solid #93c5fd;background:var(--panel);box-shadow:0 8px 24px rgba(15,23,42,.08);transform:translateY(-1px)}
+  .step{display:grid;gap:6px;padding:12px;border:1px dashed #cbd5e1;border-radius:12px;background:var(--panel-2);opacity:.35}
+  .step.active{opacity:1;border:1px solid #93c5fd;background:var(--panel);box-shadow:0 8px 24px rgba(15,23,42,.08)}
 
   .field{display:grid;gap:6px}
   .field input{background:#fff;border:1px solid #cbd5e1;color:#0f172a;border-radius:10px;padding:12px;font-size:16px}
-  .field input.invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(239,68,68,.15)}
   .kpi{font-weight:900;font-size:26px}
 
-  .volume{display:flex;align-items:center;gap:6px}
-  .volume input[type=range]{width:140px}
+  .view{display:none}
+  .view.show{display:block}
+  .narrow{max-width:840px;margin:0 auto}
 
-  .view{display:none} .view.show{display:block}
-
-  .preLabel{font-weight:900;font-size:clamp(18px,2.6vw,24px)}
-  .bigBreak{font-weight:900;font-size:clamp(26px,4.5vw,46px)}
-  .smallTotal{color:var(--muted);font-size:14px}
-
-  .modalBack{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:100}
-  .modal{background:var(--panel);border:1px solid var(--border);border-radius:18px;width:min(94vw,560px);padding:18px}
-
-  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  @media(max-width:900px){.grid-3{grid-template-columns:1fr}}
-
-  /* Enhetlig tillsätt-design */
   .addBlock{margin-top:10px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:var(--panel)}
   .addBlock .title{font-weight:800;margin-bottom:6px}
   .addList{list-style:none;padding:0;margin:0;display:grid;gap:10px;justify-content:center}
   .addItem{text-align:center}
   .addItem .lab{display:block;font-weight:900;font-size:clamp(20px,3.6vw,26px);line-height:1.06;margin:0}
   .addItem .amt{display:block;font-weight:700;font-size:clamp(14px,2.4vw,18px);line-height:1.08;margin:0;color:#0f172a}
-
-  /* Inaktiv batch-bar */
-  #inactiveBar.ibar{border-style:dashed}
-  #inactiveBar.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
-  #inactiveBar.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
-
-  /* Onboarding */
-  #viewOnboard{text-align:center}
-  #viewOnboard .row{justify-content:center}
 </style>
-<style id="ios-patches">
-  body{overflow-x:hidden}
-  @keyframes alarmFlash{0%,100%{box-shadow:0 16px 40px rgba(15,23,42,.08);}50%{box-shadow:0 0 0 6px rgba(239,68,68,.45),0 16px 40px rgba(15,23,42,.14);}}
-  .hero.alarming{animation:alarmFlash .9s ease-in-out infinite}
-</style>
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="Degguiden" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<script id="__manifest" type="application/json">{
-  "name":"Degguiden",
-  "short_name":"Degguiden",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#f8fafc",
-  "theme_color":"#2563eb"
-}</script>
-<script>(function(){try{var el=document.getElementById('__manifest');if(!el)return;var blob=new Blob([el.textContent],{type:'application/manifest+json'});var url=URL.createObjectURL(blob);var link=document.createElement('link');link.rel='manifest';link.href=url;document.head.appendChild(link);}catch(e){}})();</script>
 </head>
 <body>
 <header>
-  <div class="row">
-    <h1 id="title">🧑‍🍳 Degguiden</h1>
-  </div>
-  <div class="meta">
-    <span id="clock">--:--</span>
-    <span class="volume">🔈 <input id="volRange" type="range" min="0" max="100" value="85" /> <span id="volLabel">85%</span></span>
-  </div>
-  <div class="meta ver">v2.2.8</div>
-  <div class="meta"><span class="pill ok"><span class="dot"></span><span>Alarm redo</span></span></div>
+  <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
+  <div class="meta"><span id="clock">--:--</span><span>🔈 <input id="volRange" type="range" min="0" max="100" value="85" /> <span id="volLabel">85%</span></span></div>
+  <div class="meta ver">v2.3.0</div>
 </header>
 
+<!-- iOS install banner -->
+<div id="iosInstall" class="narrow">
+  <div class="inner">
+    <strong>Tips för helskärm på iPhone:</strong> öppna i Safari och <em>Lägg till på hemskärmen</em> (Dela → Lägg till på hemskärmen). Öppna sedan app-ikonen.
+    <button class="btn ghost" id="dismissInstall" style="float:right">Jag förstår</button>
+  </div>
+</div>
+
 <main>
-  <!-- Onboarding -->
-  <section id="viewOnboard" class="view show card stack">
+  <section id="viewOnboard" class="view show card stack" style="text-align:center">
     <h2>Steg 1: Helskärm & alarm</h2>
-    <div class="row" style="gap:12px;justify-content:center">
+    <div id="fsRow" class="row" style="justify-content:center">
       <button class="btn primary" id="enterFs" style="font-size:18px;padding:16px 22px">⤢ Starta helskärm</button>
     </div>
     <p id="fsHint" class="muted"></p>
-    <p id="fsHint" class="muted"></p>
-    <p class="muted">När helskärm är igång, <strong>testa alarmet</strong> nedan.</p>
-    <div class="row" style="gap:12px;justify-content:center">
+    <div class="row" style="justify-content:center">
       <button class="btn" id="unlockAudioBtn">🔔 Aktivera ljud</button>
       <button class="btn warn" id="testAlarmBtn">🔊 Testa alarm</button>
     </div>
+    <p class="muted" id="silenceHint" style="display:none">Hörs inget? Kontrollera att <strong>tyst läge är av</strong> och att volymen är uppvriden.</p>
     <div class="row" style="justify-content:center;margin-top:8px">
-      <!-- Inline fallback (fungerar även utan JS-init) -->
       <button class="btn primary" id="toBatch" style="padding:16px 28px" onclick="try{var a=document.getElementById('viewOnboard');var b=document.getElementById('viewBatch');if(a&&b){a.classList.remove('show');b.classList.add('show');}}catch(e){}">Nästa ▶</button>
     </div>
   </section>
 
   <section id="viewBatch" class="view card stack">
     <h2>Steg 2: Välj antal batch</h2>
-    <div class="grid-3">
+    <div class="row" style="justify-content:center;gap:12px">
       <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="1"><div><strong>1×</strong><div class="muted">122 bollar</div></div></label>
       <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="1.5"><div><strong>1.5×</strong><div class="muted">183 bollar</div></div></label>
       <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="2"><div><strong>2×</strong><div class="muted">244 bollar</div></div></label>
     </div>
-    <div class="row" style="justify-content:space-between">
-      <button class="btn" id="backToOnboard">◀ Tillbaka</button>
-      <button class="btn primary" id="toTemps">Nästa ▶</button>
-    </div>
+    <div class="row" style="justify-content:space-between"><button class="btn" id="backToOnboard">◀ Tillbaka</button><button class="btn primary" id="toTemps">Nästa ▶</button></div>
   </section>
 
   <section id="viewTemps" class="view card stack">
     <h2>Steg 3: Temperaturer & friktion</h2>
-    <div class="grid-3">
-      <div class="field"><label>Mjöltemp (°C)</label><input type="number" id="flourTemp" step="0.1" placeholder="t.ex. 20" inputmode="decimal"></div>
-      <div class="field"><label>Rumstemp (°C)</label><input type="number" id="roomTemp" step="0.1" placeholder="t.ex. 22" inputmode="decimal"></div>
-      <div class="field"><label>Önskad degtemp (°C)</label><input type="number" id="targetTemp" step="0.1" value="22" inputmode="decimal"><div class="muted">Standard hos er: 22 °C (förvalt)</div></div>
+    <div class="row" style="justify-content:center;gap:12px;flex-wrap:wrap">
+      <div class="field" style="min-width:240px"><label>Mjöltemp (°C)</label><input type="number" id="flourTemp" step="0.1" inputmode="decimal" placeholder="t.ex. 20"></div>
+      <div class="field" style="min-width:240px"><label>Rumstemp (°C)</label><input type="number" id="roomTemp" step="0.1" inputmode="decimal" placeholder="t.ex. 22"></div>
+      <div class="field" style="min-width:240px"><label>Önskad degtemp (°C)</label><input type="number" id="targetTemp" step="0.1" inputmode="decimal" value="22"><div class="muted">Standard: 22 °C</div></div>
+      <div class="field" style="min-width:240px"><label>Friktionstal (°C)</label><input type="number" id="friction" step="0.1" inputmode="decimal" placeholder="t.ex. 8"></div>
+      <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div><div class="muted">(Önskad × 3) − (Mjöl + Rum + Friktion)</div></div>
     </div>
-    <div class="grid-3">
-      <div class="field"><label>Friktionstal (°C)</label><input type="number" id="friction" step="0.1" placeholder="t.ex. 8" inputmode="decimal"></div>
-      <div class="field"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div><div class="muted">Formel: (Önskad × 3) − (Mjöl + Rum + Friktion)</div></div>
-      <div class="field"><label>Kommentar (valfritt)</label><input type="text" id="note" placeholder="t.ex. mjöl från kallt förråd, hög luftfuktighet..."></div>
-    </div>
-    <div class="row" style="justify-content:space-between">
-      <button class="btn" id="backToBatch">◀ Tillbaka</button>
-      <div class="row"><button class="btn" id="saveTemps">Spara</button><button class="btn primary" id="toPreWeigh">Spara & fortsätt ▶</button></div>
-    </div>
+    <div class="row" style="justify-content:space-between"><button class="btn" id="backToBatch">◀ Tillbaka</button><div class="row"><button class="btn" id="saveTemps">Spara</button><button class="btn primary" id="toPreWeigh">Spara & fortsätt ▶</button></div></div>
   </section>
 
   <section id="viewPre" class="view card stack">
     <h2>Steg 4: Väg upp enligt batch</h2>
-    <div class="grid-3">
+    <div class="row" style="justify-content:center;gap:12px;flex-wrap:wrap">
       <div class="card"><div class="preLabel">Vatten</div><div class="bigBreak" id="preWaterBig">—</div><div class="smallTotal" id="preWaterSmall">= — g</div></div>
       <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
       <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div><div class="smallTotal" id="preOilSmall">= — g</div></div>
@@ -213,64 +150,30 @@
 
   <section id="viewMix" class="view stack">
     <div>
-      <div class="hero" id="hero">
+      <div class="hero batch1" id="hero">
         <div class="batchTag" id="heroBatchLabel">Batch 1</div>
         <div class="stepNum" id="heroStepNum">Steg —</div>
         <div class="stepName" id="heroStepName">—</div>
         <div class="hint" id="heroHint"></div>
-
-        <div class="progWrap">
-          <div class="track"><div class="bar overall" id="heroProgOverall"></div><div class="bar time" id="heroProgTime"></div></div>
-          <div class="progText"><span id="heroProgLabel">Steg — av 7</span><span id="heroProgPct">0%</span></div>
-        </div>
-
-        <div class="handoffBox" id="heroHandoff">
-          <div class="handoffTitle">BYT BATCH</div>
-          <div class="handoffText">Ta ur <strong>Batch 1</strong> ur blandaren. Lägg hela degen i bunke med lock/plast. Starta <strong>autolys 30 min i rumstemp</strong> för Batch 1.<br>Fyll blandaren med vatten <span id="handoffWaterTemp"></span> och börja <strong>Batch 2, Steg 1–2</strong>.</div>
-          <div class="handoffOk"><button class="btn primary" id="handoffOkBtn">Ok, förstått</button></div>
-        </div>
-
-        <div class="timerWrap" id="heroTimerWrap" style="display:none">
-          <div class="time" id="timerDisplay">00:00</div>
-          <div class="controls"><button class="btn" id="timerPause">Pausa</button><button class="btn" id="timerReset">Nollställ</button></div>
-          <div class="ackWrap"><button class="btn danger ackBtn" id="ackBtn">⏰ Stoppa alarm och nästa steg</button></div>
-        </div>
+        <div class="progWrap"><div class="track"><div class="bar overall" id="heroProgOverall"></div><div class="bar time" id="heroProgTime"></div></div><div class="progText"><span id="heroProgLabel">Steg — av 7</span><span id="heroProgPct">0%</span></div></div>
+        <div class="timerWrap" id="heroTimerWrap" style="display:none"><div class="time" id="timerDisplay">00:00</div><div class="controls"><button class="btn" id="timerPause">Pausa</button><button class="btn" id="timerReset">Nollställ</button></div><div class="ackWrap"><button class="btn danger ackBtn" id="ackBtn">⏰ Stoppa alarm och nästa steg</button></div></div>
         <div class="row" style="justify-content:center;gap:8px;margin-top:10px"><button class="btn" id="prevStep">◀ Föregående</button><button class="btn primary" id="nextStep">Nästa ▶</button></div>
       </div>
-
-      <!-- Inaktiv batch-bar (visas först när andra batchen faktiskt startat) -->
-      <div id="inactiveBar" class="card ibar narrow" style="margin-top:10px;display:none;padding:10px 12px">
-        <div class="row" style="justify-content:space-between;align-items:center">
-          <div><strong id="inactiveLbl">Batch 2</strong> · <span class="muted" id="inactiveStep">—</span></div>
-          <div class="row" style="gap:10px;align-items:center"><span class="miniTime" id="inactiveTimer">—</span><button class="btn" id="inactiveJump">Gå till denna batch</button></div>
-        </div>
-      </div>
-
-      <div class="card narrow" style="margin-top:12px">
-        <div class="stepsTopBar"><div><strong id="stepBadge">1 / 7</strong></div><button class="btn ghost" id="changeBatch">Byt batch</button></div>
-        <div class="steps" id="stepsContainer"></div>
-      </div>
+      <div class="card narrow" style="margin-top:12px"><div class="stepsTopBar"><div><strong id="stepBadge">1 / 7</strong></div></div><div class="steps" id="stepsContainer"></div></div>
     </div>
   </section>
 </main>
 
-<!-- Temperatur-modal -->
-<div class="modalBack" id="tempModalBack">
-  <div class="modal">
-    <h3 id="tempModalTitle">Ange degtemperatur</h3>
-    <div class="field"><label>Temperatur (°C)</label><input type="number" id="tempInput" step="0.1" placeholder="t.ex. 22.0" inputmode="decimal"></div>
-    <div class="row" style="margin-top:12px"><button class="btn" id="tempCancel">Avbryt</button><button class="btn primary" id="tempSave">Spara & fortsätt ▶</button></div>
-  </div>
-</div>
-
+<!-- Ljudfallback -->
 <audio id="beepFallback"><source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAZGF0YQAAAAAAAAD///8AAAAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///w==" type="audio/wav"></audio>
 
 <script>
 (function(){
-  function $(sel){ return document.querySelector(sel); }
-  function bindTap(id, handler){ var el=document.getElementById(id); if(!el) return; el.addEventListener('click', handler); el.addEventListener('touchend', function(ev){ ev.preventDefault(); handler(ev); }, {passive:false}); }
-  function safeParseLS(key, fallback){ try{ var v=JSON.parse(localStorage.getItem(key)); return (v==null?fallback:v); }catch(e){ return fallback; } }
-  function pad2(n){ return (n<10?"0":"")+n; }
+  function $(s){return document.querySelector(s)}
+  function pad2(n){return (n<10?'0':'')+n}
+  function isIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent); }
+  function isStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone; }
+  function fsSupported(){ return !!(document.fullscreenEnabled && document.documentElement.requestFullscreen); }
 
   var state={
     batchMult:+(localStorage.getItem('deg_batch')||1),
@@ -280,199 +183,96 @@
     active:1,dualMode:false,tickHandle:null,
     audioCtx:null,gain:null,alarmTimer:null,alarmOn:false,volume:+(localStorage.getItem('deg_alarm_vol')||0.85),
     flour:null,room:null,target:22,friction:null,waterCalc:null,note:'',
-    logs:safeParseLS('deg_logs',[]), measurements:safeParseLS('deg_meas',[]),
-    handoffVisible:false, pendingTemp:null
+    logs:[], measurements:[],
+    handoffVisible:false, pendingTemp:null,
+    audioUnlocked: localStorage.getItem('audio_unlocked')==='1'
   };
 
-  var steps=[{id:1,duration:0},{id:2,duration:6*60},{id:3,duration:30*60},{id:4,duration:6*60},{id:5,duration:7*60},{id:6,duration:30*60},{id:7,duration:0}];
-  function fmt(s){ s=Math.max(0,Math.floor(s)); var m=Math.floor(s/60),r=s%60; return pad2(m)+":"+pad2(r); }
-
-  function numVal(id){ var el=document.getElementById(id); var raw=(el.value||'').replace(',','.').trim(); return raw===''?NaN:parseFloat(raw); }
-  function setInvalid(id,on){ var el=document.getElementById(id); if(!el) return; if(on){ el.classList.add('invalid'); } else { el.classList.remove('invalid'); } }
-
-  function show(id){ var views=['viewOnboard','viewBatch','viewTemps','viewPre','viewMix']; for(var i=0;i<views.length;i++){ document.getElementById(views[i]).classList.remove('show'); } document.getElementById(id).classList.add('show'); if(id!=='viewMix' && state.tickHandle){ cancelAnimationFrame(state.tickHandle); state.tickHandle=null; } if(id==='viewMix' && !state.tickHandle){ state.tickHandle=requestAnimationFrame(tick); } }
-
-  function enterFs(){ var el=document.documentElement; if(el.requestFullscreen){ try{ el.requestFullscreen(); }catch(e){} } }
-
   function ensureAudio(){ if(state.audioCtx) return; var Ctx=window.AudioContext||window.webkitAudioContext; if(!Ctx) return; state.audioCtx=new Ctx(); state.gain=state.audioCtx.createGain(); state.gain.gain.value=state.volume; state.gain.connect(state.audioCtx.destination); }
-  var audioUnlocked=false; function unlockAudioOnce(){ if(audioUnlocked) return; ensureAudio(); if(state.audioCtx){ try{ var b=state.audioCtx.createBuffer(1,1,22050); var src=state.audioCtx.createBufferSource(); src.buffer=b; src.connect(state.gain); src.start(0); audioUnlocked=true; }catch(e){} } }
-  document.addEventListener('touchstart', unlockAudioOnce, {passive:true, once:true});
-  document.addEventListener('click', unlockAudioOnce, {once:true});
-  function playFallbackBeep(){ var el=document.getElementById('beepFallback'); if(!el) return; try{ el.currentTime=0; el.play(); }catch(e){} }
-  function playBeep(freq,dur){ freq=(typeof freq==='number'?freq:1000); dur=(typeof dur==='number'?dur:0.25); try{ if(!state.audioCtx) return; var osc=state.audioCtx.createOscillator(); var g=state.audioCtx.createGain(); osc.type='square'; osc.frequency.value=freq; g.gain.setValueAtTime(0,state.audioCtx.currentTime); g.gain.linearRampToValueAtTime(state.volume,state.audioCtx.currentTime+0.02); g.gain.linearRampToValueAtTime(0.0001,state.audioCtx.currentTime+dur); osc.connect(g).connect(state.gain); osc.start(); var stopAt=state.audioCtx.currentTime+dur+0.05; osc.stop(stopAt); setTimeout(function(){ try{ osc.disconnect(); g.disconnect(); }catch(e){} }, (dur+0.1)*1000); }catch(e){} }
-  function startAlarm(){ unlockAudioOnce(); ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended'){ state.audioCtx.resume(); } }catch(e){} if(state.alarmOn) return; state.alarmOn=true; var t=false; state.alarmTimer=setInterval(function(){ if(state.audioCtx){ playBeep(t?1000:1500,0.28); } else { playFallbackBeep(); } if(navigator.vibrate){ try{ navigator.vibrate(120); }catch(e){} } t=!t; }, 500); }
-  function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } }
-  (){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } }
+  function unlockAudio(){ if(state.audioUnlocked) return; ensureAudio(); if(state.audioCtx){ try{ var b=state.audioCtx.createBuffer(1,1,22050); var src=state.audioCtx.createBufferSource(); src.buffer=b; src.connect(state.gain); src.start(0); state.audioUnlocked=true; localStorage.setItem('audio_unlocked','1'); }catch(e){} }
+    var el=$('#beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} }
+    var sh=$('#silenceHint'); if(sh) sh.style.display='block';
+  }
+  document.addEventListener('pointerdown', unlockAudio, {once:true});
+  document.addEventListener('touchstart', unlockAudio, {passive:true, once:true});
+  document.addEventListener('click', function(){ if(!state.audioUnlocked) unlockAudio(); }, {once:true});
+
+  function playBeep(freq,dur){ freq=freq||1000; dur=dur||0.25; if(!state.audioCtx) return; try{ var osc=state.audioCtx.createOscillator(); var g=state.audioCtx.createGain(); osc.type='square'; osc.frequency.value=freq; g.gain.setValueAtTime(0, state.audioCtx.currentTime); g.gain.linearRampToValueAtTime(state.volume, state.audioCtx.currentTime+0.02); g.gain.linearRampToValueAtTime(0.0001, state.audioCtx.currentTime+dur); osc.connect(g).connect(state.gain); osc.start(); var stopAt=state.audioCtx.currentTime+dur+0.05; osc.stop(stopAt); setTimeout(function(){ try{ osc.disconnect(); g.disconnect(); }catch(e){} }, (dur+0.1)*1000); }catch(e){} }
+  function playFallback(){ var el=$('#beepFallback'); if(!el) return; try{ el.currentTime=0; el.play(); }catch(e){} }
+
+  function startAlarm(){ if(!state.audioUnlocked) unlockAudio(); ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended'){ state.audioCtx.resume(); } }catch(e){}
+    if(state.alarmOn) return; state.alarmOn=true; var hero=$('#hero'); if(hero) hero.classList.add('alarming'); var flip=false;
+    state.alarmTimer=setInterval(function(){ if(state.audioCtx){ playBeep(flip?1000:1500,0.28); } else { playFallback(); } if(navigator.vibrate){ try{ navigator.vibrate([180,80,180]); }catch(e){} } flip=!flip; }, 700);
+  }
+  function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } var hero=$('#hero'); if(hero) hero.classList.remove('alarming'); }
+
+  function fmt(s){ s=Math.max(0,Math.floor(s)); var m=Math.floor(s/60), r=s%60; return pad2(m)+':'+pad2(r); }
+
+  function show(id){ ['viewOnboard','viewBatch','viewTemps','viewPre','viewMix'].forEach(function(v){ var el=document.getElementById(v); if(el) el.classList.remove('show'); }); var tgt=document.getElementById(id); if(tgt) tgt.classList.add('show'); if(id!=='viewMix' && state.tickHandle){ cancelAnimationFrame(state.tickHandle); state.tickHandle=null; } if(id==='viewMix' && !state.tickHandle){ state.tickHandle=requestAnimationFrame(tick); } }
+
+  function waterLabel(){ return (typeof state.waterCalc==='number')?(' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)'):''; }
+  var steps=[{id:1,duration:0},{id:2,duration:6*60},{id:3,duration:30*60},{id:4,duration:6*60},{id:5,duration:7*60},{id:6,duration:30*60},{id:7,duration:0}];
+  function perBatch(){ return {water:state.base.water, salt:state.base.salt, oil:state.base.oil}; }
+  function stepTitle(id){switch(id){case 1:return 'Häll i vatten'+waterLabel()+' i degblandaren.';case 2:return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';case 3:return 'Autolys – vila 30 minuter.';case 4:return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';case 5:return 'Starta degblandaren och kör på hastighet 2 i 7 minuter.';case 6:return 'Vik 1 - Vila 30 minuter';case 7:return 'Vik 2 - Plasta och ställ i kylskåp.';default:return ''}}
+  function addBlock(items,title){ var html='<div class="addBlock"><div class="title">'+(title||'Tillsätt:')+'</div><ul class="addList">'; for(var i=0;i<items.length;i++){ var it=items[i]; html+='<li class="addItem"><span class="lab">'+it.label+'</span>'+(it.amt?'<span class="amt">'+it.amt+'</span>':'')+'</li>'; } html+='</ul></div>'; return html; }
+  function stepHint(id){ var a=perBatch(); switch(id){case 1:return 'Använd beräknad vattentemperatur'+waterLabel()+'.';case 2:return addBlock([{label:'Mjöl'}],'Tillsätt:');case 3:return 'Låt degen vila i 30 minuter (autolys).';case 4:return addBlock([{label:'Jäst'}],'Tillsätt under körning:');case 5:return addBlock([{label:'Vatten',amt:a.water+' g / batch'},{label:'Salt',amt:a.salt+' g / batch'},{label:'Olivolja',amt:a.oil+' g / batch'}],'I följande ordning, tillsätt:');case 6:return 'Vik 1 - Vila 30 minuter';case 7:return 'Vik 2 - Plasta och ställ i kylskåp.';default:return ''}}
 
   function batchObj(n){ return n===1?state.B1:state.B2; }
   function currentBatch(){ return batchObj(state.active); }
-  function otherBatch(){ return batchObj(state.active===1?2:1); }
+  function setIdx(b,idx){ b.idx=Math.max(0,Math.min(idx,steps.length-1)); var st=steps[b.idx]; if(st.duration>0){ b.deadline=Date.now()+st.duration*1000; b.running=false; } else { b.deadline=0; b.running=false; } }
+  function remaining(b){ if(!b.deadline) return 0; return Math.max(0, Math.ceil((b.deadline-Date.now())/1000)); }
 
-  function setIdx(b,idx){ b.idx=Math.min(Math.max(0,idx),steps.length-1); var st=steps[b.idx]; if(st.duration>0){ b.deadline=Date.now()+st.duration*1000; b.running=false; } else { b.deadline=0; b.running=false; } }
-  function remaining(b){ if(!b.deadline) return 0; return Math.max(0,Math.ceil((b.deadline-Date.now())/1000)); }
-
-  function waterLabel(){ return (typeof state.waterCalc==='number')?(' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)'):''; }
-  function perBatchAmounts(){ return {water:state.base.water,salt:state.base.salt,oil:state.base.oil}; }
-
-  function stepTitle(stepId){
-    switch(stepId){
-      case 1: return 'Häll i vatten'+waterLabel()+' i degblandaren.';
-      case 2: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
-      case 3: return 'Autolys – vila 30 minuter.';
-      case 4: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
-      case 5: return 'Starta degblandaren och kör på hastighet 2 i 7 minuter.';
-      case 6: return 'Vik 1 - Vila 30 minuter';
-      case 7: return 'Vik 2 - Plasta och ställ i kylskåp.';
-    }
-    return '';
-  }
-
-  function addBlock(items,title){ var list=''; for(var i=0;i<items.length;i++){ var it=items[i]; list += '<li class="addItem"><span class="lab">'+it.label+'</span>'+(it.amt!=null?'<span class="amt">'+it.amt+'</span>':'')+'</li>'; } return '<div class="addBlock" data-multiline="true"><div class="title">'+(title||'Tillsätt:')+'</div><ul class="addList">'+list+'</ul></div>'; }
-
-  function stepHint(stepId){ var a=perBatchAmounts(); switch(stepId){
-    case 1: return 'Använd beräknad vattentemperatur'+waterLabel()+'.';
-    case 2: return addBlock([{label:'Mjöl'}], 'Tillsätt:');
-    case 3: return 'Låt degen vila i 30 minuter (autolys).';
-    case 4: return addBlock([{label:'Jäst'}], 'Tillsätt under körning:');
-    case 5: return addBlock([{label:'Vatten',amt:(a.water+' g / batch')},{label:'Salt',amt:(a.salt+' g / batch')},{label:'Olivolja',amt:(a.oil+' g / batch')}], 'I följande ordning, tillsätt:');
-    case 6: return 'Vik 1 - Vila 30 minuter';
-    case 7: return 'Vik 2 - Plasta och ställ i kylskåp.';
-  } return '';
-  }
-
-  function fitSingleLine(el,min,max,padding){ if(!el) return; var container=el.closest? (el.closest('.hero')||el.parentElement) : el.parentElement; var baseW=(container&&container.clientWidth)?container.clientWidth:window.innerWidth; var avail=Math.max(0,baseW-(padding||24)); var low=min,high=max,best=min; el.style.whiteSpace='nowrap'; el.style.display='inline-block'; while(low<=high){ var mid=(low+high)>>1; el.style.fontSize=mid+'px'; if(el.scrollWidth<=avail){ best=mid; low=mid+1; } else { high=mid-1; } } el.style.fontSize=best+'px'; el.style.display=''; }
-  function refitHeroText(){ fitSingleLine(document.getElementById('heroStepName'),16,56,24); fitSingleLine(document.getElementById('heroBatchLabel'),14,28,24); var hintEl=document.getElementById('heroHint'); if(hintEl && !hintEl.getAttribute('data-multiline')){ fitSingleLine(hintEl,14,28,24); } }
-
-  function refreshHero(){ var b=currentBatch(); var stepId=b.idx+1; var hero=document.getElementById('hero'); if(state.active===1 && !state.handoffVisible){ hero.classList.add('batch1'); hero.classList.remove('batch2','handoff'); } else if(state.active===2 && !state.handoffVisible){ hero.classList.add('batch2'); hero.classList.remove('batch1','handoff'); } else { hero.classList.add('handoff'); hero.classList.remove('batch1','batch2'); }
+  function refreshHero(){ var b=currentBatch(); var stepId=b.idx+1; var hero=document.getElementById('hero'); if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
     document.getElementById('heroBatchLabel').textContent='Batch '+state.active;
     document.getElementById('stepBadge').textContent=(b.idx+1)+' / '+steps.length;
     document.getElementById('heroStepNum').textContent='Steg '+stepId;
     document.getElementById('heroStepName').textContent=stepTitle(stepId);
     document.getElementById('heroHint').innerHTML=stepHint(stepId);
-    refitHeroText();
-    var overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100));
-    var ob=document.getElementById('heroProgOverall'); if(ob){ ob.style.width=overall+'%'; }
-    var pct=document.getElementById('heroProgPct'); if(pct){ pct.textContent=Math.round(overall)+'%'; }
-    var stlbl=document.getElementById('heroProgLabel'); if(stlbl){ stlbl.textContent='Steg '+stepId+' av '+steps.length; }
-    var showTimer=steps[b.idx].duration>0 && !state.handoffVisible; document.getElementById('heroTimerWrap').style.display=showTimer?'grid':'none';
-    document.getElementById('timerDisplay').textContent=fmt(remaining(b));
-    document.getElementById('handoffWaterTemp').textContent=waterLabel();
-    document.getElementById('heroHandoff').style.display=state.handoffVisible?'block':'none';
-    updateInactiveBar(); renderSteps();
+    var overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100)); var ob=document.getElementById('heroProgOverall'); if(ob) ob.style.width=overall+'%'; var pct=document.getElementById('heroProgPct'); if(pct) pct.textContent=Math.round(overall)+'%'; var stlbl=document.getElementById('heroProgLabel'); if(stlbl) stlbl.textContent='Steg '+stepId+' av '+steps.length;
+    var showTimer=steps[b.idx].duration>0; document.getElementById('heroTimerWrap').style.display=showTimer?'grid':'none'; document.getElementById('timerDisplay').textContent=fmt(remaining(b));
+    renderSteps();
   }
 
-  function renderSteps(){ var b=currentBatch(); var c=document.getElementById('stepsContainer'); c.innerHTML=''; for(var idx=b.idx; idx<steps.length; idx++){ var stepId=idx+1; var div=document.createElement('div'); div.className='step'+(idx===b.idx?' active':''); var dur=steps[idx].duration?('⏱ '+fmt(steps[idx].duration)) : ''; div.innerHTML='<div style="opacity:.8;font-weight:800;">'+stepId+'. '+stepTitle(stepId)+'</div>'+'<div class="muted">'+stepHint(stepId)+'</div>'+(dur?'<div class="muted">'+dur+'</div>':''); c.appendChild(div); } }
+  function renderSteps(){ var b=currentBatch(); var c=document.getElementById('stepsContainer'); c.innerHTML=''; for(var idx=b.idx;idx<steps.length;idx++){ var stepId=idx+1; var div=document.createElement('div'); div.className='step'+(idx===b.idx?' active':''); var dur=steps[idx].duration?('⏱ '+fmt(steps[idx].duration)) : ''; div.innerHTML='<div style="opacity:.8;font-weight:800;">'+stepId+'. '+stepTitle(stepId)+'</div><div class="muted">'+stepHint(stepId)+'</div>'+(dur?'<div class="muted">'+dur+'</div>':''); c.appendChild(div); } }
 
-  function hasStarted(b){ return (b.idx>0) || (b.deadline>0) || !!b.running; }
-  function updateInactiveBar(){ var bar=document.getElementById('inactiveBar'); if(!state.dualMode){ bar.style.display='none'; return; } var ob=otherBatch(); if(!hasStarted(ob)){ bar.style.display='none'; return; } var idx=ob.idx,stepId=idx+1; bar.style.display='block'; if(ob.id===1){ bar.classList.add('batch1'); bar.classList.remove('batch2'); } else { bar.classList.add('batch2'); bar.classList.remove('batch1'); } document.getElementById('inactiveLbl').textContent='Batch '+ob.id; document.getElementById('inactiveStep').textContent='Steg '+stepId+': '+stepTitle(stepId); document.getElementById('inactiveTimer').textContent=steps[idx].duration>0?fmt(remaining(ob)):'—'; document.getElementById('inactiveJump').onclick=switchBatch; }
-
-  function switchBatch(){ state.active=(state.active===1?2:1); refreshHero(); }
-
-  function nextStepActive(){ var b=currentBatch(); var stepId=b.idx+1; if(stepId===7){ openTempModal(stepId,state.active); return; } if(b.idx>=steps.length-1) return; setIdx(b,b.idx+1); if(state.dualMode && state.active===1 && (b.idx+1)===3){ state.handoffVisible=true; refreshHero(); return; } refreshHero(); }
-  function prevStepActive(){ var b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); } }
-
-  function tick(){ var b=currentBatch(); var st=steps[b.idx]; if(st.duration>0 && b.running){ if(remaining(b)<=0){ b.running=false; onTimerDoneActive(); } } document.getElementById('timerDisplay').textContent=fmt(remaining(b)); updateTimeProgress(); updateInactiveBar(); state.tickHandle=requestAnimationFrame(tick); }
-
-  function startTimer(){ if(state.handoffVisible) return; var b=currentBatch(); var st=steps[b.idx]; if(st.duration<=0) return; if(!b.deadline){ b.deadline=Date.now()+st.duration*1000; } b.running=true; document.getElementById('timerPause').textContent='Pausa'; }
+  function tick(){ var b=currentBatch(); var st=steps[b.idx]; if(st.duration>0 && b.running && remaining(b)<=0){ b.running=false; document.getElementById('ackBtn').style.display='inline-block'; startAlarm(); }
+    document.getElementById('timerDisplay').textContent=fmt(remaining(b)); state.tickHandle=requestAnimationFrame(tick);
+  }
+  function startTimer(){ var b=currentBatch(); var st=steps[b.idx]; if(st.duration<=0) return; if(!b.deadline){ b.deadline=Date.now()+st.duration*1000; } b.running=true; document.getElementById('timerPause').textContent='Pausa'; }
   function stopTimer(){ var b=currentBatch(); b.running=false; document.getElementById('timerPause').textContent='Fortsätt'; }
   function resetTimer(){ var b=currentBatch(); var st=steps[b.idx]; b.deadline=st.duration>0?(Date.now()+st.duration*1000):0; b.running=false; document.getElementById('timerPause').textContent='Fortsätt'; }
 
-  function onTimerDoneActive(){ var b=currentBatch(); var stepId=b.idx+1; if(stepId===5){ stopAlarm(); openTempModal(stepId,state.active); } else { document.getElementById('ackBtn').style.display='inline-block'; startAlarm(); } }
-  function ackAndNext(){ stopAlarm(); document.getElementById('ackBtn').style.display='none'; nextStepActive(); }
+  function num(id){ var el=document.getElementById(id); var raw=(el.value||'').replace(',','.'); return raw===''?NaN:parseFloat(raw); }
+  function updateWaterCalc(){ var t=num('targetTemp'), f=num('flourTemp'), r=num('roomTemp'), fr=num('friction'); var target=isFinite(t)?t:22; var w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null; document.getElementById('waterCalc').textContent=(w==null?'—':(Math.round(w*10)/10)+' °C'); state.waterCalc=w; }
 
-  function updateTimeProgress(){ var b=currentBatch(); var st=steps[b.idx]; var timeBar=document.getElementById('heroProgTime'); if(!timeBar) return; if(st.duration>0 && b.deadline){ var rem=remaining(b); var elapsed=Math.max(0,st.duration-rem); var frac=Math.min(1,elapsed/st.duration); timeBar.style.width=(frac*100)+'%'; } else { timeBar.style.width='0%'; } }
+  // UI events
+  document.getElementById('enterFs').addEventListener('click', function(){ if(fsSupported()){ try{ document.documentElement.requestFullscreen(); }catch(e){} } });
+  document.getElementById('unlockAudioBtn').addEventListener('click', function(){ unlockAudio(); });
+  document.getElementById('testAlarmBtn').addEventListener('click', function(){ unlockAudio(); startAlarm(); setTimeout(stopAlarm, 2200); });
 
-  function openTempModal(stepId,batch){ state.pendingTemp={stepId:stepId,batch:batch}; document.getElementById('tempModalTitle').textContent='Ange degtemperatur – Batch '+batch+' efter steg '+stepId; document.getElementById('tempInput').value=''; document.getElementById('tempModalBack').style.display='flex'; document.getElementById('tempInput').focus(); }
-  function closeTempModal(){ document.getElementById('tempModalBack').style.display='none'; }
-  function saveTemp(){ var v=numVal('tempInput'); if(isNaN(v)){ alert('Fyll i en giltig temperatur.'); return; } var was=state.pendingTemp?{stepId:state.pendingTemp.stepId,batch:state.pendingTemp.batch}:null; if(was){ var entry={ts:new Date().toISOString(),batch:was.batch,step:was.stepId,temp:v}; state.measurements.unshift(entry); state.measurements=state.measurements.slice(0,500); localStorage.setItem('deg_meas',JSON.stringify(state.measurements)); updateLastLogWithFinal(v); } closeTempModal(); state.pendingTemp=null; if(was && was.stepId===5){ nextStepActive(); } else if(was && was.stepId===7){ if(state.active===2){ state.active=1; refreshHero(); } else { refreshHero(); } } }
-
-  function updateLastLogWithFinal(finalTemp){ var last=state.logs[0]; if(!last) return; last.final=finalTemp; if(typeof last.final==='number' && typeof last.flour==='number' && typeof last.room==='number' && typeof last.water==='number'){ last.effFriction=(last.final*3)-(last.flour+last.room+last.water); } localStorage.setItem('deg_logs',JSON.stringify(state.logs)); return last.effFriction; }
-
-  function partsText(mult,base){ var half=Math.round(base/2); if(Math.abs(mult-2)<0.001) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<0.001) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; }
-  function refreshPreWeigh(){ var m=state.batchMult||1; var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); document.getElementById('preWaterBig').textContent=bw.big; document.getElementById('preWaterSmall').textContent='= '+bw.total+' g'; document.getElementById('preSaltBig').textContent=bs.big; document.getElementById('preSaltSmall').textContent='= '+bs.total+' g'; document.getElementById('preOilBig').textContent=bo.big; document.getElementById('preOilSmall').textContent='= '+bo.total+' g'; }
-
-  function updateWaterCalc(){ var t=numVal('targetTemp'), f=numVal('flourTemp'), r=numVal('roomTemp'), fr=numVal('friction'); var target=isFinite(t)?t:22; var w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null; document.getElementById('waterCalc').textContent=(w===null?'—':(Math.round(w*10)/10)+' °C'); state.waterCalc=w; if(document.getElementById('viewMix').classList.contains('show')){ refreshHero(); } return w; }
-
-  function saveLogs(){ localStorage.setItem('deg_logs',JSON.stringify(state.logs)); }
-  function pushLog(partial){ var entry={ts:new Date().toISOString(),batch:state.batchMult,flour:state.flour,room:state.room,target:state.target,friction:state.friction,water:state.waterCalc,final:null,effFriction:null,note:state.note||''}; for(var k in partial){ if(partial.hasOwnProperty(k)) entry[k]=partial[k]; } state.logs.unshift(entry); state.logs=state.logs.slice(0,300); saveLogs(); }
-
-  function prefillTemps(){ var last=state.logs[0]||null; if(last){ var fEl=document.getElementById('flourTemp'), rEl=document.getElementById('roomTemp'), tEl=document.getElementById('targetTemp'), frEl=document.getElementById('friction'); if(!fEl.value && typeof last.flour==='number') fEl.value=String(last.flour); if(!rEl.value && typeof last.room==='number') rEl.value=String(last.room); if(!frEl.value && typeof last.effFriction==='number') frEl.value=String(Math.round(last.effFriction*10)/10); if(!tEl.value) tEl.value='22'; }
-    updateWaterCalc(); }
-
-  // === Events ===
-  document.getElementById('enterFs').addEventListener('click', enterFs);
-  document.getElementById('testAlarmBtn').addEventListener('click', function(){ startAlarm(); setTimeout(stopAlarm,2000); });
-  document.getElementById('toBatch').addEventListener('click', function(e){ if(e){e.preventDefault();e.stopPropagation();} show('viewBatch'); });
+  document.getElementById('toTemps').addEventListener('click', function(){ var sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch',state.batchMult); show('viewTemps'); });
   document.getElementById('backToOnboard').addEventListener('click', function(){ show('viewOnboard'); });
+  document.getElementById('toPreWeigh').addEventListener('click', function(){ show('viewPre'); var m=state.batchMult||1; function partsText(mult,base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; } var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); document.getElementById('preWaterBig').textContent=bw.big; document.getElementById('preWaterSmall').textContent='= '+bw.total+' g'; document.getElementById('preSaltBig').textContent=bs.big; document.getElementById('preSaltSmall').textContent='= '+bs.total+' g'; document.getElementById('preOilBig').textContent=bo.big; document.getElementById('preOilSmall').textContent='= '+bo.total+' g'; });
+  document.getElementById('backToTemps').addEventListener('click', function(){ show('viewTemps'); });
+  document.getElementById('toMixing').addEventListener('click', function(){ setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; show('viewMix'); refreshHero(); });
 
-  document.getElementById('toTemps').addEventListener('click', function(){ var sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch',state.batchMult); show('viewTemps'); prefillTemps(); });
-  document.getElementById('backToBatch').addEventListener('click', function(){ show('viewBatch'); });
-  document.getElementById('saveTemps').addEventListener('click', function(){ if(doSaveTemps(true)){ updateWaterCalc(); } });
-  document.getElementById('toPreWeigh').addEventListener('click', function(){ if(doSaveTemps(true)){ show('viewPre'); refreshPreWeigh(); } });
-
-  var ids=['flourTemp','roomTemp','targetTemp','friction']; for(var i=0;i<ids.length;i++){ (function(id){ var el=document.getElementById(id); el.addEventListener('input', function(){ el.classList.remove('invalid'); updateWaterCalc(); }); })(ids[i]); }
-
-  document.getElementById('toMixing').addEventListener('click', function(){ state.dualMode=(state.batchMult>=2); setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; state.handoffVisible=false; show('viewMix'); refreshHero(); });
-  document.getElementById('changeBatch').addEventListener('click', function(){ show('viewBatch'); });
-  document.getElementById('prevStep').addEventListener('click', prevStepActive);
-  document.getElementById('nextStep').addEventListener('click', nextStepActive);
-  document.getElementById('timerPause').addEventListener('click', function(){ var st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); } });
+  document.getElementById('prevStep').addEventListener('click', function(){ var b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); }});
+  document.getElementById('nextStep').addEventListener('click', function(){ var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }});
+  document.getElementById('timerPause').addEventListener('click', function(){ var st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); }});
   document.getElementById('timerReset').addEventListener('click', function(){ resetTimer(); });
-  document.getElementById('ackBtn').addEventListener('click', ackAndNext);
-  document.getElementById('handoffOkBtn').addEventListener('click', function(){ state.handoffVisible=false; state.active=2; refreshHero(); });
-  document.getElementById('inactiveJump').addEventListener('click', function(){ switchBatch(); });
+  document.getElementById('ackBtn').addEventListener('click', function(){ stopAlarm(); this.style.display='none'; var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }});
 
-  document.getElementById('tempSave').addEventListener('click', saveTemp);
-  document.getElementById('tempCancel').addEventListener('click', function(){ closeTempModal(); state.pendingTemp=null; });
-  document.getElementById('tempModalBack').addEventListener('click', function(e){ if(e.target.id==='tempModalBack'){ closeTempModal(); state.pendingTemp=null; } });
+  ['targetTemp','flourTemp','roomTemp','friction'].forEach(function(id){ var el=document.getElementById(id); el.addEventListener('input', updateWaterCalc); });
 
-  var r=document.getElementById('volRange'), lbl=document.getElementById('volLabel'); r.value=Math.round(state.volume*100); lbl.textContent=Math.round(state.volume*100)+'%'; r.addEventListener('input', function(){ state.volume=Math.max(0,Math.min(1,r.value/100)); if(state.gain){ state.gain.gain.value=state.volume; } localStorage.setItem('deg_alarm_vol',state.volume); lbl.textContent=Math.round(state.volume*100)+'%'; });
-
-  window.addEventListener('resize', function(){ if(document.getElementById('viewMix').classList.contains('show')){ refitHeroText(); } });
+  // status + tips
   setInterval(function(){ document.getElementById('clock').textContent=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
-
-  // iOS/Safari helskärm-hint
-  function isStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone; }
-  function isIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent); }
-  (function cfgFS(){ var fsBtn=document.getElementById('enterFs'); var fsHint=document.getElementById('fsHint'); if(isStandalone()){ if(fsBtn) fsBtn.style.display='none'; if(fsHint) fsHint.textContent='Kör i helskärm via hemskärmen.'; } else if(isIOS() && !document.documentElement.requestFullscreen){ if(fsBtn) fsBtn.style.display='none'; if(fsHint) fsHint.innerHTML='På iPhone fungerar helskärm bäst om du <strong>lägger till sidan på hemskärmen</strong> (Dela → Lägg till på hemskärmen).'; } })();
-
-  // === Helpers ===
-  function doSaveTemps(enforceRequired){
-    var t=numVal('targetTemp'), f=numVal('flourTemp'), r=numVal('roomTemp'), fr=numVal('friction');
-    var target=isFinite(t)?t:22; var missing=[];
-    if(!isFinite(f)) missing.push('flourTemp');
-    if(!isFinite(r)) missing.push('roomTemp');
-    if(!isFinite(fr)) missing.push('friction');
-    var all=['flourTemp','roomTemp','targetTemp','friction']; for(var i=0;i<all.length;i++){ setInvalid(all[i], missing.indexOf(all[i])!==-1); }
-    if(enforceRequired && missing.length){ alert('Fyll i mjöltemperatur, rumstemperatur och friktion (komma eller punkt går bra).'); document.getElementById(missing[0]).focus(); return false; }
-    var w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null;
-    if(w===null){ alert('Fyll i alla temperaturer och friktion först.'); return false; }
-    state.flour=f; state.room=r; state.target=target; state.friction=fr; state.waterCalc=w; state.note=document.getElementById('note').value||'';
-    pushLog({flour:f,room:r,target:target,friction:fr,water:w,note:state.note});
-    document.getElementById('waterCalc').textContent=Math.round(w*10)/10+' °C';
-    return true;
-  }
-
-  // Start
-  show('viewOnboard');
   updateWaterCalc();
-}  /* --- iOS fullscreen & audio patches --- */
-  function isStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone; }
-  function isIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent); }
-  (function cfgFS(){ var fsBtn=document.getElementById('enterFs'); var fsHint=document.getElementById('fsHint'); var supported = !!(document.fullscreenEnabled && document.documentElement.requestFullscreen); if(isStandalone()){ if(fsBtn) fsBtn.style.display='none'; if(fsHint) fsHint.textContent='Kör i helskärm via hemskärmen.'; } else if(!supported && isIOS()){ if(fsBtn) fsBtn.style.display='none'; if(fsHint) fsHint.innerHTML='På iPhone fungerar helskärm bäst om du <strong>lägger till sidan på hemskärmen</strong> (Dela → Lägg till på hemskärmen).'; } else if(!supported){ if(fsHint) fsHint.textContent='Din webbläsare saknar helskärmsstöd för denna sida.'; } })();
 
-  var audioUnlocked=false;
-  function unlockAudioOnce(){ if(audioUnlocked) return; ensureAudio(); if(state.audioCtx){ try{ var o=state.audioCtx.createOscillator(); var g=state.audioCtx.createGain(); g.gain.value=0.0001; o.connect(g).connect(state.gain); o.start(); o.stop(state.audioCtx.currentTime+0.01); audioUnlocked=true; }catch(e){} } }
-  document.addEventListener('touchstart', unlockAudioOnce, {passive:true, once:true});
-  document.addEventListener('click', unlockAudioOnce, {once:true});
-  function playFallbackBeep(){ var el=document.getElementById('beepFallback'); if(!el) return; try{ el.currentTime=0; el.play(); }catch(e){} }
-
-  // Override alarm to ensure unlock + flash + fallback
-  startAlarm = function(){ unlockAudioOnce(); ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended'){ state.audioCtx.resume(); } }catch(e){} if(state.alarmOn) return; state.alarmOn=true; var heroEl=document.getElementById('hero'); if(heroEl) heroEl.classList.add('alarming'); var flip=false; state.alarmTimer=setInterval(function(){ if(state.audioCtx){ playBeep(flip?1000:1500,0.28); } else { playFallbackBeep(); } flip=!flip; }, 550); };
-  stopAlarm = function(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } var heroEl=document.getElementById('hero'); if(heroEl) heroEl.classList.remove('alarming'); };
-
-  var uaBtn = document.getElementById('unlockAudioBtn');
-  if(uaBtn){ uaBtn.addEventListener('click', function(){ unlockAudioOnce(); playFallbackBeep(); if(state.audioCtx){ try{ var o=state.audioCtx.createOscillator(), g=state.audioCtx.createGain(); o.type='sine'; o.frequency.value=1200; g.gain.value=0.0001; g.gain.linearRampToValueAtTime(0.2, state.audioCtx.currentTime+0.01); g.gain.linearRampToValueAtTime(0.0001, state.audioCtx.currentTime+0.2); o.connect(g).connect(state.gain); o.start(); o.stop(state.audioCtx.currentTime+0.25); }catch(e){} } }); }
+  // iOS install/FS hints
+  (function(){ var fsBtn=document.getElementById('enterFs'); var fsRow=document.getElementById('fsRow'); var fsHint=document.getElementById('fsHint'); var banner=document.getElementById('iosInstall'); var dismissBtn=document.getElementById('dismissInstall'); if(isStandalone()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.textContent='Kör redan i helskärm via hemskärmen.'; if(banner) banner.style.display='none'; }
+    else if(isIOS() && !fsSupported()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.innerHTML='På iPhone: öppna i Safari och <strong>Lägg till på hemskärmen</strong> för helskärm.'; if(banner) banner.style.display='block'; if(dismissBtn) dismissBtn.onclick=function(){ banner.style.display='none'; }; }
+    else if(!fsSupported()){ if(fsHint) fsHint.textContent='Din webbläsare saknar helskärmsstöd.'; }
+  })();
 
 })();
 </script>
