@@ -3,19 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Degguiden – Pizzeria v2.3.0 (iOS robust)</title>
+<title>Degguiden – Pizzeria v2.3.1 (iOS fail‑safe)</title>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <script id="__manifest" type="application/json">{
-  "name":"Degguiden",
-  "short_name":"Degguiden",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#f8fafc",
-  "theme_color":"#2563eb"
-}</script>
-<script>(function(){try{var el=document.getElementById('__manifest');if(!el)return;var blob=new Blob([el.textContent],{type:'application/manifest+json'});var url=URL.createObjectURL(blob);var link=document.createElement('link');link.rel='manifest';link.href=url;document.head.appendChild(link);}catch(e){}})();</script>
+  "name":"Degguiden","short_name":"Degguiden","start_url":"./","display":"standalone","background_color":"#f8fafc","theme_color":"#2563eb"}
+</script>
+<script>(function(){try{var el=document.getElementById('__manifest');if(!el)return;var blob=new Blob([el.textContent],{type:'application/manifest+json'});var url=URL.createObjectURL(blob);var link=document.createElement('link');link.rel='manifest';link.href=url;document.head.appendChild(link);}catch(e){/*noop*/}})();</script>
 <style>
   :root { --bg:#f8fafc; --panel:#fff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569; --accent:#2563eb; --warn:#b45309; --danger:#ef4444; --radius:16px; --b1a:#e8f0ff; --b1b:#f5f9ff; --b1border:#93c5fd; --b2a:#f5e8ff; --b2b:#fbf7ff; --b2border:#d8b4fe; }
   *{box-sizing:border-box}
@@ -37,11 +32,9 @@
   .btn.ghost{background:transparent;border-color:#cbd5e1}
   .muted{color:var(--muted);font-size:13px}
 
-  /* Install-overlay för iOS */
   #iosInstall{display:none;position:sticky;top:56px;z-index:25;margin:12px auto 0;max-width:840px}
   #iosInstall .inner{border:1px dashed #94a3b8;background:#ffffff;border-radius:12px;padding:10px 12px}
 
-  /* HERO */
   .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;max-width:840px;margin:0 auto;background:var(--panel)}
   .hero.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
   .hero.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
@@ -88,10 +81,9 @@
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
   <div class="meta"><span id="clock">--:--</span><span>🔈 <input id="volRange" type="range" min="0" max="100" value="85" /> <span id="volLabel">85%</span></span></div>
-  <div class="meta ver">v2.3.0</div>
+  <div class="meta ver">v2.3.1</div>
 </header>
 
-<!-- iOS install banner -->
 <div id="iosInstall" class="narrow">
   <div class="inner">
     <strong>Tips för helskärm på iPhone:</strong> öppna i Safari och <em>Lägg till på hemskärmen</em> (Dela → Lägg till på hemskärmen). Öppna sedan app-ikonen.
@@ -103,12 +95,12 @@
   <section id="viewOnboard" class="view show card stack" style="text-align:center">
     <h2>Steg 1: Helskärm & alarm</h2>
     <div id="fsRow" class="row" style="justify-content:center">
-      <button class="btn primary" id="enterFs" style="font-size:18px;padding:16px 22px">⤢ Starta helskärm</button>
+      <button class="btn primary" id="enterFs" style="font-size:18px;padding:16px 22px" onclick="try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}catch(e){}">⤢ Starta helskärm</button>
     </div>
     <p id="fsHint" class="muted"></p>
     <div class="row" style="justify-content:center">
-      <button class="btn" id="unlockAudioBtn">🔔 Aktivera ljud</button>
-      <button class="btn warn" id="testAlarmBtn">🔊 Testa alarm</button>
+      <button class="btn" id="unlockAudioBtn" onclick="try{window.__unlockAudio&&window.__unlockAudio();}catch(e){}">🔔 Aktivera ljud</button>
+      <button class="btn warn" id="testAlarmBtn" onclick="try{window.__startAlarm&&window.__startAlarm(); setTimeout(function(){window.__stopAlarm&&window.__stopAlarm();},2000);}catch(e){}">🔊 Testa alarm</button>
     </div>
     <p class="muted" id="silenceHint" style="display:none">Hörs inget? Kontrollera att <strong>tyst läge är av</strong> och att volymen är uppvriden.</p>
     <div class="row" style="justify-content:center;margin-top:8px">
@@ -123,7 +115,10 @@
       <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="1.5"><div><strong>1.5×</strong><div class="muted">183 bollar</div></div></label>
       <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="2"><div><strong>2×</strong><div class="muted">244 bollar</div></div></label>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToOnboard">◀ Tillbaka</button><button class="btn primary" id="toTemps">Nästa ▶</button></div>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn" id="backToOnboard" onclick="try{document.getElementById('viewBatch').classList.remove('show');document.getElementById('viewOnboard').classList.add('show');}catch(e){}">◀ Tillbaka</button>
+      <button class="btn primary" id="toTemps" onclick="try{document.getElementById('viewBatch').classList.remove('show');document.getElementById('viewTemps').classList.add('show');}catch(e){}">Nästa ▶</button>
+    </div>
   </section>
 
   <section id="viewTemps" class="view card stack">
@@ -135,7 +130,13 @@
       <div class="field" style="min-width:240px"><label>Friktionstal (°C)</label><input type="number" id="friction" step="0.1" inputmode="decimal" placeholder="t.ex. 8"></div>
       <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div><div class="muted">(Önskad × 3) − (Mjöl + Rum + Friktion)</div></div>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToBatch">◀ Tillbaka</button><div class="row"><button class="btn" id="saveTemps">Spara</button><button class="btn primary" id="toPreWeigh">Spara & fortsätt ▶</button></div></div>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn" id="backToBatch" onclick="try{document.getElementById('viewTemps').classList.remove('show');document.getElementById('viewBatch').classList.add('show');}catch(e){}">◀ Tillbaka</button>
+      <div class="row">
+        <button class="btn" id="saveTemps">Spara</button>
+        <button class="btn primary" id="toPreWeigh" onclick="try{document.getElementById('viewTemps').classList.remove('show');document.getElementById('viewPre').classList.add('show');}catch(e){}">Spara & fortsätt ▶</button>
+      </div>
+    </div>
   </section>
 
   <section id="viewPre" class="view card stack">
@@ -145,7 +146,10 @@
       <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
       <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div><div class="smallTotal" id="preOilSmall">= — g</div></div>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToTemps">◀ Tillbaka</button><button class="btn primary" id="toMixing">Börja degblandning ▶</button></div>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn" id="backToTemps" onclick="try{document.getElementById('viewPre').classList.remove('show');document.getElementById('viewTemps').classList.add('show');}catch(e){}">◀ Tillbaka</button>
+      <button class="btn primary" id="toMixing" onclick="try{document.getElementById('viewPre').classList.remove('show');document.getElementById('viewMix').classList.add('show');}catch(e){}">Börja degblandning ▶</button>
+    </div>
   </section>
 
   <section id="viewMix" class="view stack">
@@ -164,11 +168,19 @@
   </section>
 </main>
 
-<!-- Ljudfallback -->
-<audio id="beepFallback"><source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAZGF0YQAAAAAAAAD///8AAAAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///w==" type="audio/wav"></audio>
+<audio id="beepFallback" preload="auto" playsinline><source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAZGF0YQAAAAAAAAD///8AAAAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///w==" type="audio/wav"></audio>
 
 <script>
 (function(){
+  function safeLS(){
+    var ok=true; try{ localStorage.setItem('__test','1'); localStorage.removeItem('__test'); }catch(e){ ok=false }
+    return {
+      get:function(k){ if(!ok) return null; try{ return localStorage.getItem(k) }catch(e){ return null } },
+      set:function(k,v){ if(!ok) return; try{ localStorage.setItem(k,v) }catch(e){} }
+    };
+  }
+  var LS=safeLS();
+
   function $(s){return document.querySelector(s)}
   function pad2(n){return (n<10?'0':'')+n}
   function isIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent); }
@@ -176,35 +188,35 @@
   function fsSupported(){ return !!(document.fullscreenEnabled && document.documentElement.requestFullscreen); }
 
   var state={
-    batchMult:+(localStorage.getItem('deg_batch')||1),
+    batchMult:+(LS.get('deg_batch')||1),
     base:{water:1250,salt:450,oil:450},
     B1:{id:1,idx:0,deadline:0,running:false},
     B2:{id:2,idx:0,deadline:0,running:false},
     active:1,dualMode:false,tickHandle:null,
-    audioCtx:null,gain:null,alarmTimer:null,alarmOn:false,volume:+(localStorage.getItem('deg_alarm_vol')||0.85),
+    audioCtx:null,gain:null,alarmTimer:null,alarmOn:false,volume:+(LS.get('deg_alarm_vol')||0.85),
     flour:null,room:null,target:22,friction:null,waterCalc:null,note:'',
     logs:[], measurements:[],
     handoffVisible:false, pendingTemp:null,
-    audioUnlocked: localStorage.getItem('audio_unlocked')==='1'
+    audioUnlocked: LS.get('audio_unlocked')==='1'
   };
 
   function ensureAudio(){ if(state.audioCtx) return; var Ctx=window.AudioContext||window.webkitAudioContext; if(!Ctx) return; state.audioCtx=new Ctx(); state.gain=state.audioCtx.createGain(); state.gain.gain.value=state.volume; state.gain.connect(state.audioCtx.destination); }
-  function unlockAudio(){ if(state.audioUnlocked) return; ensureAudio(); if(state.audioCtx){ try{ var b=state.audioCtx.createBuffer(1,1,22050); var src=state.audioCtx.createBufferSource(); src.buffer=b; src.connect(state.gain); src.start(0); state.audioUnlocked=true; localStorage.setItem('audio_unlocked','1'); }catch(e){} }
+  function unlockAudio(){ if(state.audioUnlocked) return; ensureAudio(); if(state.audioCtx){ try{ var b=state.audioCtx.createBuffer(1,1,22050); var src=state.audioCtx.createBufferSource(); src.buffer=b; src.connect(state.gain); src.start(0); }catch(e){} }
     var el=$('#beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} }
+    state.audioUnlocked=true; LS.set('audio_unlocked','1');
     var sh=$('#silenceHint'); if(sh) sh.style.display='block';
   }
-  document.addEventListener('pointerdown', unlockAudio, {once:true});
-  document.addEventListener('touchstart', unlockAudio, {passive:true, once:true});
-  document.addEventListener('click', function(){ if(!state.audioUnlocked) unlockAudio(); }, {once:true});
+  window.__unlockAudio = unlockAudio; // inline fallback använder denna
 
   function playBeep(freq,dur){ freq=freq||1000; dur=dur||0.25; if(!state.audioCtx) return; try{ var osc=state.audioCtx.createOscillator(); var g=state.audioCtx.createGain(); osc.type='square'; osc.frequency.value=freq; g.gain.setValueAtTime(0, state.audioCtx.currentTime); g.gain.linearRampToValueAtTime(state.volume, state.audioCtx.currentTime+0.02); g.gain.linearRampToValueAtTime(0.0001, state.audioCtx.currentTime+dur); osc.connect(g).connect(state.gain); osc.start(); var stopAt=state.audioCtx.currentTime+dur+0.05; osc.stop(stopAt); setTimeout(function(){ try{ osc.disconnect(); g.disconnect(); }catch(e){} }, (dur+0.1)*1000); }catch(e){} }
   function playFallback(){ var el=$('#beepFallback'); if(!el) return; try{ el.currentTime=0; el.play(); }catch(e){} }
 
   function startAlarm(){ if(!state.audioUnlocked) unlockAudio(); ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended'){ state.audioCtx.resume(); } }catch(e){}
     if(state.alarmOn) return; state.alarmOn=true; var hero=$('#hero'); if(hero) hero.classList.add('alarming'); var flip=false;
-    state.alarmTimer=setInterval(function(){ if(state.audioCtx){ playBeep(flip?1000:1500,0.28); } else { playFallback(); } if(navigator.vibrate){ try{ navigator.vibrate([180,80,180]); }catch(e){} } flip=!flip; }, 700);
+    state.alarmTimer=setInterval(function(){ if(state.audioCtx){ playBeep(flip?1000:1500,0.28); } else { playFallback(); } if(navigator.vibrate){ try{ navigator.vibrate([200,100,200]); }catch(e){} } flip=!flip; }, 750);
   }
   function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } var hero=$('#hero'); if(hero) hero.classList.remove('alarming'); }
+  window.__startAlarm = startAlarm; window.__stopAlarm = stopAlarm;
 
   function fmt(s){ s=Math.max(0,Math.floor(s)); var m=Math.floor(s/60), r=s%60; return pad2(m)+':'+pad2(r); }
 
@@ -245,34 +257,44 @@
   function num(id){ var el=document.getElementById(id); var raw=(el.value||'').replace(',','.'); return raw===''?NaN:parseFloat(raw); }
   function updateWaterCalc(){ var t=num('targetTemp'), f=num('flourTemp'), r=num('roomTemp'), fr=num('friction'); var target=isFinite(t)?t:22; var w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null; document.getElementById('waterCalc').textContent=(w==null?'—':(Math.round(w*10)/10)+' °C'); state.waterCalc=w; }
 
-  // UI events
-  document.getElementById('enterFs').addEventListener('click', function(){ if(fsSupported()){ try{ document.documentElement.requestFullscreen(); }catch(e){} } });
-  document.getElementById('unlockAudioBtn').addEventListener('click', function(){ unlockAudio(); });
-  document.getElementById('testAlarmBtn').addEventListener('click', function(){ unlockAudio(); startAlarm(); setTimeout(stopAlarm, 2200); });
+  document.addEventListener('DOMContentLoaded', function(){
+    // Clock
+    setInterval(function(){ var c=document.getElementById('clock'); if(c) c.textContent=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
+    updateWaterCalc();
 
-  document.getElementById('toTemps').addEventListener('click', function(){ var sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch',state.batchMult); show('viewTemps'); });
-  document.getElementById('backToOnboard').addEventListener('click', function(){ show('viewOnboard'); });
-  document.getElementById('toPreWeigh').addEventListener('click', function(){ show('viewPre'); var m=state.batchMult||1; function partsText(mult,base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; } var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); document.getElementById('preWaterBig').textContent=bw.big; document.getElementById('preWaterSmall').textContent='= '+bw.total+' g'; document.getElementById('preSaltBig').textContent=bs.big; document.getElementById('preSaltSmall').textContent='= '+bs.total+' g'; document.getElementById('preOilBig').textContent=bo.big; document.getElementById('preOilSmall').textContent='= '+bo.total+' g'; });
-  document.getElementById('backToTemps').addEventListener('click', function(){ show('viewTemps'); });
-  document.getElementById('toMixing').addEventListener('click', function(){ setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; show('viewMix'); refreshHero(); });
+    // Volume slider
+    var r=document.getElementById('volRange'); var lbl=document.getElementById('volLabel');
+    if(r&&lbl){ r.value=Math.round(state.volume*100); lbl.textContent=Math.round(state.volume*100)+'%'; r.addEventListener('input', function(){ state.volume=Math.max(0, Math.min(1, r.value/100)); if(state.gain){ state.gain.gain.value=state.volume; } LS.set('deg_alarm_vol', state.volume); lbl.textContent=Math.round(state.volume*100)+'%'; }); }
 
-  document.getElementById('prevStep').addEventListener('click', function(){ var b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); }});
-  document.getElementById('nextStep').addEventListener('click', function(){ var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }});
-  document.getElementById('timerPause').addEventListener('click', function(){ var st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); }});
-  document.getElementById('timerReset').addEventListener('click', function(){ resetTimer(); });
-  document.getElementById('ackBtn').addEventListener('click', function(){ stopAlarm(); this.style.display='none'; var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }});
+    // Buttons
+    var fsBtn=document.getElementById('enterFs');
+    if(fsBtn){ fsBtn.addEventListener('click', function(){ if(fsSupported()){ try{ document.documentElement.requestFullscreen(); }catch(e){} } }); }
+    var ua=document.getElementById('unlockAudioBtn'); if(ua){ ua.addEventListener('click', unlockAudio); }
+    var tb=document.getElementById('testAlarmBtn'); if(tb){ tb.addEventListener('click', function(){ unlockAudio(); startAlarm(); setTimeout(stopAlarm,2000); }); }
 
-  ['targetTemp','flourTemp','roomTemp','friction'].forEach(function(id){ var el=document.getElementById(id); el.addEventListener('input', updateWaterCalc); });
+    var toTemps=document.getElementById('toTemps'); if(toTemps){ toTemps.addEventListener('click', function(){ var sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; LS.set('deg_batch', state.batchMult); show('viewTemps'); }); }
+    var backOnb=document.getElementById('backToOnboard'); if(backOnb){ backOnb.addEventListener('click', function(){ show('viewOnboard'); }); }
 
-  // status + tips
-  setInterval(function(){ document.getElementById('clock').textContent=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
-  updateWaterCalc();
+    var toPre=document.getElementById('toPreWeigh'); if(toPre){ toPre.addEventListener('click', function(){ show('viewPre'); var m=state.batchMult||1; function partsText(mult,base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; } var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); document.getElementById('preWaterBig').textContent=bw.big; document.getElementById('preWaterSmall').textContent='= '+bw.total+' g'; document.getElementById('preSaltBig').textContent=bs.big; document.getElementById('preSaltSmall').textContent='= '+bs.total+' g'; document.getElementById('preOilBig').textContent=bo.big; document.getElementById('preOilSmall').textContent='= '+bo.total+' g'; }); }
+    var backTemps=document.getElementById('backToTemps'); if(backTemps){ backTemps.addEventListener('click', function(){ show('viewTemps'); }); }
 
-  // iOS install/FS hints
-  (function(){ var fsBtn=document.getElementById('enterFs'); var fsRow=document.getElementById('fsRow'); var fsHint=document.getElementById('fsHint'); var banner=document.getElementById('iosInstall'); var dismissBtn=document.getElementById('dismissInstall'); if(isStandalone()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.textContent='Kör redan i helskärm via hemskärmen.'; if(banner) banner.style.display='none'; }
-    else if(isIOS() && !fsSupported()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.innerHTML='På iPhone: öppna i Safari och <strong>Lägg till på hemskärmen</strong> för helskärm.'; if(banner) banner.style.display='block'; if(dismissBtn) dismissBtn.onclick=function(){ banner.style.display='none'; }; }
-    else if(!fsSupported()){ if(fsHint) fsHint.textContent='Din webbläsare saknar helskärmsstöd.'; }
-  })();
+    var toMix=document.getElementById('toMixing'); if(toMix){ toMix.addEventListener('click', function(){ setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; show('viewMix'); refreshHero(); }); }
+
+    var prev=document.getElementById('prevStep'); if(prev){ prev.addEventListener('click', function(){ var b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); }}); }
+    var next=document.getElementById('nextStep'); if(next){ next.addEventListener('click', function(){ var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }}); }
+
+    var tPause=document.getElementById('timerPause'); if(tPause){ tPause.addEventListener('click', function(){ var st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); }}); }
+    var tReset=document.getElementById('timerReset'); if(tReset){ tReset.addEventListener('click', function(){ resetTimer(); }); }
+    var ack=document.getElementById('ackBtn'); if(ack){ ack.addEventListener('click', function(){ stopAlarm(); this.style.display='none'; var b=currentBatch(); if(b.idx < steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }}); }
+
+    ['targetTemp','flourTemp','roomTemp','friction'].forEach(function(id){ var el=document.getElementById(id); if(el){ el.addEventListener('input', updateWaterCalc); }});
+
+    // iOS install/FS hints
+    (function(){ var fsRow=document.getElementById('fsRow'); var fsHint=document.getElementById('fsHint'); var banner=document.getElementById('iosInstall'); var dismissBtn=document.getElementById('dismissInstall'); if(isStandalone()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.textContent='Kör redan i helskärm via hemskärmen.'; if(banner) banner.style.display='none'; }
+      else if(isIOS() && !fsSupported()){ if(fsRow) fsRow.style.display='none'; if(fsHint) fsHint.innerHTML='På iPhone: öppna i Safari och <strong>Lägg till på hemskärmen</strong> för helskärm.'; if(banner) banner.style.display='block'; if(dismissBtn) dismissBtn.onclick=function(){ banner.style.display='none'; }; }
+      else if(!fsSupported()){ if(fsHint) fsHint.textContent='Din webbläsare saknar helskärmsstöd.'; }
+    })();
+  });
 
 })();
 </script>
