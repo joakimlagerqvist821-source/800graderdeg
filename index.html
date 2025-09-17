@@ -6,12 +6,19 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.14-livebased</title>
+<title>Degguiden – Pizzeria v2.3.15-brand</title>
 <style>
   :root{
+    /* Brand vars (will be overridden by palette extractor) */
+    --brand:#e4572e;        /* primary accent from logo */
+    --brand-600:#c14422;    /* darken */
+    --brand-300:#f29a7f;    /* lighten */
+    --brand-100:#fde7df;    /* very light */
+
     --bg:#f8fafc; --panel:#ffffff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569;
-    --accent:#2563eb; --warn:#b45309; --danger:#ef4444; --radius:16px;
-    --b1a:#e8f0ff; --b1b:#f5f9ff; --b1border:#93c5fd;
+    --accent: var(--brand);
+    --warn:#b45309; --danger:#ef4444; --radius:16px;
+    --b1a:var(--brand-100); --b1b:#fff; --b1border:var(--brand-300);
     --b2a:#f5e8ff; --b2b:#fbf7ff; --b2border:#d8b4fe;
   }
   *{box-sizing:border-box}
@@ -28,23 +35,28 @@
   .muted{color:var(--muted)}
   .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;font-weight:700;font-size:16px;min-height:44px;display:inline-block;text-decoration:none}
   .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.secondary{background:#0f172a;color:#fff;border-color:#0f172a}
   .btn.warn{background:var(--warn);border-color:var(--warn);color:#fff}
   .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
   .btn.ghost{background:transparent;border-color:#cbd5e1}
+  .btn.outline{background:transparent;border-color:var(--accent);color:var(--accent)}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}
 
   .narrow{max-width:840px;margin:0 auto}
 
   /* Onboarding */
   #viewOnboard{text-align:center}
-  .onboard-actions{max-width:480px;margin:0 auto}
+  .onboard-actions{max-width:520px;margin:0 auto}
+  .onboard-steps{list-style:decimal-leading-zero;padding-left:1.5rem;text-align:left;margin:6px auto 10px;max-width:520px;color:#334155}
+  .onboard-steps li{margin:2px 0}
   .onboard-actions .row{justify-content:center;gap:12px;margin:6px 0}
   .onboard-actions .btn{min-width:220px}
-  @media (max-width:520px){.onboard-actions .btn{width:100%}}
+  @media (max-width:560px){.onboard-actions .btn{width:100%}}
 
   /* HERO */
   .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;max-width:840px;margin:0 auto;background:var(--panel)}
   .hero.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
-  .hero.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
+  .hero.batch2{background:linear-gradient(180deg,#f1f0ff,#ffffff);border-color:#d9d6ff}
   .hero .batchTag{font-weight:900;letter-spacing:.08em;color:#0f172a;text-transform:uppercase}
   .hero .stepNum{font-size:13px;color:#1d4ed8;letter-spacing:.08em;text-transform:uppercase}
   .hero .stepName{font-weight:800;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1;font-size:28px}
@@ -60,18 +72,19 @@
   /* Progress */
   .progWrap{text-align:left;margin-top:12px}
   .track{position:relative;height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-  .bar.overall{position:absolute;inset:0;width:0%;background:#c7d2fe}
-  .bar.time{position:absolute;inset:0;width:0%;background:#2563eb;mix-blend-mode:multiply}
+  .bar.overall{position:absolute;inset:0;width:0%;background:var(--brand-300)}
+  .bar.time{position:absolute;inset:0;width:0%;background:var(--accent);mix-blend-mode:multiply}
   .progText{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
 
   /* Steglista */
   .stepsTopBar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0}
   .steps{display:grid;gap:10px}
   .step{display:grid;gap:6px;padding:12px;border:1px dashed #cbd5e1;border-radius:12px;background:var(--panel-2);opacity:.35;max-width:840px;margin:0 auto}
-  .step.active{opacity:1;border:1px solid #93c5fd;background:var(--panel);box-shadow:0 8px 24px rgba(15,23,42,.08)}
+  .step.active{opacity:1;border:1px solid var(--brand-300);background:var(--panel);box-shadow:0 8px 24px rgba(15,23,42,.08)}
 
   .field{display:grid;gap:6px}
   .field input{background:#fff;border:1px solid #cbd5e1;color:#0f172a;border-radius:10px;padding:12px;font-size:16px}
+  .field input.error{border-color:#ef4444;background:#fff5f5}
   .kpi{font-weight:900;font-size:26px}
 
   .view{display:none}
@@ -89,9 +102,15 @@
   #inactiveBar{display:none;max-width:840px;margin:10px auto 0}
   #inactiveBar .inner{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2)}
   #inactiveBar.batch1 .inner{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
-  #inactiveBar.batch2 .inner{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
+  #inactiveBar.batch2 .inner{background:linear-gradient(180deg,#f1f0ff,#ffffff);border-color:#d9d6ff}
   #inactiveBar .tag{font-weight:900;letter-spacing:.08em;text-transform:uppercase}
   #inactiveBar .time{font-variant-numeric:tabular-nums;font-weight:900}
+
+  /* Batch options stacked */
+  .optionsStack{max-width:680px;margin:0 auto;display:grid;gap:10px}
+  .optCard{display:flex;gap:12px;align-items:center;border:1px solid #cbd5e1;border-radius:12px;padding:12px;background:#fff;cursor:pointer}
+  .optCard:has(input:checked){border-color:var(--accent);box-shadow:0 0 0 2px var(--brand-100)}
+  .optCard input{transform:scale(1.3)}
 
   /* Modal */
   .modalBack{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:100}
@@ -101,18 +120,26 @@
 <body>
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
-  <div class="ver">v2.3.14-livebased</div>
+  <div class="ver">v2.3.15-brand</div>
 </header>
 
 <main>
   <!-- ONBOARDING -->
   <section id="viewOnboard" class="view show card stack">
     <h2>Steg 1: Helskärm & alarm</h2>
+    <ol class="onboard-steps">
+      <li>Starta helskärm (valfritt)</li>
+      <li>Aktivera ljud (krävs för alarm på iPhone)</li>
+      <li>Testa alarm</li>
+      <li>Nästa: fortsätt till batch-val</li>
+    </ol>
     <div class="onboard-actions">
-      <div class="row"><button class="btn primary" id="enterFs" type="button">⤢ Starta helskärm</button></div>
+      <div class="row">
+        <button class="btn outline" id="enterFs" type="button">⤢ Starta helskärm</button>
+      </div>
       <p id="fsHint" class="muted"></p>
       <div class="row">
-        <button class="btn" id="unlockAudioBtn" type="button">🔔 Aktivera ljud</button>
+        <button class="btn secondary" id="unlockAudioBtn" type="button">🔔 Aktivera ljud</button>
         <button class="btn warn" id="testAlarmBtn" type="button">🔊 Testa alarm</button>
       </div>
       <div class="row"><button class="btn primary" id="toBatch" type="button">Nästa ▶</button></div>
@@ -122,10 +149,10 @@
   <!-- BATCH VAL -->
   <section id="viewBatch" class="view card stack">
     <h2>Steg 2: Välj antal batch</h2>
-    <div class="row" style="justify-content:center;gap:12px">
-      <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="1"><div><strong>1×</strong><div class="muted">122 bollar</div></div></label>
-      <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="1.5"><div><strong>1.5×</strong><div class="muted">183 bollar</div></div></label>
-      <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="2"><div><strong>2×</strong><div class="muted">244 bollar</div></div></label>
+    <div class="optionsStack">
+      <label class="optCard"><input type="radio" name="batch" value="1"><div><strong>1×</strong><div class="muted">122 bollar</div></div></label>
+      <label class="optCard"><input type="radio" name="batch" value="1.5"><div><strong>1.5×</strong><div class="muted">183 bollar</div></div></label>
+      <label class="optCard"><input type="radio" name="batch" value="2"><div><strong>2×</strong><div class="muted">244 bollar</div></div></label>
     </div>
     <div class="row" style="justify-content:space-between"><button class="btn" id="backToOnboard" type="button">◀ Tillbaka</button><button class="btn primary" id="toTemps" type="button">Nästa ▶</button></div>
   </section>
@@ -140,7 +167,13 @@
       <div class="field" style="min-width:240px"><label>Friktionstal (°C)</label><input type="number" id="friction" step="0.1" inputmode="decimal" placeholder="t.ex. 8"></div>
       <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div><div class="muted">(Önskad × 3) − (Mjöl + Rum + Friktion)</div></div>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToBatch" type="button">◀ Tillbaka</button><div class="row"><button class="btn" id="saveTemps" type="button">Spara</button><button class="btn primary" id="toPreWeigh" type="button">Spara & fortsätt ▶</button></div></div>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn" id="backToBatch" type="button">◀ Tillbaka</button>
+      <div class="row">
+        <button class="btn" id="saveTemps" type="button" disabled>Spara</button>
+        <button class="btn primary" id="toPreWeigh" type="button" disabled>Spara & fortsätt ▶</button>
+      </div>
+    </div>
   </section>
 
   <!-- FÖRVÄGNING -->
@@ -233,9 +266,7 @@
   }
   function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } byId('hero').classList.remove('alarming'); }
 
-  // Väck ljud när sidan blir aktiv igen (iOS bakgrund)
   document.addEventListener('visibilitychange', function(){ if(!document.hidden){ try{ unlockAudioOnce(); }catch(e){} } }, false);
-  // Försök väcka ljud på första beröring/klick
   ;['pointerdown','touchstart','touchend','click'].forEach(function(evt){ document.addEventListener(evt, function once(){ try{ unlockAudioOnce(); }catch(e){} document.removeEventListener(evt, once, {capture:false}); }, {passive:true}); });
 
   // ===== Text (original live) =====
@@ -333,9 +364,22 @@
     if(was && was.stepId===5){ var b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); } }
   }
 
-  // ===== Water calc =====
+  // ===== Water calc + validation =====
   function num(id){ var raw=(byId(id).value||'').replace(',','.'); var v=parseFloat(raw); return isFinite(v)?v:NaN; }
-  function updateWaterCalc(){ var t=num('targetTemp'), f=num('flourTemp'), r=num('roomTemp'), fr=num('friction'); var target=isFinite(t)?t:22; var w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null; byId('waterCalc').textContent=(w==null?'—':(Math.round(w*10)/10)+' °C'); state.waterCalc=w; }
+  function isTempsValid(){ var f=num('flourTemp'), r=num('roomTemp'), fr=num('friction'); return isFinite(f)&&isFinite(r)&&isFinite(fr); }
+  function updateWaterCalc(){
+    var t=num('targetTemp'); var f=num('flourTemp'), r=num('roomTemp'), fr=num('friction');
+    var target=isFinite(t)?t:22;
+    var ok = isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr);
+    var w = ok ? ((target*3)-(f+r+fr)) : null;
+    byId('waterCalc').textContent=(w==null?'—':(Math.round(w*10)/10)+' °C');
+    state.waterCalc = w;
+    // UI validation
+    ['flourTemp','roomTemp','friction'].forEach(function(id){ var el=byId(id); if(!el) return; var v=num(id); el.classList.toggle('error', !isFinite(v)); });
+    var enable = isTempsValid();
+    byId('saveTemps').disabled = !enable;
+    byId('toPreWeigh').disabled = !enable;
+  }
 
   // ===== Pre-weigh parts =====
   function partsText(mult, base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; }
@@ -357,8 +401,8 @@
   });
   on('backToBatch','click', function(){ show('viewBatch'); });
 
-  on('saveTemps','click', function(){ updateWaterCalc(); });
-  on('toPreWeigh','click', function(){ updateWaterCalc(); show('viewPre'); refreshPreWeigh(); });
+  on('saveTemps','click', function(){ if(!isTempsValid()){ alert('Fyll i Mjöltemp, Rumstemp och Friktionstal.'); return; } updateWaterCalc(); });
+  on('toPreWeigh','click', function(){ if(!isTempsValid()){ alert('Fyll i Mjöltemp, Rumstemp och Friktionstal.'); return; } updateWaterCalc(); show('viewPre'); refreshPreWeigh(); });
   on('backToTemps','click', function(){ show('viewTemps'); });
 
   on('toMixing','click', function(){ state.dualMode = (state.batchMult>=2); state.b2Started=false; setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; show('viewMix'); refreshHero(); });
@@ -375,7 +419,45 @@
   on('tempCancel','click', function(){ closeTempModal(); state.pendingTemp=null; });
   byId('tempModalBack').addEventListener('click', function(e){ if(e.target.id==='tempModalBack'){ closeTempModal(); state.pendingTemp=null; } }, false);
 
-  // Public API for inline handlers (iOS safety fallback if listeners break)
+  // Inputs
+  ['targetTemp','flourTemp','roomTemp','friction'].forEach(function(id){ var el=byId(id); if(el){ el.addEventListener('input', updateWaterCalc,false); el.addEventListener('change', updateWaterCalc,false);} });
+
+  // ===== Brand palette extractor from logo =====
+  (function extractBrand(){
+    var URL_LOGO = 'https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg';
+    try{
+      var img=new Image(); img.crossOrigin='anonymous';
+      img.onload=function(){
+        var w=32,h=32, cv=document.createElement('canvas'); cv.width=w; cv.height=h; var cx=cv.getContext('2d');
+        cx.drawImage(img,0,0,w,h);
+        var data=cx.getImageData(0,0,w,h).data; var hist={}, i, r,g,b, key;
+        function sat(r,g,b){ var max=Math.max(r,g,b), min=Math.min(r,g,b); return max? (max-min)/max:0; }
+        for(i=0;i<data.length;i+=4){ r=data[i]; g=data[i+1]; b=data[i+2]; if(data[i+3]<128) continue; // skip transparent
+          // quantize to 16 levels per channel
+          r=r>>4; g=g>>4; b=b>>4; key=r+','+g+','+b; hist[key]=(hist[key]||0)+1; }
+        var top=Object.keys(hist).map(function(k){ var p=k.split(','); var rr=parseInt(p[0],10)<<4, gg=parseInt(p[1],10)<<4, bb=parseInt(p[2],10)<<4; return {k:k, n:hist[k], r:rr,g:gg,b:bb, s:sat(rr,gg,bb)}; })
+          .sort(function(a,b){ return b.n-a.n; }).slice(0,24);
+        // pick most saturated among top few to avoid beige/white
+        top.sort(function(a,b){ return (b.s*1.2 + b.n/1000) - (a.s*1.2 + a.n/1000); });
+        var pick=top[0]||{r:228,g:87,b:46};
+        function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+        function mix(c, t, f){ return Math.round(c + (t-c)*f); }
+        var r0=pick.r,g0=pick.g,b0=pick.b;
+        var rDark=clamp(Math.round(r0*0.75),0,255), gDark=clamp(Math.round(g0*0.75),0,255), bDark=clamp(Math.round(b0*0.75),0,255);
+        var rLight=mix(r0,255,0.6), gLight=mix(g0,255,0.6), bLight=mix(b0,255,0.6);
+        var rSoft=mix(r0,255,0.85), gSoft=mix(g0,255,0.85), bSoft=mix(b0,255,0.85);
+        var root=document.documentElement.style;
+        root.setProperty('--brand', 'rgb('+r0+','+g0+','+b0+')');
+        root.setProperty('--brand-600', 'rgb('+rDark+','+gDark+','+bDark+')');
+        root.setProperty('--brand-300', 'rgb('+rLight+','+gLight+','+bLight+')');
+        root.setProperty('--brand-100', 'rgb('+rSoft+','+gSoft+','+bSoft+')');
+      };
+      img.onerror=function(){};
+      img.src=URL_LOGO;
+    }catch(e){}
+  })();
+
+  // Public API fallback for iOS
   window.DG = {
     toBatch: function(){ try{ show('viewBatch'); }catch(e){} },
     unlockAudio: function(){ try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} },
