@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.10-rollback</title>
+<title>Degguiden – Pizzeria v2.3.12-es5-rollback-stable</title>
 <style>
   :root{
     --bg:#f8fafc; --panel:#ffffff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569;
@@ -17,24 +17,25 @@
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:#0f172a;line-height:1.45}
-  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center}
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
   header h1{margin:0;font-size:18px;font-weight:800}
-  header .meta{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted)}
   header .ver{padding:4px 8px;border:1px solid var(--border);border-radius:999px;background:var(--panel-2);font-weight:700}
+
   main{max-width:1200px;margin:16px auto 120px;padding:0 16px}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:0 8px 24px rgba(15,23,42,.06)}
   .stack{display:grid;gap:12px}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .muted{color:var(--muted)}
-  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;font-weight:700;font-size:16px;min-height:44px;display:inline-block;text-decoration:none}
+  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;
+    font-weight:700;font-size:16px;min-height:44px;display:inline-block;text-decoration:none}
   .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   .btn.warn{background:var(--warn);border-color:var(--warn);color:#fff}
   .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
   .btn.ghost{background:transparent;border-color:#cbd5e1}
-
   .narrow{max-width:840px;margin:0 auto}
 
-  /* Onboarding layout */
+  /* Onboarding */
   #viewOnboard{text-align:center}
   .onboard-actions{max-width:480px;margin:0 auto}
   .onboard-actions .row{justify-content:center;gap:12px;margin:6px 0}
@@ -42,7 +43,8 @@
   @media (max-width:520px){.onboard-actions .btn{width:100%}}
 
   /* HERO */
-  .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;max-width:840px;margin:0 auto;background:var(--panel)}
+  .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;
+    max-width:840px;margin:0 auto;background:var(--panel)}
   .hero.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
   .hero.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
   .hero .batchTag{font-weight:900;letter-spacing:.08em;color:#0f172a;text-transform:uppercase}
@@ -101,8 +103,7 @@
 <body>
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
-  
-  <div class="ver">v2.3.10-rollback</div>
+  <div class="ver">v2.3.12-es5-rollback-stable</div>
 </header>
 
 <main>
@@ -110,10 +111,13 @@
   <section id="viewOnboard" class="view show card stack">
     <h2>Steg 1: Helskärm & alarm</h2>
     <div class="onboard-actions">
-      <div class="row"><button class="btn primary" id="enterFs" type="button" onclick="DG.enterFs()"$1⤢ Starta helskärm</button></div>
+      <div class="row"><button class="btn primary" id="enterFs" type="button">⤢ Starta helskärm</button></div>
       <p id="fsHint" class="muted"></p>
-      <div class="row"><button class="btn" id="unlockAudioBtn" type="button" onclick="DG.unlockAudio()"$1🔔 Aktivera ljud</button><button class="btn warn" id="testAlarmBtn" type="button" onclick="DG.testAlarm()"$1🔊 Testa alarm</button></div>
-      <div class="row"><button class="btn primary" id="toBatch" type="button" onclick="DG.toBatch()"$1Nästa ▶</button></div>
+      <div class="row">
+        <button class="btn" id="unlockAudioBtn" type="button">🔔 Aktivera ljud</button>
+        <button class="btn warn" id="testAlarmBtn" type="button">🔊 Testa alarm</button>
+      </div>
+      <div class="row"><button class="btn primary" id="toBatch" type="button">Nästa ▶</button></div>
     </div>
   </section>
 
@@ -125,7 +129,7 @@
       <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="1.5"><div><strong>1.5×</strong><div class="muted">183 bollar</div></div></label>
       <label class="card row" style="gap:12px;align-items:center"><input type="radio" name="batch" value="2"><div><strong>2×</strong><div class="muted">244 bollar</div></div></label>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToOnboard">◀ Tillbaka</button><button class="btn primary" id="toTemps">Nästa ▶</button></div>
+    <div class="row" style="justify-content:space-between"><button class="btn" id="backToOnboard" type="button">◀ Tillbaka</button><button class="btn primary" id="toTemps" type="button">Nästa ▶</button></div>
   </section>
 
   <!-- TEMPERATURER -->
@@ -138,7 +142,7 @@
       <div class="field" style="min-width:240px"><label>Friktionstal (°C)</label><input type="number" id="friction" step="0.1" inputmode="decimal" placeholder="t.ex. 8"></div>
       <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div><div class="muted">(Önskad × 3) − (Mjöl + Rum + Friktion)</div></div>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToBatch">◀ Tillbaka</button><div class="row"><button class="btn" id="saveTemps">Spara</button><button class="btn primary" id="toPreWeigh">Spara & fortsätt ▶</button></div></div>
+    <div class="row" style="justify-content:space-between"><button class="btn" id="backToBatch" type="button">◀ Tillbaka</button><div class="row"><button class="btn" id="saveTemps" type="button">Spara</button><button class="btn primary" id="toPreWeigh" type="button">Spara & fortsätt ▶</button></div></div>
   </section>
 
   <!-- FÖRVÄGNING -->
@@ -149,7 +153,7 @@
       <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
       <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div><div class="smallTotal" id="preOilSmall">= — g</div></div>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToTemps">◀ Tillbaka</button><button class="btn primary" id="toMixing">Börja degblandning ▶</button></div>
+    <div class="row" style="justify-content:space-between"><button class="btn" id="backToTemps" type="button">◀ Tillbaka</button><button class="btn primary" id="toMixing" type="button">Börja degblandning ▶</button></div>
   </section>
 
   <!-- MIXFLÖDE -->
@@ -160,51 +164,34 @@
       <div class="stepName" id="heroStepName">—</div>
       <div class="hint" id="heroHint"></div>
       <div class="progWrap"><div class="track"><div class="bar overall" id="heroProgOverall"></div><div class="bar time" id="heroProgTime"></div></div><div class="progText"><span id="heroProgLabel">Steg — av 7</span><span id="heroProgPct">0%</span></div></div>
-      <div class="timerWrap" id="heroTimerWrap" style="display:none"><div class="time" id="timerDisplay">00:00</div><div class="controls"><button class="btn" id="timerPause">Pausa</button><button class="btn" id="timerReset">Nollställ</button></div><div class="ackWrap"><button class="btn danger ackBtn" id="ackBtn">⏰ Stoppa alarm och nästa steg</button></div></div>
-      <div class="row" style="justify-content:center;gap:8px;margin-top:10px"><button class="btn" id="prevStep">◀ Föregående</button><button class="btn primary" id="nextStep">Nästa ▶</button></div>
+      <div class="timerWrap" id="heroTimerWrap" style="display:none"><div class="time" id="timerDisplay">00:00</div><div class="controls"><button class="btn" id="timerPause" type="button">Pausa</button><button class="btn" id="timerReset" type="button">Nollställ</button></div><div class="ackWrap"><button class="btn danger ackBtn" id="ackBtn" type="button">⏰ Stoppa alarm och nästa steg</button></div></div>
+      <div class="row" style="justify-content:center;gap:8px;margin-top:10px"><button class="btn" id="prevStep" type="button">◀ Föregående</button><button class="btn primary" id="nextStep" type="button">Nästa ▶</button></div>
     </div>
-    <div id="inactiveBar"><div class="inner"><span class="tag" id="inactiveLbl">Batch 2</span><span class="info" id="inactiveStep">—</span><span class="time" id="inactiveTimer">—</span><button class="btn ghost" id="inactiveJump">Gå till denna batch</button></div></div>
+    <div id="inactiveBar"><div class="inner"><span class="tag" id="inactiveLbl">Batch 2</span><span class="info" id="inactiveStep">—</span><span class="time" id="inactiveTimer">—</span><button class="btn ghost" id="inactiveJump" type="button">Gå till denna batch</button></div></div>
     <div class="card narrow" style="margin-top:12px"><div class="stepsTopBar"><div><strong id="stepBadge">1 / 7</strong></div></div><div class="steps" id="stepsContainer"></div></div>
   </section>
 </main>
 
 <!-- MODAL för temp -->
-<div class="modalBack" id="tempModalBack"><div class="modal"><h3 id="tempModalTitle">Ange degtemperatur</h3><div class="field"><label>Temperatur (°C)</label><input type="number" id="tempInput" step="0.1" placeholder="t.ex. 22.0" inputmode="decimal"></div><div class="row" style="margin-top:12px"><button class="btn" id="tempCancel">Avbryt</button><button class="btn primary" id="tempSave">Spara & fortsätt ▶</button></div></div></div>
+<div class="modalBack" id="tempModalBack"><div class="modal"><h3 id="tempModalTitle">Ange degtemperatur</h3><div class="field"><label>Temperatur (°C)</label><input type="number" id="tempInput" step="0.1" placeholder="t.ex. 22.0" inputmode="decimal"></div><div class="row" style="margin-top:12px"><button class="btn" id="tempCancel" type="button">Avbryt</button><button class="btn primary" id="tempSave" type="button">Spara & fortsätt ▶</button></div></div></div>
 
 <audio id="beepFallback" preload="auto" playsinline>
   <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABYAZGF0YQAAAAAAAAD///8AAAAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///wAAAP///w==" type="audio/wav">
 </audio>
 
 <script>
-window.addEventListener('DOMContentLoaded', function(){
-  // Helpers (safe)
-  if(!window.__dgHelpers){
-    window.__dgHelpers = true;
-    window.$ = window.$ || (sel=>document.querySelector(sel));
-    window.byId = window.byId || (id=>document.getElementById(id));
-    window.on = window.on || function(id,ev,fn){ var el=document.getElementById(id); if(el) el.addEventListener(ev,fn); };
-  }
-  // Guard: clock & volume elements may be missing
-  (function(){ try{
-    var r=document.getElementById('volRange'); var lbl=document.getElementById('volLabel');
-    if(r && lbl){ /* init later in code still works; this ensures no crash if duplicated */ }
-  }catch(e){}
-  try{
-    setInterval(function(){ var el=document.getElementById('clock'); if(el){ el.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); } }, 1000);
-  }catch(e){}
-  })();
-  // Extra: proactively unlock audio on first touch/click (iOS/Chrome)
-  ;['pointerdown','touchstart','touchend','click'].forEach(function(evt){ document.addEventListener(evt, function once(){ try{ if(typeof unlockAudioOnce==='function'){ unlockAudioOnce(); } }catch(e){} document.removeEventListener(evt, once, {capture:false}); }, {passive:true}); });
-  // ==== Helpers ====
-  const $ = (sel)=>document.querySelector(sel);
-  const byId = (id)=>document.getElementById(id);
-  const on = (id,ev,fn)=>{ const el=byId(id); if(el) el.addEventListener(ev,fn); };
-  const pad2 = (n)=> (n<10?'0':'')+n;
-  const fmt = (s)=>{ s=Math.max(0,Math.floor(s)); const m=Math.floor(s/60), r=s%60; return pad2(m)+':'+pad2(r); };
-  const fsSupported = ()=> !!document.documentElement.requestFullscreen;
+(function(){
+  // ===== Helpers (ES5) =====
+  function $(sel){ return document.querySelector(sel); }
+  function byId(id){ return document.getElementById(id); }
+  function on(id,ev,fn){ var el=byId(id); if(el){ el.addEventListener(ev,fn,false); } }
+  function pad2(n){ return (n<10?'0':'')+n; }
+  function fmt(s){ s=Math.max(0,Math.floor(s)); var m=Math.floor(s/60), r=s%60; return pad2(m)+':'+pad2(r); }
+  function fsSupported(){ return !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen); }
+  if (!Element.prototype.closest) { Element.prototype.closest = function(s){ var el=this; if(!document.documentElement.contains(el)) return null; do { if (el.matches && el.matches(s)) return el; el=el.parentElement||el.parentNode; } while(el&&el.nodeType===1); return null; }; }
 
-  // ==== State ====
-  const state = {
+  // ===== State =====
+  var state = {
     batchMult:+(localStorage.getItem('deg_batch')||1),
     base:{ water:1250, salt:450, oil:450 },
     B1:{ id:1, idx:0, deadline:0, running:false },
@@ -213,10 +200,10 @@ window.addEventListener('DOMContentLoaded', function(){
     tickHandle:null,
     audioCtx:null, gain:null, alarmTimer:null, alarmOn:false, volume:+(localStorage.getItem('deg_alarm_vol')||0.85),
     flour:null, room:null, target:22, friction:null, waterCalc:null,
-    handoffVisible:false, pendingTemp:null
+    pendingTemp:null
   };
 
-  const steps = [
+  var steps = [
     {id:1, duration:0},
     {id:2, duration:6*60},
     {id:3, duration:30*60},
@@ -226,231 +213,182 @@ window.addEventListener('DOMContentLoaded', function(){
     {id:7, duration:0}
   ];
 
-  // ==== View switching ====
+  // ===== View switching =====
   function show(id){
-    ['viewOnboard','viewBatch','viewTemps','viewPre','viewMix'].forEach(v=>{ const el=byId(v); if(el) el.classList.remove('show'); });
-    const tgt=byId(id); if(tgt) tgt.classList.add('show');
+    var ids=['viewOnboard','viewBatch','viewTemps','viewPre','viewMix'];
+    for(var i=0;i<ids.length;i++){ var el=byId(ids[i]); if(el){ el.classList.remove('show'); } }
+    var tgt=byId(id); if(tgt){ tgt.classList.add('show'); }
     if(id!=='viewMix' && state.tickHandle){ cancelAnimationFrame(state.tickHandle); state.tickHandle=null; }
     if(id==='viewMix' && !state.tickHandle){ state.tickHandle=requestAnimationFrame(tick); }
   }
 
-  // ==== Audio / Alarm (robust unlock) ====
-  function ensureAudio(){ if(state.audioCtx) return; const Ctx=window.AudioContext||window.webkitAudioContext; if(!Ctx) return; state.audioCtx=new Ctx(); state.gain=state.audioCtx.createGain(); state.gain.gain.value=state.volume; state.gain.connect(state.audioCtx.destination); }
-  function unlockAudioOnce(){ ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended'){ state.audioCtx.resume(); } }catch(e){}
-    const el=byId('beepFallback'); if(el){ try{ el.muted=false; el.currentTime=0; el.play(); }catch(e){} }
+  // ===== Audio / Alarm (robust unlock) =====
+  function ensureAudio(){ if(state.audioCtx) return; var Ctx=window.AudioContext||window.webkitAudioContext; if(!Ctx) return; state.audioCtx=new Ctx(); state.gain=state.audioCtx.createGain(); state.gain.gain.value=state.volume; state.gain.connect(state.audioCtx.destination); }
+  function unlockAudioOnce(){ ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended' && state.audioCtx.resume){ state.audioCtx.resume(); } }catch(e){}
+    var el=byId('beepFallback'); if(el){ try{ el.muted=false; el.currentTime=0; el.play(); }catch(e){} }
   }
-  function playBeep(freq=1000, dur=0.25){ try{ if(!state.audioCtx) return; const osc=state.audioCtx.createOscillator(); const g=state.audioCtx.createGain(); osc.type='square'; osc.frequency.value=freq; g.gain.setValueAtTime(0,state.audioCtx.currentTime); g.gain.linearRampToValueAtTime(state.volume,state.audioCtx.currentTime+0.02); g.gain.linearRampToValueAtTime(0.0001,state.audioCtx.currentTime+dur); osc.connect(g).connect(state.gain); osc.start(); osc.stop(state.audioCtx.currentTime+dur+0.05); }catch(e){} }
-  function startAlarm(){ unlockAudioOnce(); ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended'){ state.audioCtx.resume(); } }catch(e){}
-    if(state.alarmOn) return; state.alarmOn=true; $('#hero').classList.add('alarming'); let flip=false; state.alarmTimer=setInterval(()=>{ if(state.audioCtx) playBeep(flip?1000:1500,0.28); else { const el=byId('beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} } } if(navigator.vibrate){ try{ navigator.vibrate(120); }catch(e){} } flip=!flip; }, 700); }
-  function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } $('#hero').classList.remove('alarming'); }
+  function playBeep(freq, dur){ if(freq==null) freq=1000; if(dur==null) dur=0.25; try{ if(!state.audioCtx) return; var osc=state.audioCtx.createOscillator(); var g=state.audioCtx.createGain(); osc.type='square'; osc.frequency.value=freq; g.gain.setValueAtTime(0,state.audioCtx.currentTime); g.gain.linearRampToValueAtTime(state.volume,state.audioCtx.currentTime+0.02); g.gain.linearRampToValueAtTime(0.0001,state.audioCtx.currentTime+dur); osc.connect(g).connect(state.gain); osc.start(); osc.stop(state.audioCtx.currentTime+dur+0.05); }catch(e){} }
+  function startAlarm(){ unlockAudioOnce(); ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended' && state.audioCtx.resume){ state.audioCtx.resume(); } }catch(e){}
+    if(state.alarmOn) return; state.alarmOn=true; byId('hero').classList.add('alarming'); var flip=false;
+    state.alarmTimer=setInterval(function(){ if(state.audioCtx) playBeep(flip?1000:1500,0.28); else { var el=byId('beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} } }
+      if(navigator.vibrate){ try{ navigator.vibrate(120); }catch(e){} } flip=!flip; }, 700);
+  }
+  function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } byId('hero').classList.remove('alarming'); }
 
-  // ==== Steps text ====
-  function waterLabel(){ return (typeof state.waterCalc==='number')?(' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)'):''; }
+  // ===== Text (rollback version) =====
   function perBatch(){ return { water:state.base.water, salt:state.base.salt, oil:state.base.oil }; }
-  function addBlock(items,title){ let html='<div class="addBlock"><div class="title">'+(title||'Tillsätt:')+'</div><ul class="addList">'; items.forEach(it=>{ html+='<li class="addItem"><span class="lab">'+it.label+'</span>'+(it.amt?'<span class="amt">'+it.amt+'</span>':'')+'</li>'; }); html+='</ul></div>'; return html; }
   function stepTitle(id){
-  switch(id){
-    case 1: return 'Häll i vatten i degblandaren.';
-    case 2: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
-    case 3: return 'Autolys – vila 30 minuter.';
-    case 4: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
-    case 5: return 'Starta degblandaren och kör på hastighet 2 i 7 minuter.';
-    case 6: return 'Vik degen – vila 30 minuter.';
-    case 7: return 'Vik igen, plasta & lock – in i kyl.';
+    switch(id){
+      case 1: return 'Häll i vatten i degblandaren.';
+      case 2: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
+      case 3: return 'Autolys – vila 30 minuter.';
+      case 4: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
+      case 5: return 'Starta degblandaren och kör på hastighet 2 i 7 minuter.';
+      case 6: return 'Vik degen – vila 30 minuter.';
+      case 7: return 'Vik igen, plasta & lock – in i kyl.';
+    }
+    return '';
   }
-  return '';
-}
-  return '';
-}
-  return '';
-}
-  return '';
-}
-function stepHint(id){
-  var a = perBatch();
-  switch(id){
-    case 1: return 'Använd beräknad vattentemperatur' + waterLabel() + '.';
-    case 2: return 'Tillsätt mjöl.';
-    case 3: return 'Låt degen vila i 30 minuter (autolys).';
-    case 4: return 'Tillsätt jäst under körning.';
-    case 5: return 'Tillsätt i denna ordning:<br>'+
-                 '1) Extra vatten' + waterLabel() + ' – <strong>' + a.water + ' g (per batch)</strong><br>'+
-                 '2) Salt – <strong>' + a.salt + ' g (per batch)</strong><br>'+
-                 '3) Olivolja – <strong>' + a.oil + ' g (per batch)</strong>';
-    case 6: return 'Vik degen en gång och låt vila.';
-    case 7: return 'Vik igen, plasta & lock och kyl.';
+  function waterLabel(){ return (typeof state.waterCalc==='number') ? (' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)') : ''; }
+  function stepHint(id){
+    var a = perBatch();
+    switch(id){
+      case 1: return 'Använd beräknad vattentemperatur' + waterLabel() + '.';
+      case 2: return 'Tillsätt mjöl.';
+      case 3: return 'Låt degen vila i 30 minuter (autolys).';
+      case 4: return 'Tillsätt jäst under körning.';
+      case 5: return 'Tillsätt i denna ordning:<br>'
+                   + '1) Extra vatten' + waterLabel() + ' – <strong>' + a.water + ' g (per batch)</strong><br>'
+                   + '2) Salt – <strong>' + a.salt + ' g (per batch)</strong><br>'
+                   + '3) Olivolja – <strong>' + a.oil + ' g (per batch)</strong>';
+      case 6: return 'Vik degen en gång och låt vila.';
+      case 7: return 'Vik igen, plasta & lock och kyl.';
+    }
+    return '';
   }
-  return '';
-},
-      {label:'Salt',  amt: a.salt  + ' g / batch'},
-      {label:'Olja',  amt: a.oil   + ' g / batch'}
-    ], 'Tillsätt');
-    case 6: return 'Vik degen en gång och låt vila.';
-    case 7: return 'Vik igen, plasta & lock och kyl.';
-  }
-  return '';
-},
-      {label:'Salt',  amt: a.salt  + ' g / batch'},
-      {label:'Olja',  amt: a.oil   + ' g / batch'}
-    ], 'Tillsätt'); // lämnas som det är
-    case 6: return '';
-    case 7: return '';
-  }
-  return '';
-}
-  return '';
-},
-      {label:'Salt',  amt: a.salt  + ' g / batch'},
-      {label:'Olja',  amt: a.oil   + ' g / batch'}
-    ], 'Tillsätt');
-    case 6: return '';
-    case 7: return '';
-  }
-  return '';
-}
-],'Tillsätt:');
-    case 3: return 'Låt degen vila i 30 minuter (autolys).';
-    case 4: return addBlock([{label:'Jäst'}],'Tillsätt under körning:');
-    case 5: return addBlock([{label:'Vatten',amt:a.water+' g / batch'},{label:'Salt',amt:a.salt+' g / batch'},{label:'Olivolja',amt:a.oil+' g / batch'}],'I följande ordning, tillsätt:');
-    case 6: return 'Vik 1 - Vila 30 minuter';
-    case 7: return 'Vik 2 - Plasta och ställ i kylskåp.';
-  } return ''; }
 
-  // ==== Batches ====
-  const batchObj = (n)=> n===1?state.B1:state.B2;
-  const currentBatch = ()=> batchObj(state.active);
-  const otherBatch = ()=> batchObj(state.active===1?2:1);
-  function setIdx(b, idx){ b.idx=Math.max(0,Math.min(idx,steps.length-1)); const st=steps[b.idx]; if(st.duration>0){ b.deadline=Date.now()+st.duration*1000; b.running=false; } else { b.deadline=0; b.running=false; } }
+  // ===== Batches =====
+  function batchObj(n){ return n===1?state.B1:state.B2; }
+  function currentBatch(){ return batchObj(state.active); }
+  function otherBatch(){ return batchObj(state.active===1?2:1); }
+  function setIdx(b, idx){ b.idx=Math.max(0,Math.min(idx,steps.length-1)); var st=steps[b.idx]; if(st.duration>0){ b.deadline=Date.now()+st.duration*1000; b.running=false; } else { b.deadline=0; b.running=false; } }
   function remaining(b){ if(!b.deadline) return 0; return Math.max(0, Math.ceil((b.deadline-Date.now())/1000)); }
 
-  // ==== Render ====
-  function renderSteps(){ const b=currentBatch(); const c=byId('stepsContainer'); c.innerHTML=''; for(let idx=b.idx; idx<steps.length; idx++){ const stepId=idx+1; const div=document.createElement('div'); div.className='step'+(idx===b.idx?' active':''); const dur=steps[idx].duration?('⏱ '+fmt(steps[idx].duration)) : ''; div.innerHTML='<div style="opacity:.8;font-weight:800;">'+stepId+'. '+stepTitle(stepId)+'</div><div class="muted">'+stepHint(stepId)+'</div>'+(dur?'<div class="muted">'+dur+'</div>':''); c.appendChild(div);} }
-  function updateInactiveBar(){ const bar=byId('inactiveBar'); if(!state.dualMode){ bar.style.display='none'; return; } const ob=otherBatch(); const started = (ob.idx>0) || (ob.deadline>0) || ob.running || (state.active===2);
+  // ===== Render =====
+  function renderSteps(){
+    var b=currentBatch(); var c=byId('stepsContainer'); c.innerHTML='';
+    for(var idx=b.idx; idx<steps.length; idx++){
+      var stepId=idx+1; var div=document.createElement('div'); div.className='step'+(idx===b.idx?' active':'');
+      var dur=steps[idx].duration?('⏱ '+fmt(steps[idx].duration)) : '';
+      div.innerHTML='<div style="opacity:.8;font-weight:800;">'+stepId+'. '+stepTitle(stepId)+'</div>'+
+                    '<div class="muted">'+stepHint(stepId)+'</div>'+(dur?'<div class="muted">'+dur+'</div>':'');
+      c.appendChild(div);
+    }
+  }
+  function updateInactiveBar(){
+    var bar=byId('inactiveBar');
+    if(!state.dualMode){ bar.style.display='none'; return; }
+    var ob=otherBatch(); var started = (ob.idx>0) || (ob.deadline>0) || ob.running || (state.active===2);
     if(state.active===1 && ob.id===2 && !started){ bar.style.display='none'; return; }
     bar.style.display='block'; bar.classList.toggle('batch1', ob.id===1); bar.classList.toggle('batch2', ob.id===2);
-    byId('inactiveLbl').textContent='Batch '+ob.id; byId('inactiveStep').textContent='Steg '+(ob.idx+1)+': '+stepTitle(ob.idx+1); byId('inactiveTimer').textContent= steps[ob.idx].duration>0 ? fmt(remaining(ob)) : '—';
-    on('inactiveJump','click', ()=>{ state.active=ob.id; refreshHero(); });
+    byId('inactiveLbl').textContent='Batch '+ob.id;
+    byId('inactiveStep').textContent='Steg '+(ob.idx+1)+': '+stepTitle(ob.idx+1);
+    byId('inactiveTimer').textContent= steps[ob.idx].duration>0 ? fmt(remaining(ob)) : '—';
+    on('inactiveJump','click', function(){ state.active=ob.id; refreshHero(); });
   }
-  function refreshHero(){ const b=currentBatch(); const stepId=b.idx+1; const hero=byId('hero'); if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
-    byId('heroBatchLabel').textContent='Batch '+state.active; byId('stepBadge').textContent=(b.idx+1)+' / '+steps.length; byId('heroStepNum').textContent='Steg '+stepId; byId('heroStepName').textContent=stepTitle(stepId); byId('heroHint').innerHTML=stepHint(stepId);
-    const overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100)); byId('heroProgOverall').style.width=overall+'%'; byId('heroProgPct').textContent=Math.round(overall)+'%'; byId('heroProgLabel').textContent='Steg '+stepId+' av '+steps.length;
-    const showTimer=steps[b.idx].duration>0; byId('heroTimerWrap').style.display=showTimer?'grid':'none'; byId('timerDisplay').textContent=fmt(remaining(b));
+  function refreshHero(){
+    var b=currentBatch(); var stepId=b.idx+1; var hero=byId('hero');
+    if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
+    byId('heroBatchLabel').textContent='Batch '+state.active;
+    byId('stepBadge').textContent=(b.idx+1)+' / '+steps.length;
+    byId('heroStepNum').textContent='Steg '+stepId;
+    byId('heroStepName').textContent=stepTitle(stepId);
+    byId('heroHint').innerHTML=stepHint(stepId);
+    var overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100));
+    byId('heroProgOverall').style.width=overall+'%';
+    byId('heroProgPct').textContent=Math.round(overall)+'%';
+    byId('heroProgLabel').textContent='Steg '+stepId+' av '+steps.length;
+    var showTimer=steps[b.idx].duration>0; byId('heroTimerWrap').style.display=showTimer?'grid':'none';
+    byId('timerDisplay').textContent=fmt(remaining(b));
     renderSteps(); updateInactiveBar();
   }
 
-  // ==== Timer ====
-  function tick(){ const b=currentBatch(); const st=steps[b.idx]; if(st.duration>0 && b.running && remaining(b)<=0){ b.running=false; if((b.idx+1)===5){ // temp efter steg 5
-        stopAlarm(); openTempModal(5,state.active);
-      } else {
-        byId('ackBtn').style.display='inline-block'; startAlarm();
-      }
+  // ===== Timer =====
+  function tick(){
+    var b=currentBatch(); var st=steps[b.idx];
+    if(st.duration>0 && b.running && remaining(b)<=0){
+      b.running=false;
+      if((b.idx+1)===5){ stopAlarm(); openTempModal(5,state.active); }
+      else { byId('ackBtn').style.display='inline-block'; startAlarm(); }
     }
     byId('timerDisplay').textContent=fmt(remaining(b));
-    // time progress
-    if(st.duration>0 && b.deadline){ const rem=remaining(b); const elapsed=Math.max(0,st.duration-rem); const frac=Math.min(1,elapsed/st.duration); byId('heroProgTime').style.width=(frac*100)+'%'; } else { byId('heroProgTime').style.width='0%'; }
+    if(st.duration>0 && b.deadline){
+      var rem=remaining(b); var elapsed=Math.max(0,st.duration-rem); var frac=Math.min(1,elapsed/st.duration);
+      byId('heroProgTime').style.width=(frac*100)+'%';
+    } else { byId('heroProgTime').style.width='0%'; }
     updateInactiveBar();
     state.tickHandle=requestAnimationFrame(tick);
   }
-  function startTimer(){ const b=currentBatch(); const st=steps[b.idx]; if(st.duration<=0) return; if(!b.deadline){ b.deadline=Date.now()+st.duration*1000; } b.running=true; byId('timerPause').textContent='Pausa'; }
-  function stopTimer(){ const b=currentBatch(); b.running=false; byId('timerPause').textContent='Fortsätt'; }
-  function resetTimer(){ const b=currentBatch(); const st=steps[b.idx]; b.deadline=st.duration>0?(Date.now()+st.duration*1000):0; b.running=false; byId('timerPause').textContent='Fortsätt'; }
+  function startTimer(){ var b=currentBatch(); var st=steps[b.idx]; if(st.duration<=0) return; if(!b.deadline){ b.deadline=Date.now()+st.duration*1000; } b.running=true; byId('timerPause').textContent='Pausa'; }
+  function stopTimer(){ var b=currentBatch(); b.running=false; byId('timerPause').textContent='Fortsätt'; }
+  function resetTimer(){ var b=currentBatch(); var st=steps[b.idx]; b.deadline=st.duration>0?(Date.now()+st.duration*1000):0; b.running=false; byId('timerPause').textContent='Fortsätt'; }
 
-  // ==== Temp modal (endast efter steg 5) ====
-  function openTempModal(stepId,batch){ state.pendingTemp={stepId,batch}; byId('tempModalTitle').textContent='Ange degtemperatur – Batch '+batch+' efter steg '+stepId; byId('tempInput').value=''; byId('tempModalBack').style.display='flex'; byId('tempInput').focus(); }
+  // ===== Temp modal (efter steg 5) =====
+  function openTempModal(stepId,batch){ state.pendingTemp={stepId:stepId,batch:batch}; byId('tempModalTitle').textContent='Ange degtemperatur – Batch '+batch+' efter steg '+stepId; byId('tempInput').value=''; byId('tempModalBack').style.display='flex'; byId('tempInput').focus(); }
   function closeTempModal(){ byId('tempModalBack').style.display='none'; }
-  function saveTemp(){ const v=parseFloat((byId('tempInput').value||'').replace(',','.')); if(isNaN(v)){ alert('Fyll i en giltig temperatur.'); return; } const was=state.pendingTemp?{...state.pendingTemp}:null; closeTempModal(); state.pendingTemp=null; if(was && was.stepId===5){ // efter steg 5, fortsätt
-      const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }
-    } }
+  function saveTemp(){ var v=parseFloat((byId('tempInput').value||'').replace(',','.')); if(isNaN(v)){ alert('Fyll i en giltig temperatur.'); return; }
+    var was=state.pendingTemp?{stepId:state.pendingTemp.stepId,batch:state.pendingTemp.batch}:null; closeTempModal(); state.pendingTemp=null;
+    if(was && was.stepId===5){ var b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); } }
+  }
 
-  // ==== Water calc ====
-  function num(id){ const raw=(byId(id).value||'').replace(',','.'); const v=parseFloat(raw); return isFinite(v)?v:NaN; }
-  function updateWaterCalc(){ const t=num('targetTemp'), f=num('flourTemp'), r=num('roomTemp'), fr=num('friction'); const target=isFinite(t)?t:22; const w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null; byId('waterCalc').textContent=(w==null?'—':(Math.round(w*10)/10)+' °C'); state.waterCalc=w; }
+  // ===== Water calc =====
+  function num(id){ var raw=(byId(id).value||'').replace(',','.'); var v=parseFloat(raw); return isFinite(v)?v:NaN; }
+  function updateWaterCalc(){ var t=num('targetTemp'), f=num('flourTemp'), r=num('roomTemp'), fr=num('friction'); var target=isFinite(t)?t:22; var w=(isFinite(target)&&isFinite(f)&&isFinite(r)&&isFinite(fr))?((target*3)-(f+r+fr)):null; byId('waterCalc').textContent=(w==null?'—':(Math.round(w*10)/10)+' °C'); state.waterCalc=w; }
 
-  // ==== Pre-weigh parts ====
-  function partsText(mult, base){ const half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:`2 × ${base} g`, total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:`1 × ${base} g + 1 × ${half} g`, total:base+half}; return {big:`1 × ${base} g`, total:base}; }
-  function refreshPreWeigh(){ const m=state.batchMult||1; const bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); byId('preWaterBig').textContent=bw.big; byId('preWaterSmall').textContent='= '+bw.total+' g'; byId('preSaltBig').textContent=bs.big; byId('preSaltSmall').textContent='= '+bs.total+' g'; byId('preOilBig').textContent=bo.big; byId('preOilSmall').textContent='= '+bo.total+' g'; }
+  // ===== Pre-weigh parts =====
+  function partsText(mult, base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; }
+  function refreshPreWeigh(){ var m=state.batchMult||1; var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); byId('preWaterBig').textContent=bw.big; byId('preWaterSmall').textContent='= '+bw.total+' g'; byId('preSaltBig').textContent=bs.big; byId('preSaltSmall').textContent='= '+bs.total+' g'; byId('preOilBig').textContent=bo.big; byId('preOilSmall').textContent='= '+bo.total+' g'; }
 
-  // ==== Navigation ====
-  on('enterFs','click', ()=>{ if(fsSupported()){ try{ document.documentElement.requestFullscreen(); }catch(e){} } else { byId('fsHint').textContent='Din webbläsare saknar helskärmsstöd.'; } });
-  on('unlockAudioBtn','click', ()=>{ unlockAudioOnce(); const el=byId('beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} } });
-  on('testAlarmBtn','click', ()=>{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); });
+  // ===== Navigation =====
+  on('enterFs','click', function(){ if(fsSupported()){ try{ (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen).call(document.documentElement); }catch(e){} } else { var h=byId('fsHint'); if(h){ h.textContent='Din webbläsare saknar helskärmsstöd.'; } } });
+  on('unlockAudioBtn','click', function(){ unlockAudioOnce(); var el=byId('beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} } });
+  on('testAlarmBtn','click', function(){ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); });
 
-  on('toBatch','click', ()=> show('viewBatch'));
-  on('backToOnboard','click', ()=> show('viewOnboard'));
+  on('toBatch','click', function(){ show('viewBatch'); });
+  on('backToOnboard','click', function(){ show('viewOnboard'); });
 
-  on('toTemps','click', ()=>{ const sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch', state.batchMult); show('viewTemps'); updateWaterCalc(); });
-  on('backToBatch','click', ()=> show('viewBatch'));
-
-  on('saveTemps','click', ()=>{ updateWaterCalc(); });
-  on('toPreWeigh','click', ()=>{ updateWaterCalc(); show('viewPre'); refreshPreWeigh(); });
-  on('backToTemps','click', ()=> show('viewTemps'));
-
-  on('toMixing','click', ()=>{ state.dualMode = (state.batchMult>=2); state.b2Started=false; setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; show('viewMix'); refreshHero(); });
-  on('prevStep','click', ()=>{ const b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); } });
-  on('nextStep','click', ()=>{ const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); if(state.dualMode && state.active===1 && (b.idx+1)===3){ // handoff
-        state.active=2; state.b2Started=true; // hoppa till Batch 2 steg 1
-        setIdx(state.B2,0); refreshHero(); return; }
-      refreshHero(); }
+  on('toTemps','click', function(){
+    var sel=document.querySelector('input[name="batch"]:checked');
+    state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch', state.batchMult);
+    show('viewTemps'); updateWaterCalc();
   });
-  on('timerPause','click', ()=>{ const st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); } });
-  on('timerReset','click', ()=> resetTimer());
-  on('ackBtn','click', ()=>{ stopAlarm(); byId('ackBtn').style.display='none'; const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); } });
+  on('backToBatch','click', function(){ show('viewBatch'); });
 
-  on('inactiveJump','click', ()=>{ state.active = otherBatch().id; refreshHero(); });
+  on('saveTemps','click', function(){ updateWaterCalc(); });
+  on('toPreWeigh','click', function(){ updateWaterCalc(); show('viewPre'); refreshPreWeigh(); });
+  on('backToTemps','click', function(){ show('viewTemps'); });
+
+  on('toMixing','click', function(){ state.dualMode = (state.batchMult>=2); state.b2Started=false; setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; show('viewMix'); refreshHero(); });
+  on('prevStep','click', function(){ var b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); } });
+  on('nextStep','click', function(){ var b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); if(state.dualMode && state.active===1 && (b.idx+1)===3){ state.active=2; state.b2Started=true; setIdx(state.B2,0); refreshHero(); return; } refreshHero(); } });
+  on('timerPause','click', function(){ var st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); } });
+  on('timerReset','click', function(){ resetTimer(); });
+  on('ackBtn','click', function(){ stopAlarm(); byId('ackBtn').style.display='none'; var b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); } });
+
+  on('inactiveJump','click', function(){ state.active = otherBatch().id; refreshHero(); });
 
   // Temp modal events
   on('tempSave','click', saveTemp);
-  on('tempCancel','click', ()=>{ closeTempModal(); state.pendingTemp=null; });
-  byId('tempModalBack').addEventListener('click', (e)=>{ if(e.target.id==='tempModalBack'){ closeTempModal(); state.pendingTemp=null; } });
+  on('tempCancel','click', function(){ closeTempModal(); state.pendingTemp=null; });
+  byId('tempModalBack').addEventListener('click', function(e){ if(e.target.id==='tempModalBack'){ closeTempModal(); state.pendingTemp=null; } }, false);
 
   // Inputs
-  ['targetTemp','flourTemp','roomTemp','friction'].forEach(id=>{ const el=byId(id); if(el){ el.addEventListener('input', updateWaterCalc); el.addEventListener('change', updateWaterCalc);} });
-  const r=byId('volRange'); const lbl=byId('volLabel'); if(r&&lbl){ r.value=Math.round(state.volume*100); lbl.textContent=Math.round(state.volume*100)+'%'; r.addEventListener('input', ()=>{ state.volume=Math.max(0,Math.min(1,r.value/100)); if(state.gain){ state.gain.gain.value=state.volume; } localStorage.setItem('deg_alarm_vol', state.volume); lbl.textContent=Math.round(state.volume*100)+'%'; }); }
-
-  // Clock
-  setInterval(()=>{ const el=byId('clock'); if(el) el.textContent=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
-
-  // Public API for inline handlers (ultimate fallback for iOS Safari/Chrome)
-  window.DG = {
-    toBatch: function(){ try{ show('viewBatch'); }catch(e){} },
-    unlockAudio: function(){ try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} },
-    testAlarm: function(){ try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} },
-    enterFs: function(){ try{ if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen(); } }catch(e){} }
-  };
-
-  // Start
-  // Safety: delegate clicks so critical buttons always work (iOS/Safari/Chrome quirks)
-  document.addEventListener('click', function(ev){
-    var btn = ev.target.closest && ev.target.closest('button');
-    if(!btn) return;
-    switch(btn.id){
-      case 'toBatch': ev.preventDefault(); try{ show('viewBatch'); }catch(e){} break;
-      case 'unlockAudioBtn': ev.preventDefault(); try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} break;
-      case 'testAlarmBtn': ev.preventDefault(); try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} break;
-    }
-  }, {passive:false});
-
-  // Public API for inline handlers (ultimate fallback for iOS Safari/Chrome)
-  window.DG = {
-    toBatch: function(){ try{ show('viewBatch'); }catch(e){} },
-    unlockAudio: function(){ try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} },
-    testAlarm: function(){ try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} },
-    enterFs: function(){ try{ var rfs=(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen); if(rfs) rfs.call(document.documentElement); }catch(e){} }
-  };
-
-  // Safety delegate (extra):
-  document.addEventListener('click', function(ev){
-    var t = ev.target || ev.srcElement; var btn = t && (t.closest ? t.closest('button') : t);
-    if(!btn || !btn.id) return;
-    if(btn.id==='toBatch'){ ev.preventDefault(); DG.toBatch(); }
-    else if(btn.id==='unlockAudioBtn'){ ev.preventDefault(); DG.unlockAudio(); }
-    else if(btn.id==='testAlarmBtn'){ ev.preventDefault(); DG.testAlarm(); }
-    else if(btn.id==='enterFs'){ ev.preventDefault(); DG.enterFs(); }
-  }, false);
+  var ids=['targetTemp','flourTemp','roomTemp','friction'];
+  for(var i=0;i<ids.length;i++){ var el=byId(ids[i]); if(el){ el.addEventListener('input', updateWaterCalc,false); el.addEventListener('change', updateWaterCalc,false);} }
 
   // Start
   show('viewOnboard');
-});
+})();
 </script>
 </body>
 </html>
