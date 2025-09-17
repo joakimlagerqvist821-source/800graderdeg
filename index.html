@@ -254,6 +254,8 @@
 <script>
 (function(){
   function $(sel){ return document.querySelector(sel); }
+  function on(id, ev, fn){ var el=document.getElementById(id); if(el){ el.addEventListener(ev, fn); } }
+  function qs(id){ return document.getElementById(id); }
   function setInvalid(id, on){ var el=document.getElementById(id); if(!el) return; if(on) el.classList.add('invalid'); else el.classList.remove('invalid'); }
   function safeParseLS(key, fallback){ try{ var v=JSON.parse(localStorage.getItem(key)); return (v==null?fallback:v); }catch(e){ return fallback; } }
   function pad2(n){ return (n<10?"0":"")+n; }
@@ -416,24 +418,24 @@
   function updateLastLogWithFinal(finalTemp){ var last=state.logs[0]; if(!last) return; last.final=finalTemp; if(typeof last.final==='number' && typeof last.flour==='number' && typeof last.room==='number' && typeof last.water==='number'){ last.effFriction=(last.final*3)-(last.flour+last.room+last.water); } localStorage.setItem('deg_logs',JSON.stringify(state.logs)); return last.effFriction; }
 
   // ==== Events ====
-  document.getElementById('enterFs').addEventListener('click', function(){ if(fsSupported()){ try{ document.documentElement.requestFullscreen(); }catch(e){} } });
-  document.getElementById('unlockAudioBtn').addEventListener('click', function(){ unlockAudioOnce(); playFallbackBeep(); if(state.audioCtx){ try{ var o=state.audioCtx.createOscillator(), g=state.audioCtx.createGain(); o.type='sine'; o.frequency.value=1200; g.gain.value=0.0001; g.gain.linearRampToValueAtTime(0.2, state.audioCtx.currentTime+0.01); g.gain.linearRampToValueAtTime(0.0001, state.audioCtx.currentTime+0.2); o.connect(g).connect(state.gain); o.start(); o.stop(state.audioCtx.currentTime+0.25); }catch(e){} } });
-  document.getElementById('testAlarmBtn').addEventListener('click', function(){ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); });
+  on('enterFs','click', function(){ if(fsSupported()){ try{ document.documentElement.requestFullscreen(); }catch(e){} } }); }catch(e){} } });
+  on('unlockAudioBtn','click', function(){ unlockAudioOnce(); var el=qs('beepFallback'); if(el){ try{ el.muted=false; el.currentTime=0; el.play(); }catch(e){} } }); playFallbackBeep(); if(state.audioCtx){ try{ var o=state.audioCtx.createOscillator(), g=state.audioCtx.createGain(); o.type='sine'; o.frequency.value=1200; g.gain.value=0.0001; g.gain.linearRampToValueAtTime(0.2, state.audioCtx.currentTime+0.01); g.gain.linearRampToValueAtTime(0.0001, state.audioCtx.currentTime+0.2); o.connect(g).connect(state.gain); o.start(); o.stop(state.audioCtx.currentTime+0.25); }catch(e){} } });
+  on('testAlarmBtn','click', function(){ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }); startAlarm(); setTimeout(stopAlarm,2000); });
 
-  document.getElementById('toBatch').addEventListener('click', function(){ show('viewBatch'); });
-  document.getElementById('backToOnboard').addEventListener('click', function(){ show('viewOnboard'); });
+  on('toBatch','click', function(){ show('viewBatch'); }); });
+  on('backToOnboard','click', function(){ show('viewOnboard'); }); });
 
-  document.getElementById('toTemps').addEventListener('click', function(){ var sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch',state.batchMult); show('viewTemps'); prefillTemps(); });
-  document.getElementById('backToBatch').addEventListener('click', function(){ show('viewBatch'); });
-  document.getElementById('saveTemps').addEventListener('click', function(){ if(doSaveTemps(true)){ updateWaterCalc(); } });
-  document.getElementById('toPreWeigh').addEventListener('click', function(){ if(doSaveTemps(true)){ show('viewPre'); refreshPreWeigh(); } });
+  on('toTemps','click', function(){ var sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch',state.batchMult); show('viewTemps'); prefillTemps(); }); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch',state.batchMult); show('viewTemps'); prefillTemps(); });
+  on('backToBatch','click', function(){ show('viewBatch'); }); });
+  on('saveTemps','click', function(){ if(doSaveTemps(true)){ updateWaterCalc(); } }); } });
+  on('toPreWeigh','click', function(){ if(doSaveTemps(true)){ show('viewPre'); refreshPreWeigh(); } }); refreshPreWeigh(); } });
 
   var ids=['flourTemp','roomTemp','targetTemp','friction']; for(var i=0;i<ids.length;i++){ (function(id){ var el=document.getElementById(id); el.addEventListener('input', function(){ setInvalid(id,false); updateWaterCalc(); }); })(ids[i]); }
 
   function partsText(mult,base){ var half=Math.round(base/2); if(Math.abs(mult-2)<0.001) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<0.001) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; }
   function refreshPreWeigh(){ var m=state.batchMult||1; var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); document.getElementById('preWaterBig').textContent=bw.big; document.getElementById('preWaterSmall').textContent='= '+bw.total+' g'; document.getElementById('preSaltBig').textContent=bs.big; document.getElementById('preSaltSmall').textContent='= '+bs.total+' g'; document.getElementById('preOilBig').textContent=bo.big; document.getElementById('preOilSmall').textContent='= '+bo.total+' g'; }
 
-  document.getElementById('toMixing').addEventListener('click', function(){ state.dualMode=(state.batchMult>=2); setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; state.handoffVisible=false; show('viewMix'); refreshHero(); });
+  on('toMixing','click', function(){ state.dualMode=(state.batchMult>=2); setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; state.handoffVisible=false; show('viewMix'); refreshHero(); }); setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; state.handoffVisible=false; show('viewMix'); refreshHero(); });
   document.getElementById('changeBatch').addEventListener('click', function(){ show('viewBatch'); });
   document.getElementById('prevStep').addEventListener('click', prevStepActive);
   document.getElementById('nextStep').addEventListener('click', nextStepActive);
