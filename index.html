@@ -110,10 +110,10 @@
   <section id="viewOnboard" class="view show card stack">
     <h2>Steg 1: Helskärm & alarm</h2>
     <div class="onboard-actions">
-      <div class="row"><button class="btn primary" id="enterFs" type="button" onclick="DG.enterFs()">⤢ Starta helskärm</button></div>
+      <div class="row"><button class="btn primary" id="enterFs" type="button" onclick="DG.enterFs()"$1⤢ Starta helskärm</button></div>
       <p id="fsHint" class="muted"></p>
-      <div class="row"><button class="btn" id="unlockAudioBtn" type="button" onclick="DG.unlockAudio()">🔔 Aktivera ljud</button><button class="btn warn" id="testAlarmBtn" type="button" onclick="DG.testAlarm()">🔊 Testa alarm</button></div>
-      <div class="row"><button class="btn primary" id="toBatch" type="button" onclick="DG.toBatch()">Nästa ▶</button></div>
+      <div class="row"><button class="btn" id="unlockAudioBtn" type="button" onclick="DG.unlockAudio()"$1🔔 Aktivera ljud</button><button class="btn warn" id="testAlarmBtn" type="button" onclick="DG.testAlarm()"$1🔊 Testa alarm</button></div>
+      <div class="row"><button class="btn primary" id="toBatch" type="button" onclick="DG.toBatch()"$1Nästa ▶</button></div>
     </div>
   </section>
 
@@ -420,6 +420,24 @@ function stepHint(id){
       case 'testAlarmBtn': ev.preventDefault(); try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} break;
     }
   }, {passive:false});
+
+  // Public API for inline handlers (ultimate fallback for iOS Safari/Chrome)
+  window.DG = {
+    toBatch: function(){ try{ show('viewBatch'); }catch(e){} },
+    unlockAudio: function(){ try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} },
+    testAlarm: function(){ try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} },
+    enterFs: function(){ try{ var rfs=(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen); if(rfs) rfs.call(document.documentElement); }catch(e){} }
+  };
+
+  // Safety delegate (extra):
+  document.addEventListener('click', function(ev){
+    var t = ev.target || ev.srcElement; var btn = t && (t.closest ? t.closest('button') : t);
+    if(!btn || !btn.id) return;
+    if(btn.id==='toBatch'){ ev.preventDefault(); DG.toBatch(); }
+    else if(btn.id==='unlockAudioBtn'){ ev.preventDefault(); DG.unlockAudio(); }
+    else if(btn.id==='testAlarmBtn'){ ev.preventDefault(); DG.testAlarm(); }
+    else if(btn.id==='enterFs'){ ev.preventDefault(); DG.enterFs(); }
+  }, false);
 
   // Start
   show('viewOnboard');
