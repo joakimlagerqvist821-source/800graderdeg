@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.16-brand</title>
+<title>Degguiden – Pizzeria v2.3.17-brand</title>
 <style>
   :root{
     /* Brand vars (will be overridden by palette extractor) */
@@ -123,8 +123,8 @@
 </head>
 <body>
 <header>
-  <div class="row"><img src="https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg" alt="800 Grader" class="logo" /><h1 id="title">🧑‍🍳 Degguiden</h1></div>
-  <div class="ver">v2.3.16-brand</div>
+  <div class="row"><img src="https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg" alt="800 Grader" class="logo" /></div>
+  <div class="ver">v2.3.17-brand</div>
 </header>
 
 <main>
@@ -184,9 +184,9 @@
   <section id="viewPre" class="view card stack">
     <h2>Steg 4: Väg upp enligt batch</h2>
     <div class="stackedCards">
-      <div class="card"><div class="preLabel">Vatten</div><div class="bigBreak" id="preWaterBig">—</div><div class="smallTotal" id="preWaterSmall">= — g</div></div>
-      <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
-      <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div><div class="smallTotal" id="preOilSmall">= — g</div></div>
+      <div class="card"><div class="preLabel">Vatten</div><div class="bigBreak" id="preWaterBig">—</div></div>
+      <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div></div>
+      <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div></div>
     </div>
     <div class="row" style="justify-content:space-between"><button class="btn" id="backToTemps" type="button">◀ Tillbaka</button><button class="btn primary" id="toMixing" type="button">Börja degblandning ▶</button></div>
   </section>
@@ -387,7 +387,7 @@
 
   // ===== Pre-weigh parts =====
   function partsText(mult, base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; }
-  function refreshPreWeigh(){ var m=state.batchMult||1; var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); byId('preWaterBig').textContent=bw.big; byId('preWaterSmall').textContent='= '+bw.total+' g'; byId('preSaltBig').textContent=bs.big; byId('preSaltSmall').textContent='= '+bs.total+' g'; byId('preOilBig').textContent=bo.big; byId('preOilSmall').textContent='= '+bo.total+' g'; }
+  function refreshPreWeigh(){ var m=state.batchMult||1; var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); byId('preWaterBig').textContent=bw.big; byId('preSaltBig').textContent=bs.big; byId('preOilBig').textContent=bo.big; }
 
   // ===== Navigation =====
   on('enterFs','click', function(){ if(fsSupported()){ try{ (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen).call(document.documentElement); }catch(e){} } else { var h=byId('fsHint'); if(h){ h.textContent='Din webbläsare saknar helskärmsstöd.'; } } });
