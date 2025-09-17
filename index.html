@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.15-brand</title>
+<title>Degguiden – Pizzeria v2.3.16-brand</title>
 <style>
   :root{
     /* Brand vars (will be overridden by palette extractor) */
@@ -26,6 +26,10 @@
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:#0f172a;line-height:1.45}
   header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
   header h1{margin:0;font-size:18px;font-weight:800}
+  .logo{height:28px;width:28px;border-radius:6px;object-fit:cover;margin-right:8px}
+  .belowOptions{margin-top:12px}
+  .stackedCards{max-width:680px;margin:0 auto;display:grid;gap:10px}
+  .stackedCards .card{width:100%}
   header .ver{padding:4px 8px;border:1px solid var(--border);border-radius:999px;background:var(--panel-2);font-weight:700}
 
   main{max-width:1200px;margin:16px auto 120px;padding:0 16px}
@@ -119,8 +123,8 @@
 </head>
 <body>
 <header>
-  <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
-  <div class="ver">v2.3.15-brand</div>
+  <div class="row"><img src="https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg" alt="800 Grader" class="logo" /><h1 id="title">🧑‍🍳 Degguiden</h1></div>
+  <div class="ver">v2.3.16-brand</div>
 </header>
 
 <main>
@@ -154,7 +158,7 @@
       <label class="optCard"><input type="radio" name="batch" value="1.5"><div><strong>1.5×</strong><div class="muted">183 bollar</div></div></label>
       <label class="optCard"><input type="radio" name="batch" value="2"><div><strong>2×</strong><div class="muted">244 bollar</div></div></label>
     </div>
-    <div class="row" style="justify-content:space-between"><button class="btn" id="backToOnboard" type="button">◀ Tillbaka</button><button class="btn primary" id="toTemps" type="button">Nästa ▶</button></div>
+    <div class="row belowOptions" style="justify-content:space-between"><button class="btn" id="backToOnboard" type="button">◀ Tillbaka</button><button class="btn primary" id="toTemps" type="button">Nästa ▶</button></div>
   </section>
 
   <!-- TEMPERATURER -->
@@ -165,7 +169,7 @@
       <div class="field" style="min-width:240px"><label>Rumstemp (°C)</label><input type="number" id="roomTemp" step="0.1" inputmode="decimal" placeholder="t.ex. 22"></div>
       <div class="field" style="min-width:240px"><label>Önskad degtemp (°C)</label><input type="number" id="targetTemp" step="0.1" inputmode="decimal" value="22"><div class="muted">Standard: 22 °C</div></div>
       <div class="field" style="min-width:240px"><label>Friktionstal (°C)</label><input type="number" id="friction" step="0.1" inputmode="decimal" placeholder="t.ex. 8"></div>
-      <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div><div class="muted">(Önskad × 3) − (Mjöl + Rum + Friktion)</div></div>
+      <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div></div>
     </div>
     <div class="row" style="justify-content:space-between">
       <button class="btn" id="backToBatch" type="button">◀ Tillbaka</button>
@@ -179,7 +183,7 @@
   <!-- FÖRVÄGNING -->
   <section id="viewPre" class="view card stack">
     <h2>Steg 4: Väg upp enligt batch</h2>
-    <div class="row" style="justify-content:center;gap:12px;flex-wrap:wrap">
+    <div class="stackedCards">
       <div class="card"><div class="preLabel">Vatten</div><div class="bigBreak" id="preWaterBig">—</div><div class="smallTotal" id="preWaterSmall">= — g</div></div>
       <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
       <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div><div class="smallTotal" id="preOilSmall">= — g</div></div>
