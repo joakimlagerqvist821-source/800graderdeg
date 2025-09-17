@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.6 SAFE</title>
+<title>Degguiden – Pizzeria v2.3.6-hotfix</title>
 <style>
   :root{
     --bg:#f8fafc; --panel:#ffffff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569;
@@ -102,7 +102,7 @@
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
   
-  <div class="ver">v2.3.6</div>
+  <div class="ver">v2.3.6-hotfix</div>
 </header>
 
 <main>
@@ -387,6 +387,18 @@ function stepHint(id){
 
   // Clock
   setInterval(()=>{ const el=byId('clock'); if(el) el.textContent=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
+
+  // Start
+  // Safety: delegate clicks so critical buttons always work (iOS/Safari/Chrome quirks)
+  document.addEventListener('click', function(ev){
+    var btn = ev.target.closest && ev.target.closest('button');
+    if(!btn) return;
+    switch(btn.id){
+      case 'toBatch': ev.preventDefault(); try{ show('viewBatch'); }catch(e){} break;
+      case 'unlockAudioBtn': ev.preventDefault(); try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} break;
+      case 'testAlarmBtn': ev.preventDefault(); try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} break;
+    }
+  }, {passive:false});
 
   // Start
   show('viewOnboard');
