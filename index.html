@@ -268,11 +268,19 @@ function stepHint(id){
   var a = perBatch();
   switch(id){
     case 1: return 'Vattentemp: ' + (typeof state.waterCalc==='number' ? (Math.round(state.waterCalc*10)/10 + ' °C') : '—');
-    case 2: return 'Tillsätt mjöl.'; // lämnas som det är
-    case 3: return '';
-    case 4: return 'Tillsätt jäst under körning.'; // lämnas som det är
+    case 2: return 'Tillsätt mjöl.';
+    case 3: return 'Låt degen vila i 30 minuter (autolys).';
+    case 4: return 'Tillsätt jäst under körning.';
     case 5: return addBlock([
       {label:'Vatten', amt: a.water + ' g / batch'},
+      {label:'Salt',  amt: a.salt  + ' g / batch'},
+      {label:'Olja',  amt: a.oil   + ' g / batch'}
+    ], 'Tillsätt');
+    case 6: return 'Vik degen en gång och låt vila.';
+    case 7: return 'Vik igen, plasta & lock och kyl.';
+  }
+  return '';
+},
       {label:'Salt',  amt: a.salt  + ' g / batch'},
       {label:'Olja',  amt: a.oil   + ' g / batch'}
     ], 'Tillsätt'); // lämnas som det är
