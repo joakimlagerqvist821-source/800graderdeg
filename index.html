@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.6-hotfix</title>
+<title>Degguiden – Pizzeria v2.3.6-stable-inline</title>
 <style>
   :root{
     --bg:#f8fafc; --panel:#ffffff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569;
@@ -102,7 +102,7 @@
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
   
-  <div class="ver">v2.3.6-hotfix</div>
+  <div class="ver">v2.3.6-stable-inline</div>
 </header>
 
 <main>
@@ -110,10 +110,10 @@
   <section id="viewOnboard" class="view show card stack">
     <h2>Steg 1: Helskärm & alarm</h2>
     <div class="onboard-actions">
-      <div class="row"><button class="btn primary" id="enterFs">⤢ Starta helskärm</button></div>
+      <div class="row"><button class="btn primary" id="enterFs" type="button" onclick="DG.enterFs()">⤢ Starta helskärm</button></div>
       <p id="fsHint" class="muted"></p>
-      <div class="row"><button class="btn" id="unlockAudioBtn">🔔 Aktivera ljud</button><button class="btn warn" id="testAlarmBtn">🔊 Testa alarm</button></div>
-      <div class="row"><button class="btn primary" id="toBatch">Nästa ▶</button></div>
+      <div class="row"><button class="btn" id="unlockAudioBtn" type="button" onclick="DG.unlockAudio()">🔔 Aktivera ljud</button><button class="btn warn" id="testAlarmBtn" type="button" onclick="DG.testAlarm()">🔊 Testa alarm</button></div>
+      <div class="row"><button class="btn primary" id="toBatch" type="button" onclick="DG.toBatch()">Nästa ▶</button></div>
     </div>
   </section>
 
@@ -387,6 +387,14 @@ function stepHint(id){
 
   // Clock
   setInterval(()=>{ const el=byId('clock'); if(el) el.textContent=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
+
+  // Public API for inline handlers (ultimate fallback for iOS Safari/Chrome)
+  window.DG = {
+    toBatch: function(){ try{ show('viewBatch'); }catch(e){} },
+    unlockAudio: function(){ try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} },
+    testAlarm: function(){ try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} },
+    enterFs: function(){ try{ if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen(); } }catch(e){} }
+  };
 
   // Start
   // Safety: delegate clicks so critical buttons always work (iOS/Safari/Chrome quirks)
