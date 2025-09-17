@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.12-es5-rollback-stable</title>
+<title>Degguiden – Pizzeria v2.3.14-livebased</title>
 <style>
   :root{
     --bg:#f8fafc; --panel:#ffffff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569;
@@ -15,10 +15,9 @@
     --b2a:#f5e8ff; --b2b:#fbf7ff; --b2border:#d8b4fe;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
+  html,body{height:100%; overflow-x:hidden;}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:#0f172a;line-height:1.45}
-  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
   header h1{margin:0;font-size:18px;font-weight:800}
   header .ver{padding:4px 8px;border:1px solid var(--border);border-radius:999px;background:var(--panel-2);font-weight:700}
 
@@ -27,12 +26,12 @@
   .stack{display:grid;gap:12px}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .muted{color:var(--muted)}
-  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;
-    font-weight:700;font-size:16px;min-height:44px;display:inline-block;text-decoration:none}
+  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;font-weight:700;font-size:16px;min-height:44px;display:inline-block;text-decoration:none}
   .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   .btn.warn{background:var(--warn);border-color:var(--warn);color:#fff}
   .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
   .btn.ghost{background:transparent;border-color:#cbd5e1}
+
   .narrow{max-width:840px;margin:0 auto}
 
   /* Onboarding */
@@ -43,8 +42,7 @@
   @media (max-width:520px){.onboard-actions .btn{width:100%}}
 
   /* HERO */
-  .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;
-    max-width:840px;margin:0 auto;background:var(--panel)}
+  .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;max-width:840px;margin:0 auto;background:var(--panel)}
   .hero.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
   .hero.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
   .hero .batchTag{font-weight:900;letter-spacing:.08em;color:#0f172a;text-transform:uppercase}
@@ -103,7 +101,7 @@
 <body>
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
-  <div class="ver">v2.3.12-es5-rollback-stable</div>
+  <div class="ver">v2.3.14-livebased</div>
 </header>
 
 <main>
@@ -235,8 +233,14 @@
   }
   function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } byId('hero').classList.remove('alarming'); }
 
-  // ===== Text (rollback version) =====
+  // Väck ljud när sidan blir aktiv igen (iOS bakgrund)
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden){ try{ unlockAudioOnce(); }catch(e){} } }, false);
+  // Försök väcka ljud på första beröring/klick
+  ;['pointerdown','touchstart','touchend','click'].forEach(function(evt){ document.addEventListener(evt, function once(){ try{ unlockAudioOnce(); }catch(e){} document.removeEventListener(evt, once, {capture:false}); }, {passive:true}); });
+
+  // ===== Text (original live) =====
   function perBatch(){ return { water:state.base.water, salt:state.base.salt, oil:state.base.oil }; }
+  function waterLabel(){ return (typeof state.waterCalc==='number') ? (' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)') : ''; }
   function stepTitle(id){
     switch(id){
       case 1: return 'Häll i vatten i degblandaren.';
@@ -249,7 +253,6 @@
     }
     return '';
   }
-  function waterLabel(){ return (typeof state.waterCalc==='number') ? (' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)') : ''; }
   function stepHint(id){
     var a = perBatch();
     switch(id){
@@ -257,10 +260,10 @@
       case 2: return 'Tillsätt mjöl.';
       case 3: return 'Låt degen vila i 30 minuter (autolys).';
       case 4: return 'Tillsätt jäst under körning.';
-      case 5: return 'Tillsätt i denna ordning:<br>'
-                   + '1) Extra vatten' + waterLabel() + ' – <strong>' + a.water + ' g (per batch)</strong><br>'
-                   + '2) Salt – <strong>' + a.salt + ' g (per batch)</strong><br>'
-                   + '3) Olivolja – <strong>' + a.oil + ' g (per batch)</strong>';
+      case 5: return 'Tillsätt i denna ordning:<br>'+
+                   '1) Extra vatten' + waterLabel() + ' – <strong>' + a.water + ' g (per batch)</strong><br>'+
+                   '2) Salt – <strong>' + a.salt + ' g (per batch)</strong><br>'+
+                   '3) Olivolja – <strong>' + a.oil + ' g (per batch)</strong>';
       case 6: return 'Vik degen en gång och låt vila.';
       case 7: return 'Vik igen, plasta & lock och kyl.';
     }
@@ -275,8 +278,7 @@
   function remaining(b){ if(!b.deadline) return 0; return Math.max(0, Math.ceil((b.deadline-Date.now())/1000)); }
 
   // ===== Render =====
-  function renderSteps(){
-    var b=currentBatch(); var c=byId('stepsContainer'); c.innerHTML='';
+  function renderSteps(){ var b=currentBatch(); var c=byId('stepsContainer'); c.innerHTML='';
     for(var idx=b.idx; idx<steps.length; idx++){
       var stepId=idx+1; var div=document.createElement('div'); div.className='step'+(idx===b.idx?' active':'');
       var dur=steps[idx].duration?('⏱ '+fmt(steps[idx].duration)) : '';
@@ -285,9 +287,7 @@
       c.appendChild(div);
     }
   }
-  function updateInactiveBar(){
-    var bar=byId('inactiveBar');
-    if(!state.dualMode){ bar.style.display='none'; return; }
+  function updateInactiveBar(){ var bar=byId('inactiveBar'); if(!state.dualMode){ bar.style.display='none'; return; }
     var ob=otherBatch(); var started = (ob.idx>0) || (ob.deadline>0) || ob.running || (state.active===2);
     if(state.active===1 && ob.id===2 && !started){ bar.style.display='none'; return; }
     bar.style.display='block'; bar.classList.toggle('batch1', ob.id===1); bar.classList.toggle('batch2', ob.id===2);
@@ -296,8 +296,7 @@
     byId('inactiveTimer').textContent= steps[ob.idx].duration>0 ? fmt(remaining(ob)) : '—';
     on('inactiveJump','click', function(){ state.active=ob.id; refreshHero(); });
   }
-  function refreshHero(){
-    var b=currentBatch(); var stepId=b.idx+1; var hero=byId('hero');
+  function refreshHero(){ var b=currentBatch(); var stepId=b.idx+1; var hero=byId('hero');
     if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
     byId('heroBatchLabel').textContent='Batch '+state.active;
     byId('stepBadge').textContent=(b.idx+1)+' / '+steps.length;
@@ -314,18 +313,11 @@
   }
 
   // ===== Timer =====
-  function tick(){
-    var b=currentBatch(); var st=steps[b.idx];
-    if(st.duration>0 && b.running && remaining(b)<=0){
-      b.running=false;
-      if((b.idx+1)===5){ stopAlarm(); openTempModal(5,state.active); }
-      else { byId('ackBtn').style.display='inline-block'; startAlarm(); }
-    }
+  function tick(){ var b=currentBatch(); var st=steps[b.idx];
+    if(st.duration>0 && b.running && remaining(b)<=0){ b.running=false; if((b.idx+1)===5){ stopAlarm(); openTempModal(5,state.active); }
+      else { byId('ackBtn').style.display='inline-block'; startAlarm(); } }
     byId('timerDisplay').textContent=fmt(remaining(b));
-    if(st.duration>0 && b.deadline){
-      var rem=remaining(b); var elapsed=Math.max(0,st.duration-rem); var frac=Math.min(1,elapsed/st.duration);
-      byId('heroProgTime').style.width=(frac*100)+'%';
-    } else { byId('heroProgTime').style.width='0%'; }
+    if(st.duration>0 && b.deadline){ var rem=remaining(b); var elapsed=Math.max(0,st.duration-rem); var frac=Math.min(1,elapsed/st.duration); byId('heroProgTime').style.width=(frac*100)+'%'; } else { byId('heroProgTime').style.width='0%'; }
     updateInactiveBar();
     state.tickHandle=requestAnimationFrame(tick);
   }
@@ -359,7 +351,8 @@
 
   on('toTemps','click', function(){
     var sel=document.querySelector('input[name="batch"]:checked');
-    state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch', state.batchMult);
+    if(!sel){ alert('Välj antal batch först.'); return; }
+    state.batchMult=parseFloat(sel.value); localStorage.setItem('deg_batch', state.batchMult);
     show('viewTemps'); updateWaterCalc();
   });
   on('backToBatch','click', function(){ show('viewBatch'); });
@@ -382,9 +375,23 @@
   on('tempCancel','click', function(){ closeTempModal(); state.pendingTemp=null; });
   byId('tempModalBack').addEventListener('click', function(e){ if(e.target.id==='tempModalBack'){ closeTempModal(); state.pendingTemp=null; } }, false);
 
-  // Inputs
-  var ids=['targetTemp','flourTemp','roomTemp','friction'];
-  for(var i=0;i<ids.length;i++){ var el=byId(ids[i]); if(el){ el.addEventListener('input', updateWaterCalc,false); el.addEventListener('change', updateWaterCalc,false);} }
+  // Public API for inline handlers (iOS safety fallback if listeners break)
+  window.DG = {
+    toBatch: function(){ try{ show('viewBatch'); }catch(e){} },
+    unlockAudio: function(){ try{ unlockAudioOnce(); var el=document.getElementById('beepFallback'); if(el){ el.currentTime=0; el.play(); } }catch(e){} },
+    testAlarm: function(){ try{ unlockAudioOnce(); startAlarm(); setTimeout(stopAlarm,2000); }catch(e){} },
+    enterFs: function(){ try{ var rfs=(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen); if(rfs) rfs.call(document.documentElement); }catch(e){} }
+  };
+
+  // Safety delegate for critical buttons
+  document.addEventListener('click', function(ev){
+    var t = ev.target || ev.srcElement; var btn = t && (t.closest ? t.closest('button') : t);
+    if(!btn || !btn.id) return;
+    if(btn.id==='toBatch'){ ev.preventDefault(); DG.toBatch(); }
+    else if(btn.id==='unlockAudioBtn'){ ev.preventDefault(); DG.unlockAudio(); }
+    else if(btn.id==='testAlarmBtn'){ ev.preventDefault(); DG.testAlarm(); }
+    else if(btn.id==='enterFs'){ ev.preventDefault(); DG.enterFs(); }
+  }, false);
 
   // Start
   show('viewOnboard');
