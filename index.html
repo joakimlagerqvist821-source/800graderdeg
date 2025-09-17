@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.6-stable-inline</title>
+<title>Degguiden – Pizzeria v2.3.10-rollback</title>
 <style>
   :root{
     --bg:#f8fafc; --panel:#ffffff; --panel-2:#f1f5f9; --border:#e2e8f0; --muted:#475569;
@@ -102,7 +102,7 @@
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
   
-  <div class="ver">v2.3.6-stable-inline</div>
+  <div class="ver">v2.3.10-rollback</div>
 </header>
 
 <main>
@@ -250,14 +250,16 @@ window.addEventListener('DOMContentLoaded', function(){
   function addBlock(items,title){ let html='<div class="addBlock"><div class="title">'+(title||'Tillsätt:')+'</div><ul class="addList">'; items.forEach(it=>{ html+='<li class="addItem"><span class="lab">'+it.label+'</span>'+(it.amt?'<span class="amt">'+it.amt+'</span>':'')+'</li>'; }); html+='</ul></div>'; return html; }
   function stepTitle(id){
   switch(id){
-    case 1: return 'Häll i vatten i degblandaren';
-    case 2: return 'Kör degblandaren Hastighet 1';
-    case 3: return 'Autolys';
-    case 4: return 'Kör degblandaren på Hastighet 2';
-    case 5: return 'Kör degblandaren på Hastighet 2';
-    case 6: return 'Vik 1 - Vila';
-    case 7: return 'Vik 2';
+    case 1: return 'Häll i vatten i degblandaren.';
+    case 2: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
+    case 3: return 'Autolys – vila 30 minuter.';
+    case 4: return 'Starta degblandaren och kör på hastighet 1 i 6 minuter.';
+    case 5: return 'Starta degblandaren och kör på hastighet 2 i 7 minuter.';
+    case 6: return 'Vik degen – vila 30 minuter.';
+    case 7: return 'Vik igen, plasta & lock – in i kyl.';
   }
+  return '';
+}
   return '';
 }
   return '';
@@ -267,12 +269,19 @@ window.addEventListener('DOMContentLoaded', function(){
 function stepHint(id){
   var a = perBatch();
   switch(id){
-    case 1: return 'Vattentemp: ' + (typeof state.waterCalc==='number' ? (Math.round(state.waterCalc*10)/10 + ' °C') : '—');
+    case 1: return 'Använd beräknad vattentemperatur' + waterLabel() + '.';
     case 2: return 'Tillsätt mjöl.';
     case 3: return 'Låt degen vila i 30 minuter (autolys).';
     case 4: return 'Tillsätt jäst under körning.';
-    case 5: return addBlock([
-      {label:'Vatten', amt: a.water + ' g / batch'},
+    case 5: return 'Tillsätt i denna ordning:<br>'+
+                 '1) Extra vatten' + waterLabel() + ' – <strong>' + a.water + ' g (per batch)</strong><br>'+
+                 '2) Salt – <strong>' + a.salt + ' g (per batch)</strong><br>'+
+                 '3) Olivolja – <strong>' + a.oil + ' g (per batch)</strong>';
+    case 6: return 'Vik degen en gång och låt vila.';
+    case 7: return 'Vik igen, plasta & lock och kyl.';
+  }
+  return '';
+},
       {label:'Salt',  amt: a.salt  + ' g / batch'},
       {label:'Olja',  amt: a.oil   + ' g / batch'}
     ], 'Tillsätt');
