@@ -177,6 +177,24 @@
 
 <script>
 window.addEventListener('DOMContentLoaded', function(){
+  // Helpers (safe)
+  if(!window.__dgHelpers){
+    window.__dgHelpers = true;
+    window.$ = window.$ || (sel=>document.querySelector(sel));
+    window.byId = window.byId || (id=>document.getElementById(id));
+    window.on = window.on || function(id,ev,fn){ var el=document.getElementById(id); if(el) el.addEventListener(ev,fn); };
+  }
+  // Guard: clock & volume elements may be missing
+  (function(){ try{
+    var r=document.getElementById('volRange'); var lbl=document.getElementById('volLabel');
+    if(r && lbl){ /* init later in code still works; this ensures no crash if duplicated */ }
+  }catch(e){}
+  try{
+    setInterval(function(){ var el=document.getElementById('clock'); if(el){ el.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); } }, 1000);
+  }catch(e){}
+  })();
+  // Extra: proactively unlock audio on first touch/click (iOS/Chrome)
+  ;['pointerdown','touchstart','touchend','click'].forEach(function(evt){ document.addEventListener(evt, function once(){ try{ if(typeof unlockAudioOnce==='function'){ unlockAudioOnce(); } }catch(e){} document.removeEventListener(evt, once, {capture:false}); }, {passive:true}); });
   // ==== Helpers ====
   const $ = (sel)=>document.querySelector(sel);
   const byId = (id)=>document.getElementById(id);
