@@ -17,19 +17,16 @@
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:#0f172a;line-height:1.45}
-
-  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center}
   header h1{margin:0;font-size:18px;font-weight:800}
+  header .meta{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted)}
   header .ver{padding:4px 8px;border:1px solid var(--border);border-radius:999px;background:var(--panel-2);font-weight:700}
-
   main{max-width:1200px;margin:16px auto 120px;padding:0 16px}
   .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:0 8px 24px rgba(15,23,42,.06)}
   .stack{display:grid;gap:12px}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .muted{color:var(--muted)}
-  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;
-    font-weight:700;font-size:16px;min-height:44px;display:inline-block;text-decoration:none}
+  .btn{border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:14px 18px;border-radius:12px;cursor:pointer;font-weight:700;font-size:16px;min-height:44px;display:inline-block;text-decoration:none}
   .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   .btn.warn{background:var(--warn);border-color:var(--warn);color:#fff}
   .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
@@ -45,8 +42,7 @@
   @media (max-width:520px){.onboard-actions .btn{width:100%}}
 
   /* HERO */
-  .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;
-    max-width:840px;margin:0 auto;background:var(--panel)}
+  .hero{border-radius:24px;padding:20px;text-align:center;box-shadow:0 16px 40px rgba(15,23,42,.08);border:1px solid;position:relative;overflow:hidden;max-width:840px;margin:0 auto;background:var(--panel)}
   .hero.batch1{background:linear-gradient(180deg,var(--b1a),var(--b1b));border-color:var(--b1border)}
   .hero.batch2{background:linear-gradient(180deg,var(--b2a),var(--b2b));border-color:var(--b2border)}
   .hero .batchTag{font-weight:900;letter-spacing:.08em;color:#0f172a;text-transform:uppercase}
@@ -105,7 +101,8 @@
 <body>
 <header>
   <div class="row"><h1 id="title">🧑‍🍳 Degguiden</h1></div>
-  <div class="ver">v2.3.8</div>
+  
+  <div class="meta ver">v2.3.8</div>
 </header>
 
 <main>
@@ -226,17 +223,15 @@ window.addEventListener('DOMContentLoaded', function(){
   }
   function playBeep(freq=1000, dur=0.25){ try{ if(!state.audioCtx) return; const osc=state.audioCtx.createOscillator(); const g=state.audioCtx.createGain(); osc.type='square'; osc.frequency.value=freq; g.gain.setValueAtTime(0,state.audioCtx.currentTime); g.gain.linearRampToValueAtTime(state.volume,state.audioCtx.currentTime+0.02); g.gain.linearRampToValueAtTime(0.0001,state.audioCtx.currentTime+dur); osc.connect(g).connect(state.gain); osc.start(); osc.stop(state.audioCtx.currentTime+dur+0.05); }catch(e){} }
   function startAlarm(){ unlockAudioOnce(); ensureAudio(); try{ if(state.audioCtx && state.audioCtx.state==='suspended'){ state.audioCtx.resume(); } }catch(e){}
-    if(state.alarmOn) return; state.alarmOn=true; $('#hero').classList.add('alarming'); let flip=false;
-    state.alarmTimer=setInterval(()=>{ if(state.audioCtx) playBeep(flip?1000:1500,0.28); else { const el=byId('beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} } }
-      if(navigator.vibrate){ try{ navigator.vibrate(120); }catch(e){} } flip=!flip; }, 700);
-  }
+    if(state.alarmOn) return; state.alarmOn=true; $('#hero').classList.add('alarming'); let flip=false; state.alarmTimer=setInterval(()=>{ if(state.audioCtx) playBeep(flip?1000:1500,0.28); else { const el=byId('beepFallback'); if(el){ try{ el.currentTime=0; el.play(); }catch(e){} } } if(navigator.vibrate){ try{ navigator.vibrate(120); }catch(e){} } flip=!flip; }, 700); }
   function stopAlarm(){ state.alarmOn=false; if(state.alarmTimer){ clearInterval(state.alarmTimer); state.alarmTimer=null; } $('#hero').classList.remove('alarming'); }
 
   // ==== Steps text ====
   function waterLabel(){ return (typeof state.waterCalc==='number')?(' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)'):''; }
   function perBatch(){ return { water:state.base.water, salt:state.base.salt, oil:state.base.oil }; }
   function addBlock(items,title){ let html='<div class="addBlock"><div class="title">'+(title||'Tillsätt:')+'</div><ul class="addList">'; items.forEach(it=>{ html+='<li class="addItem"><span class="lab">'+it.label+'</span>'+(it.amt?'<span class="amt">'+it.amt+'</span>':'')+'</li>'; }); html+='</ul></div>'; return html; }
-  function stepTitle(id){ switch(id){
+  function stepTitle(id){
+  switch(id){
     case 1: return 'Häll i vatten i degblandaren';
     case 2: return 'Kör degblandaren Hastighet 1';
     case 3: return 'Autolys';
@@ -244,8 +239,12 @@ window.addEventListener('DOMContentLoaded', function(){
     case 5: return 'Kör degblandaren på Hastighet 2';
     case 6: return 'Vik 1 - Vila';
     case 7: return 'Vik 2';
-  } return ''; }
-  function stepHint(id){ const a = perBatch(); switch(id){
+  }
+  return '';
+}
+function stepHint(id){
+  const a = perBatch();
+  switch(id){
     case 1: return 'Vattentemp: ' + (typeof state.waterCalc==='number' ? (Math.round(state.waterCalc*10)/10 + ' °C') : '—');
     case 2: return 'Tillsätt mjöl';
     case 3: return '';
@@ -257,6 +256,15 @@ window.addEventListener('DOMContentLoaded', function(){
     ], 'Tillsätt');
     case 6: return '';
     case 7: return '';
+  }
+  return '';
+}
+],'Tillsätt:');
+    case 3: return 'Låt degen vila i 30 minuter (autolys).';
+    case 4: return addBlock([{label:'Jäst'}],'Tillsätt under körning:');
+    case 5: return addBlock([{label:'Vatten',amt:a.water+' g / batch'},{label:'Salt',amt:a.salt+' g / batch'},{label:'Olivolja',amt:a.oil+' g / batch'}],'I följande ordning, tillsätt:');
+    case 6: return 'Vik 1 - Vila 30 minuter';
+    case 7: return 'Vik 2 - Plasta och ställ i kylskåp.';
   } return ''; }
 
   // ==== Batches ====
@@ -282,8 +290,7 @@ window.addEventListener('DOMContentLoaded', function(){
   }
 
   // ==== Timer ====
-  function tick(){ const b=currentBatch(); const st=steps[b.idx]; if(st.duration>0 && b.running && remaining(b)<=0){ b.running=false;
-      if((b.idx+1)===5){ // temp efter steg 5
+  function tick(){ const b=currentBatch(); const st=steps[b.idx]; if(st.duration>0 && b.running && remaining(b)<=0){ b.running=false; if((b.idx+1)===5){ // temp efter steg 5
         stopAlarm(); openTempModal(5,state.active);
       } else {
         byId('ackBtn').style.display='inline-block'; startAlarm();
@@ -302,7 +309,9 @@ window.addEventListener('DOMContentLoaded', function(){
   // ==== Temp modal (endast efter steg 5) ====
   function openTempModal(stepId,batch){ state.pendingTemp={stepId,batch}; byId('tempModalTitle').textContent='Ange degtemperatur – Batch '+batch+' efter steg '+stepId; byId('tempInput').value=''; byId('tempModalBack').style.display='flex'; byId('tempInput').focus(); }
   function closeTempModal(){ byId('tempModalBack').style.display='none'; }
-  function saveTemp(){ const v=parseFloat((byId('tempInput').value||'').replace(',','.')); if(isNaN(v)){ alert('Fyll i en giltig temperatur.'); return; } const was=state.pendingTemp?{...state.pendingTemp}:null; closeTempModal(); state.pendingTemp=null; if(was && was.stepId===5){ const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); } } }
+  function saveTemp(){ const v=parseFloat((byId('tempInput').value||'').replace(',','.')); if(isNaN(v)){ alert('Fyll i en giltig temperatur.'); return; } const was=state.pendingTemp?{...state.pendingTemp}:null; closeTempModal(); state.pendingTemp=null; if(was && was.stepId===5){ // efter steg 5, fortsätt
+      const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); }
+    } }
 
   // ==== Water calc ====
   function num(id){ const raw=(byId(id).value||'').replace(',','.'); const v=parseFloat(raw); return isFinite(v)?v:NaN; }
@@ -320,7 +329,7 @@ window.addEventListener('DOMContentLoaded', function(){
   on('toBatch','click', ()=> show('viewBatch'));
   on('backToOnboard','click', ()=> show('viewOnboard'));
 
-  on('toTemps','click', ()=>{ const sel=document.querySelector('input[name="batch"]:+checked, input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch', state.batchMult); show('viewTemps'); updateWaterCalc(); });
+  on('toTemps','click', ()=>{ const sel=document.querySelector('input[name="batch"]:checked'); state.batchMult=sel?parseFloat(sel.value):1; localStorage.setItem('deg_batch', state.batchMult); show('viewTemps'); updateWaterCalc(); });
   on('backToBatch','click', ()=> show('viewBatch'));
 
   on('saveTemps','click', ()=>{ updateWaterCalc(); });
@@ -329,7 +338,11 @@ window.addEventListener('DOMContentLoaded', function(){
 
   on('toMixing','click', ()=>{ state.dualMode = (state.batchMult>=2); state.b2Started=false; setIdx(state.B1,0); setIdx(state.B2,0); state.active=1; show('viewMix'); refreshHero(); });
   on('prevStep','click', ()=>{ const b=currentBatch(); if(b.idx>0){ setIdx(b,b.idx-1); refreshHero(); } });
-  on('nextStep','click', ()=>{ const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); if(state.dualMode && state.active===1 && (b.idx+1)===3){ state.active=2; state.b2Started=true; setIdx(state.B2,0); refreshHero(); return; } refreshHero(); } });
+  on('nextStep','click', ()=>{ const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); if(state.dualMode && state.active===1 && (b.idx+1)===3){ // handoff
+        state.active=2; state.b2Started=true; // hoppa till Batch 2 steg 1
+        setIdx(state.B2,0); refreshHero(); return; }
+      refreshHero(); }
+  });
   on('timerPause','click', ()=>{ const st=steps[currentBatch().idx]; if(st.duration>0){ currentBatch().running?stopTimer():startTimer(); } });
   on('timerReset','click', ()=> resetTimer());
   on('ackBtn','click', ()=>{ stopAlarm(); byId('ackBtn').style.display='none'; const b=currentBatch(); if(b.idx<steps.length-1){ setIdx(b,b.idx+1); refreshHero(); } });
@@ -343,6 +356,10 @@ window.addEventListener('DOMContentLoaded', function(){
 
   // Inputs
   ['targetTemp','flourTemp','roomTemp','friction'].forEach(id=>{ const el=byId(id); if(el){ el.addEventListener('input', updateWaterCalc); el.addEventListener('change', updateWaterCalc);} });
+  const r=byId('volRange'); const lbl=byId('volLabel'); if(r&&lbl){ r.value=Math.round(state.volume*100); lbl.textContent=Math.round(state.volume*100)+'%'; r.addEventListener('input', ()=>{ state.volume=Math.max(0,Math.min(1,r.value/100)); if(state.gain){ state.gain.gain.value=state.volume; } localStorage.setItem('deg_alarm_vol', state.volume); lbl.textContent=Math.round(state.volume*100)+'%'; }); }
+
+  // Clock
+  setInterval(()=>{ const el=byId('clock'); if(el) el.textContent=new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }, 1000);
 
   // Start
   show('viewOnboard');
