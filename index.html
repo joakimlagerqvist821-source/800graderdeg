@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.18-brand</title>
+<title>Degguiden – Pizzeria v2.3.17-brand</title>
 <style>
   :root{
     /* Brand vars (will be overridden by palette extractor) */
@@ -123,8 +123,8 @@
 </head>
 <body>
 <header>
-  <div class="row"><img src="https://joakimlagerqvist821-source.github.io/800graderdeg/8870096F-C392-4789-B8AD-54E15B6D459B.jpeg" alt="800 Grader" class="logo" /></div>
-  <div class="ver">v2.3.18-brand</div>
+  <div class="row"><img src="https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg" alt="800 Grader" class="logo" /></div>
+  <div class="ver">v2.3.17-brand</div>
 </header>
 
 <main>
@@ -312,30 +312,6 @@
   function setIdx(b, idx){ b.idx=Math.max(0,Math.min(idx,steps.length-1)); var st=steps[b.idx]; if(st.duration>0){ b.deadline=Date.now()+st.duration*1000; b.running=false; } else { b.deadline=0; b.running=false; } }
   function remaining(b){ if(!b.deadline) return 0; return Math.max(0, Math.ceil((b.deadline-Date.now())/1000)); }
 
-  // === Fit-to-width helpers ===
-  function fitToOneLine(el, maxPx, minPx){
-    try{
-      if(!el) return; el.style.fontSize=''; el.style.whiteSpace='nowrap';
-      var size = maxPx; el.style.fontSize = size+'px';
-      var guard=0; // avoid infinite loops
-      while(el.scrollWidth>el.clientWidth && size>minPx && guard<40){ size-=1; el.style.fontSize=size+'px'; guard++; }
-    }catch(e){}
-  }
-  function fitHeroTexts(){
-    var name = byId('heroStepName');
-    fitToOneLine(name, 34, 16);
-    var hint = byId('heroHint');
-    if(!hint) return;
-    if(hint.innerHTML.indexOf('<br>')===-1){ // single-line hints only
-      hint.style.whiteSpace='nowrap';
-      fitToOneLine(hint, 20, 14);
-    } else {
-      hint.style.whiteSpace='normal';
-      hint.style.fontSize='';
-    }
-  }
-  window.addEventListener('resize', fitHeroTexts, false);
-
   // ===== Render =====
   function renderSteps(){ var b=currentBatch(); var c=byId('stepsContainer'); c.innerHTML='';
     for(var idx=b.idx; idx<steps.length; idx++){
@@ -357,20 +333,6 @@
   }
   function refreshHero(){ var b=currentBatch(); var stepId=b.idx+1; var hero=byId('hero');
     if(state.active===1){ hero.classList.add('batch1'); hero.classList.remove('batch2'); } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
-    byId('heroBatchLabel').textContent='Batch '+state.active;
-    byId('stepBadge').textContent=(b.idx+1)+' / '+steps.length;
-    byId('heroStepNum').textContent='Steg '+stepId;
-    byId('heroStepName').textContent=stepTitle(stepId);
-    byId('heroHint').innerHTML=stepHint(stepId);
-    var overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100));
-    byId('heroProgOverall').style.width=overall+'%';
-    byId('heroProgPct').textContent=Math.round(overall)+'%';
-    byId('heroProgLabel').textContent='Steg '+stepId+' av '+steps.length;
-    var showTimer=steps[b.idx].duration>0; byId('heroTimerWrap').style.display=showTimer?'grid':'none';
-    byId('timerDisplay').textContent=fmt(remaining(b));
-    renderSteps(); updateInactiveBar();
-    requestAnimationFrame(fitHeroTexts);
-  } else { hero.classList.add('batch2'); hero.classList.remove('batch1'); }
     byId('heroBatchLabel').textContent='Batch '+state.active;
     byId('stepBadge').textContent=(b.idx+1)+' / '+steps.length;
     byId('heroStepNum').textContent='Steg '+stepId;
@@ -466,7 +428,7 @@
 
   // ===== Brand palette extractor from logo =====
   (function extractBrand(){
-    var URL_LOGO = 'https://joakimlagerqvist821-source.github.io/800graderdeg/8870096F-C392-4789-B8AD-54E15B6D459B.jpeg';
+    var URL_LOGO = 'https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg';
     try{
       var img=new Image(); img.crossOrigin='anonymous';
       img.onload=function(){
