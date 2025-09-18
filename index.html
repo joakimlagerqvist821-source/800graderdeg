@@ -6,11 +6,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Degguiden" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Degguiden – Pizzeria v2.3.17-brand</title>
+<title>Degguiden – Pizzeria v2.3.19-brand</title>
 <style>
   :root{
-    /* Brand vars (will be overridden by palette extractor) */
-    --brand:#e4572e;        /* primary accent from logo */
+    /* Brand vars (extracted from logo at runtime) */
+    --brand:#e4572e;        /* fallback accent */
     --brand-600:#c14422;    /* darken */
     --brand-300:#f29a7f;    /* lighten */
     --brand-100:#fde7df;    /* very light */
@@ -26,10 +26,7 @@
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:#0f172a;line-height:1.45}
   header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
   header h1{margin:0;font-size:18px;font-weight:800}
-  .logo{height:28px;width:28px;border-radius:6px;object-fit:cover;margin-right:8px}
-  .belowOptions{margin-top:12px}
-  .stackedCards{max-width:680px;margin:0 auto;display:grid;gap:10px}
-  .stackedCards .card{width:100%}
+  .logo{height:40px;width:auto;border-radius:4px;object-fit:contain;margin-right:10px}
   header .ver{padding:4px 8px;border:1px solid var(--border);border-radius:999px;background:var(--panel-2);font-weight:700}
 
   main{max-width:1200px;margin:16px auto 120px;padding:0 16px}
@@ -94,14 +91,6 @@
   .view{display:none}
   .view.show{display:block}
 
-  /* Tillsätt-block */
-  .addBlock{margin-top:10px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:var(--panel)}
-  .addBlock .title{font-weight:800;margin-bottom:6px}
-  .addList{list-style:none;padding:0;margin:0;display:grid;gap:10px;justify-content:center}
-  .addItem{text-align:center}
-  .addItem .lab{display:block;font-weight:900;font-size:22px;line-height:1.06;margin:0}
-  .addItem .amt{display:block;font-weight:700;font-size:16px;line-height:1.08;margin:0;color:#0f172a}
-
   /* Inaktiv batch bar */
   #inactiveBar{display:none;max-width:840px;margin:10px auto 0}
   #inactiveBar .inner{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2)}
@@ -119,12 +108,19 @@
   /* Modal */
   .modalBack{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:100}
   .modal{background:var(--panel);border:1px solid var(--border);border-radius:18px;width:min(94vw,560px);padding:18px}
+  /* Add box for ingredients in hero */
+  .addBlock{margin-top:12px;padding:12px;border:1px solid #cbd5e1;border-radius:12px;background:var(--panel)}
+  .addBlock .title{font-weight:900;margin-bottom:8px}
+  .addList{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+  .addItem{text-align:left}
+  .addItem .lab{display:block;font-weight:900;font-size:18px;line-height:1.1}
+  .addItem .amt{display:block;font-weight:700;font-size:14px;opacity:.9}
 </style>
 </head>
 <body>
 <header>
-  <div class="row"><img src="https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg" alt="800 Grader" class="logo" /></div>
-  <div class="ver">v2.3.17-brand</div>
+  <div class="row"><img src="https://joakimlagerqvist821-source.github.io/800graderdeg/85D4DC81-9284-43F7-BB63-A98750228389.jpeg" alt="800 Grader" class="logo" /><h1 id="title">🧑‍🍳 Degguiden</h1></div>
+  <div class="ver">v2.3.19-brand</div>
 </header>
 
 <main>
@@ -138,9 +134,7 @@
       <li>Nästa: fortsätt till batch-val</li>
     </ol>
     <div class="onboard-actions">
-      <div class="row">
-        <button class="btn outline" id="enterFs" type="button">⤢ Starta helskärm</button>
-      </div>
+      <div class="row"><button class="btn outline" id="enterFs" type="button">⤢ Starta helskärm</button></div>
       <p id="fsHint" class="muted"></p>
       <div class="row">
         <button class="btn secondary" id="unlockAudioBtn" type="button">🔔 Aktivera ljud</button>
@@ -158,7 +152,7 @@
       <label class="optCard"><input type="radio" name="batch" value="1.5"><div><strong>1.5×</strong><div class="muted">183 bollar</div></div></label>
       <label class="optCard"><input type="radio" name="batch" value="2"><div><strong>2×</strong><div class="muted">244 bollar</div></div></label>
     </div>
-    <div class="row belowOptions" style="justify-content:space-between"><button class="btn" id="backToOnboard" type="button">◀ Tillbaka</button><button class="btn primary" id="toTemps" type="button">Nästa ▶</button></div>
+    <div class="row" style="justify-content:space-between"><button class="btn" id="backToOnboard" type="button">◀ Tillbaka</button><button class="btn primary" id="toTemps" type="button">Nästa ▶</button></div>
   </section>
 
   <!-- TEMPERATURER -->
@@ -169,7 +163,7 @@
       <div class="field" style="min-width:240px"><label>Rumstemp (°C)</label><input type="number" id="roomTemp" step="0.1" inputmode="decimal" placeholder="t.ex. 22"></div>
       <div class="field" style="min-width:240px"><label>Önskad degtemp (°C)</label><input type="number" id="targetTemp" step="0.1" inputmode="decimal" value="22"><div class="muted">Standard: 22 °C</div></div>
       <div class="field" style="min-width:240px"><label>Friktionstal (°C)</label><input type="number" id="friction" step="0.1" inputmode="decimal" placeholder="t.ex. 8"></div>
-      <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div></div>
+      <div class="field" style="min-width:240px"><label>Beräknad vattentemp (°C)</label><div class="kpi" id="waterCalc">—</div><div class="muted">(Önskad × 3) − (Mjöl + Rum + Friktion)</div></div>
     </div>
     <div class="row" style="justify-content:space-between">
       <button class="btn" id="backToBatch" type="button">◀ Tillbaka</button>
@@ -183,10 +177,10 @@
   <!-- FÖRVÄGNING -->
   <section id="viewPre" class="view card stack">
     <h2>Steg 4: Väg upp enligt batch</h2>
-    <div class="stackedCards">
-      <div class="card"><div class="preLabel">Vatten</div><div class="bigBreak" id="preWaterBig">—</div></div>
-      <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div></div>
-      <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div></div>
+    <div class="row" style="justify-content:center;gap:12px;flex-wrap:wrap">
+      <div class="card"><div class="preLabel">Vatten</div><div class="bigBreak" id="preWaterBig">—</div><div class="smallTotal" id="preWaterSmall">= — g</div></div>
+      <div class="card"><div class="preLabel">Salt</div><div class="bigBreak" id="preSaltBig">—</div><div class="smallTotal" id="preSaltSmall">= — g</div></div>
+      <div class="card"><div class="preLabel">Olivolja</div><div class="bigBreak" id="preOilBig">—</div><div class="smallTotal" id="preOilSmall">= — g</div></div>
     </div>
     <div class="row" style="justify-content:space-between"><button class="btn" id="backToTemps" type="button">◀ Tillbaka</button><button class="btn primary" id="toMixing" type="button">Börja degblandning ▶</button></div>
   </section>
@@ -198,6 +192,10 @@
       <div class="stepNum" id="heroStepNum">Steg —</div>
       <div class="stepName" id="heroStepName">—</div>
       <div class="hint" id="heroHint"></div>
+      <div id="addBox" class="addBlock" style="display:none;">
+        <div class="title">Tillsätt nu</div>
+        <ul id="addList" class="addList"></ul>
+      </div>
       <div class="progWrap"><div class="track"><div class="bar overall" id="heroProgOverall"></div><div class="bar time" id="heroProgTime"></div></div><div class="progText"><span id="heroProgLabel">Steg — av 7</span><span id="heroProgPct">0%</span></div></div>
       <div class="timerWrap" id="heroTimerWrap" style="display:none"><div class="time" id="timerDisplay">00:00</div><div class="controls"><button class="btn" id="timerPause" type="button">Pausa</button><button class="btn" id="timerReset" type="button">Nollställ</button></div><div class="ackWrap"><button class="btn danger ackBtn" id="ackBtn" type="button">⏰ Stoppa alarm och nästa steg</button></div></div>
       <div class="row" style="justify-content:center;gap:8px;margin-top:10px"><button class="btn" id="prevStep" type="button">◀ Föregående</button><button class="btn primary" id="nextStep" type="button">Nästa ▶</button></div>
@@ -273,7 +271,7 @@
   document.addEventListener('visibilitychange', function(){ if(!document.hidden){ try{ unlockAudioOnce(); }catch(e){} } }, false);
   ;['pointerdown','touchstart','touchend','click'].forEach(function(evt){ document.addEventListener(evt, function once(){ try{ unlockAudioOnce(); }catch(e){} document.removeEventListener(evt, once, {capture:false}); }, {passive:true}); });
 
-  // ===== Text (original live) =====
+  // ===== Text (original live-ish) =====
   function perBatch(){ return { water:state.base.water, salt:state.base.salt, oil:state.base.oil }; }
   function waterLabel(){ return (typeof state.waterCalc==='number') ? (' (vattentemp: '+(Math.round(state.waterCalc*10)/10)+' °C)') : ''; }
   function stepTitle(id){
@@ -304,6 +302,15 @@
     }
     return '';
   }
+  function getAddItems(stepId){ var a=perBatch();
+    if(stepId===2) return [{lab:'Mjöl'}];
+    if(stepId===4) return [{lab:'Jäst'}];
+    if(stepId===5) return [
+      {lab:'Vatten', amt: a.water+' g / batch'},
+      {lab:'Salt', amt: a.salt+' g / batch'},
+      {lab:'Olivolja', amt: a.oil+' g / batch'}
+    ];
+    return []; }
 
   // ===== Batches =====
   function batchObj(n){ return n===1?state.B1:state.B2; }
@@ -338,6 +345,17 @@
     byId('heroStepNum').textContent='Steg '+stepId;
     byId('heroStepName').textContent=stepTitle(stepId);
     byId('heroHint').innerHTML=stepHint(stepId);
+
+    // Build Add box
+    var items = getAddItems(stepId);
+    var addBox = byId('addBox'); var addList = byId('addList');
+    if(items && items.length){ addBox.style.display='block'; addList.innerHTML='';
+      for(var i=0;i<items.length;i++){ var it=items[i]; var li=document.createElement('li'); li.className='addItem';
+        li.innerHTML = '<span class="lab">'+it.lab+'</span>' + (it.amt?'<span class="amt">'+it.amt+'</span>':'');
+        addList.appendChild(li);
+      }
+    } else { addBox.style.display='none'; addList.innerHTML=''; }
+
     var overall=Math.min(100,Math.max(0,(b.idx)/(steps.length-1)*100));
     byId('heroProgOverall').style.width=overall+'%';
     byId('heroProgPct').textContent=Math.round(overall)+'%';
@@ -387,7 +405,7 @@
 
   // ===== Pre-weigh parts =====
   function partsText(mult, base){ var half=Math.round(base/2); if(Math.abs(mult-2)<1e-3) return {big:'2 × '+base+' g', total:2*base}; if(Math.abs(mult-1.5)<1e-3) return {big:'1 × '+base+' g + 1 × '+half+' g', total:base+half}; return {big:'1 × '+base+' g', total:base}; }
-  function refreshPreWeigh(){ var m=state.batchMult||1; var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); byId('preWaterBig').textContent=bw.big; byId('preSaltBig').textContent=bs.big; byId('preOilBig').textContent=bo.big; }
+  function refreshPreWeigh(){ var m=state.batchMult||1; var bw=partsText(m,state.base.water), bs=partsText(m,state.base.salt), bo=partsText(m,state.base.oil); byId('preWaterBig').textContent=bw.big; byId('preWaterSmall').textContent='= '+bw.total+' g'; byId('preSaltBig').textContent=bs.big; byId('preSaltSmall').textContent='= '+bs.total+' g'; byId('preOilBig').textContent=bo.big; byId('preOilSmall').textContent='= '+bo.total+' g'; }
 
   // ===== Navigation =====
   on('enterFs','click', function(){ if(fsSupported()){ try{ (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen).call(document.documentElement); }catch(e){} } else { var h=byId('fsHint'); if(h){ h.textContent='Din webbläsare saknar helskärmsstöd.'; } } });
@@ -436,12 +454,9 @@
         cx.drawImage(img,0,0,w,h);
         var data=cx.getImageData(0,0,w,h).data; var hist={}, i, r,g,b, key;
         function sat(r,g,b){ var max=Math.max(r,g,b), min=Math.min(r,g,b); return max? (max-min)/max:0; }
-        for(i=0;i<data.length;i+=4){ r=data[i]; g=data[i+1]; b=data[i+2]; if(data[i+3]<128) continue; // skip transparent
-          // quantize to 16 levels per channel
-          r=r>>4; g=g>>4; b=b>>4; key=r+','+g+','+b; hist[key]=(hist[key]||0)+1; }
+        for(i=0;i<data.length;i+=4){ r=data[i]; g=data[i+1]; b=data[i+2]; if(data[i+3]<128) continue; r=r>>4; g=g>>4; b=b>>4; key=r+','+g+','+b; hist[key]=(hist[key]||0)+1; }
         var top=Object.keys(hist).map(function(k){ var p=k.split(','); var rr=parseInt(p[0],10)<<4, gg=parseInt(p[1],10)<<4, bb=parseInt(p[2],10)<<4; return {k:k, n:hist[k], r:rr,g:gg,b:bb, s:sat(rr,gg,bb)}; })
           .sort(function(a,b){ return b.n-a.n; }).slice(0,24);
-        // pick most saturated among top few to avoid beige/white
         top.sort(function(a,b){ return (b.s*1.2 + b.n/1000) - (a.s*1.2 + a.n/1000); });
         var pick=top[0]||{r:228,g:87,b:46};
         function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
